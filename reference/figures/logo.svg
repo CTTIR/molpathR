@@ -1,0 +1,132 @@
+<svg width="500" height="580" viewBox="0 0 500 580" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgmol" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#2a1a5e"/>
+      <stop offset="50%" stop-color="#1a0e42"/>
+      <stop offset="100%" stop-color="#0d0825"/>
+    </linearGradient>
+    <linearGradient id="dbgrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5b21b6"/>
+      <stop offset="100%" stop-color="#2e1065"/>
+    </linearGradient>
+    <clipPath id="hexmol">
+      <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"/>
+    </clipPath>
+  </defs>
+
+  <polygon points="250,30 455,145 455,375 250,490 45,375 45,145" fill="url(#bgmol)"/>
+
+  <g clip-path="url(#hexmol)">
+
+    <!-- Central DNA helix -->
+    <path d="M 214,148 C 214,168 236,180 236,204 C 236,228 214,240 214,260 C 214,280 236,292 236,316"
+      fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.95"/>
+    <path d="M 286,148 C 286,168 264,180 264,204 C 264,228 286,240 286,260 C 286,280 264,292 264,316"
+      fill="none" stroke="#c4b5f7" stroke-width="4" stroke-linecap="round" opacity="0.95"/>
+    <line x1="236" y1="204" x2="264" y2="204" stroke="#e2d9ff" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="214" y1="260" x2="286" y2="260" stroke="#e2d9ff" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="214" y1="148" x2="286" y2="148" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="217" y1="174" x2="283" y2="174" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round" opacity="0.42"/>
+    <line x1="217" y1="232" x2="283" y2="232" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round" opacity="0.42"/>
+    <line x1="217" y1="288" x2="283" y2="288" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round" opacity="0.42"/>
+    <line x1="236" y1="316" x2="264" y2="316" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <circle cx="214" cy="148" r="5" fill="#ffffff" opacity="0.9"/>
+    <circle cx="286" cy="148" r="5" fill="#c4b5f7" opacity="0.9"/>
+    <circle cx="236" cy="204" r="5" fill="#ffffff" opacity="0.88"/>
+    <circle cx="264" cy="204" r="5" fill="#c4b5f7" opacity="0.88"/>
+    <circle cx="214" cy="260" r="5" fill="#ffffff" opacity="0.88"/>
+    <circle cx="286" cy="260" r="5" fill="#c4b5f7" opacity="0.88"/>
+    <circle cx="236" cy="316" r="5" fill="#ffffff" opacity="0.9"/>
+    <circle cx="264" cy="316" r="5" fill="#c4b5f7" opacity="0.9"/>
+
+    <!-- Clinical — clipboard -->
+    <rect x="66" y="168" width="38" height="32" rx="4" fill="none" stroke="#60a5fa" stroke-width="2.2" opacity="0.88"/>
+    <rect x="75" y="162" width="20" height="8" rx="3" fill="#0d0825" stroke="#60a5fa" stroke-width="2" opacity="0.88"/>
+    <line x1="73" y1="180" x2="96" y2="180" stroke="#60a5fa" stroke-width="1.8" opacity="0.65"/>
+    <line x1="73" y1="188" x2="96" y2="188" stroke="#60a5fa" stroke-width="1.8" opacity="0.55"/>
+    <line x1="73" y1="196" x2="88" y2="196" stroke="#60a5fa" stroke-width="1.8" opacity="0.45"/>
+
+    <!-- Survival — KM curve -->
+    <polyline points="66,278 66,300 78,300 78,312 96,312 96,320 112,320"
+      fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.88"/>
+
+    <!-- Survey / patient -->
+    <circle cx="90" cy="368" r="10" fill="none" stroke="#e879f9" stroke-width="2.2" opacity="0.88"/>
+    <path d="M 72,398 Q 72,384 90,384 Q 108,384 108,398"
+      fill="none" stroke="#e879f9" stroke-width="2.2" stroke-linecap="round" opacity="0.88"/>
+    <rect x="96" y="355" width="22" height="14" rx="3" fill="none" stroke="#e879f9" stroke-width="1.8" opacity="0.75"/>
+    <line x1="100" y1="360" x2="114" y2="360" stroke="#e879f9" stroke-width="1.2" opacity="0.55"/>
+    <line x1="100" y1="364" x2="111" y2="364" stroke="#e879f9" stroke-width="1.2" opacity="0.45"/>
+    <polygon points="99,369 96,374 103,369" fill="#e879f9" opacity="0.6"/>
+
+    <!-- Imaging — scan arcs -->
+    <path d="M 382,168 A 26 26 0 0 1 434,168" fill="none" stroke="#fb923c" stroke-width="2.5" stroke-linecap="round" opacity="0.88"/>
+    <path d="M 388,180 A 18 18 0 0 1 428,180" fill="none" stroke="#fb923c" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+    <path d="M 394,192 A 10 10 0 0 1 422,192" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" opacity="0.62"/>
+    <circle cx="408" cy="198" r="4" fill="#fb923c" opacity="0.75"/>
+
+    <!-- Histology — slide -->
+    <rect x="392" y="272" width="46" height="30" rx="3" fill="none" stroke="#f472b6" stroke-width="2.2" opacity="0.88"/>
+    <rect x="404" y="266" width="22" height="8" rx="2" fill="#0d0825" stroke="#f472b6" stroke-width="2" opacity="0.8"/>
+    <circle cx="406" cy="287" r="5"   fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.65"/>
+    <circle cx="418" cy="283" r="4"   fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.58"/>
+    <circle cx="426" cy="290" r="3.5" fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.52"/>
+
+    <!-- Lab data — flask -->
+    <path d="M 410,352 L 400,352 L 384,382 L 426,382 L 410,352 Z"
+      fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linejoin="round" opacity="0.88"/>
+    <line x1="400" y1="352" x2="410" y2="352" stroke="#fbbf24" stroke-width="2" opacity="0.75"/>
+    <path d="M 387,373 Q 405,366 423,373" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.55"/>
+    <circle cx="394" cy="376" r="2.5" fill="#fbbf24" opacity="0.5"/>
+    <circle cx="405" cy="373" r="2"   fill="#fbbf24" opacity="0.4"/>
+    <circle cx="416" cy="376" r="2"   fill="#fbbf24" opacity="0.35"/>
+
+    <!-- Spokes -->
+    <line x1="104" y1="184" x2="204" y2="370" stroke="#60a5fa" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.48"/>
+    <circle cx="104" cy="184" r="3" fill="#60a5fa" opacity="0.7"/>
+    <line x1="112" y1="310" x2="205" y2="382" stroke="#34d399" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.48"/>
+    <circle cx="112" cy="310" r="3" fill="#34d399" opacity="0.7"/>
+    <line x1="108" y1="380" x2="208" y2="393" stroke="#e879f9" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.48"/>
+    <circle cx="108" cy="380" r="3" fill="#e879f9" opacity="0.7"/>
+    <line x1="392" y1="184" x2="296" y2="370" stroke="#fb923c" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.48"/>
+    <circle cx="392" cy="184" r="3" fill="#fb923c" opacity="0.7"/>
+    <line x1="392" y1="287" x2="296" y2="382" stroke="#f472b6" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.48"/>
+    <circle cx="392" cy="287" r="3" fill="#f472b6" opacity="0.7"/>
+    <line x1="392" y1="367" x2="295" y2="393" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.48"/>
+    <circle cx="392" cy="367" r="3" fill="#fbbf24" opacity="0.7"/>
+    <line x1="250" y1="320" x2="250" y2="372" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="4 3" opacity="0.55"/>
+    <circle cx="250" cy="320" r="3.5" fill="#a78bfa" opacity="0.8"/>
+
+    <!-- Database cylinder -->
+    <rect x="200" y="388" width="100" height="48" rx="4" fill="url(#dbgrad)" opacity="0.97"/>
+    <ellipse cx="250" cy="388" rx="50" ry="13" fill="#5b21b6" opacity="0.98"/>
+    <ellipse cx="250" cy="388" rx="42" ry="10" fill="#7c3aed" opacity="0.55"/>
+    <ellipse cx="250" cy="412" rx="50" ry="13" fill="none" stroke="#7c3aed" stroke-width="1.2" opacity="0.5"/>
+    <ellipse cx="250" cy="436" rx="50" ry="13" fill="#3b0764" opacity="0.98"/>
+    <ellipse cx="250" cy="436" rx="42" ry="10" fill="#4c1d95" opacity="0.45"/>
+    <line x1="215" y1="393" x2="215" y2="431" stroke="#a78bfa" stroke-width="1" opacity="0.22"/>
+    <line x1="200" y1="400" x2="300" y2="400" stroke="#7c3aed" stroke-width="0.8" opacity="0.38"/>
+    <line x1="200" y1="413" x2="300" y2="413" stroke="#7c3aed" stroke-width="0.8" opacity="0.38"/>
+    <line x1="200" y1="426" x2="300" y2="426" stroke="#7c3aed" stroke-width="0.8" opacity="0.38"/>
+    <circle cx="204" cy="373" r="3" fill="#60a5fa" opacity="0.75"/>
+    <circle cx="205" cy="382" r="3" fill="#34d399" opacity="0.75"/>
+    <circle cx="208" cy="393" r="3" fill="#e879f9" opacity="0.75"/>
+    <circle cx="296" cy="373" r="3" fill="#fb923c" opacity="0.75"/>
+    <circle cx="296" cy="382" r="3" fill="#f472b6" opacity="0.75"/>
+    <circle cx="295" cy="393" r="3" fill="#fbbf24" opacity="0.75"/>
+
+  </g>
+
+  <!-- Hex border -->
+  <polygon points="250,30 455,145 455,375 250,490 45,375 45,145"
+    fill="none" stroke="#7c3aed" stroke-width="9" stroke-linejoin="round"/>
+  <polygon points="250,38 447,150 447,370 250,482 53,370 53,150"
+    fill="none" stroke="#a78bfa" stroke-width="1.2" stroke-linejoin="round" opacity="0.45"/>
+
+  <!-- Package name -->
+  <text font-family="monospace" font-weight="700" font-size="28"
+    fill="#e9d5ff" text-anchor="middle" x="244" y="545" letter-spacing="1">molpath</text>
+  <text font-family="monospace" font-weight="700" font-size="32"
+    fill="#c4b5f7" text-anchor="start" x="316" y="545">R</text>
+
+</svg>
