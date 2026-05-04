@@ -3,6 +3,7 @@
 ## Launching the app
 
 ``` r
+
 library(molpathR)
 
 # Launch with pre-loaded example data
@@ -63,6 +64,7 @@ formats. Preview the data before downloading.
 ## Deployment
 
 ``` r
+
 # Deploy to shinyapps.io
 rsconnect::deployApp(
   appDir = system.file("shiny", "molpathR", package = "molpathR"),

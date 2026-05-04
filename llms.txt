@@ -11,6 +11,7 @@ application for clinical exploration and visualization.
 Install the development version from GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("r-heller/molpathR")
 ```
@@ -18,6 +19,7 @@ remotes::install_github("r-heller/molpathR")
 ## Quick example
 
 ``` r
+
 library(molpathR)
 
 # Load example database with synthetic data
@@ -30,6 +32,7 @@ head(tp53[, c("sample_id", "gene", "variant", "classification", "vaf")])
 ```
 
 ``` r
+
 # Survival analysis by diagnosis
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ```
@@ -37,6 +40,7 @@ mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ## Launch the Shiny app
 
 ``` r
+
 mp_run_app(db)
 ```
 

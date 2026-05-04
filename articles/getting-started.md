@@ -5,6 +5,7 @@
 Install molpathR from GitHub:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("r-heller/molpathR")
 ```
@@ -14,6 +15,7 @@ remotes::install_github("r-heller/molpathR")
 Load the package and create an example database:
 
 ``` r
+
 library(molpathR)
 db <- mp_example_db(n_patients = 50, seed = 42)
 db
@@ -27,7 +29,7 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-04-17 15:52:14"
+#> ℹ Created: "2026-05-04 18:30:58"
 #> ℹ Source files: 0
 ```
 
@@ -36,6 +38,7 @@ db
 Get a cohort summary:
 
 ``` r
+
 mp_summary(db)
 #> 
 #> ── molpathR Database Summary ───────────────────────────────────────────────────
@@ -79,6 +82,7 @@ mp_summary(db)
 ## Query patients
 
 ``` r
+
 # Find melanoma patients over 60
 melanoma <- mp_query_patients(db, diagnosis == "Melanoma", age > 60)
 head(melanoma)
@@ -93,6 +97,7 @@ head(melanoma)
 ## Query variants
 
 ``` r
+
 # Pathogenic TP53 variants with VAF > 10%
 tp53 <- mp_query_variants(db, genes = "TP53", classification = "Pathogenic", min_vaf = 0.1)
 head(tp53)
@@ -111,12 +116,14 @@ head(tp53)
 ## Visualize
 
 ``` r
+
 mp_plot_variant_landscape(db, top_n = 10)
 ```
 
 ![](getting-started_files/figure-html/landscape-1.png)
 
 ``` r
+
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ```
 
@@ -125,5 +132,6 @@ mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ## Launch the Shiny app
 
 ``` r
+
 mp_run_app(db)
 ```
