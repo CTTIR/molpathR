@@ -1,0 +1,61 @@
+Package: molpathR
+Title: Molecular Pathology Data Platform for Clinical NGS Integration
+Description: A unified platform for ingesting, linking, querying, and visualizing
+    molecular pathology data from heterogeneous sources including NGS files (FASTQ,
+    BAM, VCF), XML variant interpretation reports, structured pathology PDF reports,
+    pathology and clinical information systems, and survival outcome data. Provides
+    a searchable in-memory database and an interactive Shiny application for clinical
+    exploration and cohort analysis.
+Version: 0.1.0
+Authors@R: person("Raban", "Heller", email = "raban.heller@charite.de",
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
+License: MIT + file LICENSE
+URL: https://github.com/r-heller/molpathR, https://r-heller.github.io/molpathR/
+BugReports: https://github.com/r-heller/molpathR/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+LazyData: true
+Depends:
+    R (>= 4.1.0)
+Imports:
+    tibble,
+    dplyr,
+    tidyr,
+    readr,
+    readxl,
+    xml2,
+    jsonlite,
+    pdftools,
+    stringr,
+    rlang,
+    cli,
+    ggplot2,
+    survival,
+    DT,
+    shiny,
+    bslib,
+    plotly,
+    shinyWidgets,
+    stats,
+    utils,
+    tools,
+    methods
+Suggests:
+    Rsamtools,
+    VariantAnnotation,
+    GenomicRanges,
+    ShortRead,
+    Biostrings,
+    BiocGenerics,
+    IRanges,
+    SummarizedExperiment,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    pkgdown,
+    withr,
+    shinytest2,
+    writexl
+Config/testthat/edition: 3
+VignetteBuilder: knitr

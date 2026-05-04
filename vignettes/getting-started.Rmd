@@ -1,0 +1,76 @@
+---
+title: "Getting Started with molpathR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with molpathR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+## Installation
+
+Install molpathR from GitHub:
+
+```{r install, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("r-heller/molpathR")
+```
+
+## Quick start
+
+Load the package and create an example database:
+
+```{r load}
+library(molpathR)
+db <- mp_example_db(n_patients = 50, seed = 42)
+db
+```
+
+## Explore the data
+
+Get a cohort summary:
+
+```{r summary}
+mp_summary(db)
+```
+
+## Query patients
+
+```{r query}
+# Find melanoma patients over 60
+melanoma <- mp_query_patients(db, diagnosis == "Melanoma", age > 60)
+head(melanoma)
+```
+
+## Query variants
+
+```{r variants}
+# Pathogenic TP53 variants with VAF > 10%
+tp53 <- mp_query_variants(db, genes = "TP53", classification = "Pathogenic", min_vaf = 0.1)
+head(tp53)
+```
+
+## Visualize
+
+```{r landscape, fig.width = 8, fig.height = 5}
+mp_plot_variant_landscape(db, top_n = 10)
+```
+
+```{r survival, fig.width = 7, fig.height = 5}
+mp_plot_survival(db, group_by = "diagnosis", type = "os")
+```
+
+## Launch the Shiny app
+
+```{r shiny, eval = FALSE}
+mp_run_app(db)
+```

@@ -1,0 +1,77 @@
+---
+title: "Visualization Guide"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualization Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+## Overview
+
+All molpathR plot functions return ggplot2 objects, so you can customize them
+with standard ggplot2 syntax.
+
+```{r data}
+library(molpathR)
+db <- mp_example_db(n_patients = 150, seed = 42)
+```
+
+## Variant landscape
+
+```{r landscape, fig.width = 9, fig.height = 6}
+mp_plot_variant_landscape(db, top_n = 10)
+```
+
+## VAF distribution
+
+```{r vaf}
+mp_plot_vaf_distribution(db, gene = "TP53")
+```
+
+## Survival analysis
+
+```{r survival}
+# Overall survival by diagnosis
+mp_plot_survival(db, group_by = "diagnosis", type = "os")
+```
+
+```{r survival_gene}
+# Stratify by TP53 mutation status
+mp_plot_survival(db, group_by = "TP53", type = "os")
+```
+
+## Cohort overview
+
+```{r cohort}
+plots <- mp_plot_cohort_overview(db)
+plots$diagnosis
+plots$top_genes
+```
+
+## Patient timeline
+
+```{r timeline}
+pid <- db$patients$patient_id[1]
+mp_plot_timeline(db, pid)
+```
+
+## Customization
+
+All plots can be customized with ggplot2:
+
+```{r custom}
+library(ggplot2)
+mp_plot_vaf_distribution(db) +
+  labs(title = "Custom Title") +
+  theme(plot.title = element_text(colour = "purple"))
+```

@@ -1,0 +1,51 @@
+/* molpathR Shiny App — Custom styles */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #7B2D8E;
+  font-weight: 600;
+}
+
+.value-box {
+  border-radius: 8px;
+}
+
+.btn-primary {
+  background-color: #7B2D8E;
+  border-color: #7B2D8E;
+}
+
+.btn-primary:hover {
+  background-color: #9B59B6;
+  border-color: #9B59B6;
+}
+
+.sidebar {
+  background-color: #f8f9fa;
+}
+
+pre {
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 0.85em;
+}
+
+.dataTables_wrapper {
+  font-size: 0.9em;
+}

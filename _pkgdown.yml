@@ -1,0 +1,85 @@
+url: https://r-heller.github.io/molpathR/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#7B2D8E"
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+
+reference:
+  - title: "Parsers"
+    desc: "Functions for reading molecular pathology data files"
+    contents:
+      - mp_read_vcf
+      - mp_read_fastq
+      - mp_read_bam
+      - mp_read_xml_report
+      - mp_read_pdf_report
+      - mp_read_nexus_pathology
+      - mp_read_nexus_clinical
+      - mp_read_survival
+      - mp_read_auto
+
+  - title: "Database"
+    desc: "Build and manage the in-memory database"
+    contents:
+      - mp_build_db
+      - mp_add_data
+      - mp_merge_db
+      - mp_validate_db
+      - mp_save_db
+      - mp_load_db
+
+  - title: "Queries"
+    desc: "Filter and search the database"
+    contents:
+      - mp_query_patients
+      - mp_query_variants
+      - mp_query_samples
+      - mp_get_patient
+      - mp_summary
+      - mp_search
+
+  - title: "Visualization"
+    desc: "Publication-ready plots"
+    contents:
+      - mp_plot_variant_landscape
+      - mp_plot_mutation_spectrum
+      - mp_plot_survival
+      - mp_plot_cohort_overview
+      - mp_plot_vaf_distribution
+      - mp_plot_timeline
+
+  - title: "Shiny"
+    desc: "Interactive application"
+    contents:
+      - mp_run_app
+
+  - title: "Data"
+    desc: "Example data generation"
+    contents:
+      - mp_example_db
+      - mp_example_files
+
+  - title: "Classes"
+    desc: "S3 class constructors"
+    contents:
+      - new_molpath_db
+      - new_molpath_parsed
+      - validate_molpath_db
+      - print.molpath_db
+      - print.molpath_parsed
+      - summary.molpath_db
+      - summary.molpath_parsed
+
+articles:
+  - title: "User guides"
+    contents:
+      - getting-started
+      - data-import
+      - visualization
+      - shiny-app

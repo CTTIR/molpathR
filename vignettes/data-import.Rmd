@@ -1,0 +1,83 @@
+---
+title: "Data Import Guide"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Import Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+molpathR provides dedicated parsers for each molecular pathology data source.
+All parsers return `molpath_parsed` objects that can be combined into a unified
+database using `mp_build_db()`.
+
+## Available parsers
+
+| Function | File types | Description |
+|----------|-----------|-------------|
+| `mp_read_vcf()` | .vcf, .vcf.gz | Variant Call Format files |
+| `mp_read_fastq()` | .fastq, .fq | FASTQ sequence files |
+| `mp_read_bam()` | .bam | BAM alignment files |
+| `mp_read_xml_report()` | .xml | XML variant interpretation reports |
+| `mp_read_pdf_report()` | .pdf | Pathology PDF reports |
+| `mp_read_nexus_pathology()` | .csv, .xml | Nexus Pathology exports |
+| `mp_read_nexus_clinical()` | .csv | Nexus clinical data exports |
+| `mp_read_survival()` | .xlsx, .csv | Survival/outcome data |
+| `mp_read_auto()` | any | Auto-detect and dispatch |
+
+## Example: parsing VCF files
+
+```{r vcf, eval = FALSE}
+library(molpathR)
+
+# Parse a single VCF file
+parsed_vcf <- mp_read_vcf("path/to/variants.vcf")
+parsed_vcf
+
+# View the data
+head(parsed_vcf$data)
+```
+
+## Building a database from multiple sources
+
+```{r build, eval = FALSE}
+# Parse several files
+vcf1 <- mp_read_vcf("sample1.vcf")
+vcf2 <- mp_read_vcf("sample2.vcf")
+surv <- mp_read_survival("survival_data.xlsx")
+
+# Build the database
+db <- mp_build_db(vcf1, vcf2, surv)
+
+# Validate integrity
+mp_validate_db(db)
+
+# Save for later use
+mp_save_db(db, "my_database.rds")
+```
+
+## Auto-detection with mp_read_auto()
+
+```{r auto, eval = FALSE}
+# Automatically detects file type and uses the correct parser
+parsed <- mp_read_auto("unknown_file.vcf")
+parsed$source_type
+```
+
+## Handling parse errors
+
+All parsers use defensive parsing with informative error messages:
+
+```{r errors, eval = FALSE}
+# Malformed files produce warnings, not crashes
+result <- mp_read_vcf("possibly_broken.vcf")
+```
