@@ -10,8 +10,8 @@ Version: 0.1.0
 Authors@R: person("Raban", "Heller", email = "raban.heller@charite.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 License: MIT + file LICENSE
-URL: https://github.com/r-heller/molpathR, https://r-heller.github.io/molpathR/
-BugReports: https://github.com/r-heller/molpathR/issues
+URL: https://github.com/cttir/molpathR, https://cttir.github.io/molpathR/
+BugReports: https://github.com/cttir/molpathR/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

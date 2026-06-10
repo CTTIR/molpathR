@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # molpathR <img src="man/figures/logo.svg" align="right" height="139" alt="" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/cttir/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cttir/molpathR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 **molpathR** is a unified molecular pathology data platform that ingests
@@ -31,7 +31,7 @@ Install the development version from GitHub:
 
 ```{r install, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("r-heller/molpathR")
+remotes::install_github("cttir/molpathR")
 ```
 
 ## Quick example
@@ -69,10 +69,23 @@ mp_run_app(db)
 
 ## Documentation
 
-- [Getting Started](https://r-heller.github.io/molpathR/articles/getting-started.html)
-- [Data Import Guide](https://r-heller.github.io/molpathR/articles/data-import.html)
-- [Visualization Guide](https://r-heller.github.io/molpathR/articles/visualization.html)
-- [Shiny Application](https://r-heller.github.io/molpathR/articles/shiny-app.html)
+- [Getting Started](https://cttir.github.io/molpathR/articles/getting-started.html)
+- [Data Import Guide](https://cttir.github.io/molpathR/articles/data-import.html)
+- [Visualization Guide](https://cttir.github.io/molpathR/articles/visualization.html)
+- [Shiny Application](https://cttir.github.io/molpathR/articles/shiny-app.html)
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large language model tooling for
+narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting,
+scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were [Chat AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/),
+the LLM service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B, Apache-2.0)** run locally via
+[Ollama](https://ollama.com/) and the `ollamar` R package — local inference only, with no data sent to
+third parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses, interpretations, and conclusions are the
+author's own. No LLM-generated text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 ## License
 
