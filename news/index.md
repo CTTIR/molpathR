@@ -13,5 +13,5 @@
   survival curves, cohort overview, VAF distribution, patient timeline.
 - Interactive Shiny application with 6 tabs and cross-tab interactivity.
 - Synthetic data generator
-  ([`mp_example_db()`](https://r-heller.github.io/molpathR/reference/mp_example_db.md))
+  ([`mp_example_db()`](https://cttir.github.io/molpathR/reference/mp_example_db.md))
   for demonstration and testing.

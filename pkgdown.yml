@@ -6,7 +6,7 @@ articles:
   getting-started: getting-started.html
   shiny-app: shiny-app.html
   visualization: visualization.html
-last_built: 2026-05-04T18:30Z
+last_built: 2026-06-10T11:31Z
 urls:
-  reference: https://r-heller.github.io/molpathR/reference
-  article: https://r-heller.github.io/molpathR/articles
+  reference: https://cttir.github.io/molpathR/reference
+  article: https://cttir.github.io/molpathR/articles

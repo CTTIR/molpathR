@@ -1,16 +1,16 @@
 # Getting Started with molpathR
 
-## Installation
+### Installation
 
 Install molpathR from GitHub:
 
 ``` r
 
 # install.packages("remotes")
-remotes::install_github("r-heller/molpathR")
+remotes::install_github("cttir/molpathR")
 ```
 
-## Quick start
+### Quick start
 
 Load the package and create an example database:
 
@@ -29,11 +29,11 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-05-04 18:30:58"
+#> ℹ Created: "2026-06-10 11:33:21"
 #> ℹ Source files: 0
 ```
 
-## Explore the data
+### Explore the data
 
 Get a cohort summary:
 
@@ -79,7 +79,7 @@ mp_summary(db)
 #> • patients_with_clinical: 100%
 ```
 
-## Query patients
+### Query patients
 
 ``` r
 
@@ -94,7 +94,7 @@ head(melanoma)
 #> 3 PAT-2024-0032    70 F     Melanoma  2024-11-25
 ```
 
-## Query variants
+### Query variants
 
 ``` r
 
@@ -113,7 +113,7 @@ head(tp53)
 #> # ℹ 2 more variables: ref_allele <chr>, alt_allele <chr>
 ```
 
-## Visualize
+### Visualize
 
 ``` r
 
@@ -129,9 +129,27 @@ mp_plot_survival(db, group_by = "diagnosis", type = "os")
 
 ![](getting-started_files/figure-html/survival-1.png)
 
-## Launch the Shiny app
+### Launch the Shiny app
 
 ``` r
 
 mp_run_app(db)
 ```
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
+service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
+Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
+`ollamar` R package — local inference only, with no data sent to third
+parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.

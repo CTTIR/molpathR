@@ -11,9 +11,11 @@
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Inter-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with molpathR">
 </head>
@@ -21,7 +23,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">molpathR</a>
 
@@ -41,7 +43,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-heller/molpathR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/molpathR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -57,26 +59,26 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Getting Started with molpathR</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-heller/molpathR/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cttir/molpathR/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
       <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
     
     
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
 <p>Install molpathR from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-heller/molpathR"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"cttir/molpathR"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
-</h2>
+<div class="section level3">
+<h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h3>
 <p>Load the package and create an example database:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-heller/molpathR" class="external-link">molpathR</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cttir/molpathR" class="external-link">molpathR</a></span><span class="op">)</span></span>
 <span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_example_db.html">mp_example_db</a></span><span class="op">(</span>n_patients <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">42</span><span class="op">)</span></span>
 <span><span class="va">db</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -89,12 +91,12 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #00BB00;">survival</span>: <span style="color: #0000BB;">50</span> records x <span style="color: #0000BB;">5</span> columns</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample date range: <span style="color: #0000BB;">2021-04-01</span> to <span style="color: #0000BB;">2025-06-26</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Overall completeness: <span style="color: #0000BB;">"93.7%"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Created: <span style="color: #0000BB;">"2026-05-04 18:30:58"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Created: <span style="color: #0000BB;">"2026-06-10 11:33:21"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Source files: <span style="color: #0000BB;">0</span></span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="explore-the-data">Explore the data<a class="anchor" aria-label="anchor" href="#explore-the-data"></a>
-</h2>
+<div class="section level3">
+<h3 id="explore-the-data">Explore the data<a class="anchor" aria-label="anchor" href="#explore-the-data"></a>
+</h3>
 <p>Get a cohort summary:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_summary.html">mp_summary</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span>
@@ -136,9 +138,9 @@
 <span><span class="co">#&gt; • patients_with_survival: <span style="color: #0000BB;">100</span>%</span></span>
 <span><span class="co">#&gt; • patients_with_clinical: <span style="color: #0000BB;">100</span>%</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="query-patients">Query patients<a class="anchor" aria-label="anchor" href="#query-patients"></a>
-</h2>
+<div class="section level3">
+<h3 id="query-patients">Query patients<a class="anchor" aria-label="anchor" href="#query-patients"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Find melanoma patients over 60</span></span>
 <span><span class="va">melanoma</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_query_patients.html">mp_query_patients</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">diagnosis</span> <span class="op">==</span> <span class="st">"Melanoma"</span>, <span class="va">age</span> <span class="op">&gt;</span> <span class="fl">60</span><span class="op">)</span></span>
@@ -150,9 +152,9 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> PAT-2024-0031    67 M     Melanoma  2021-07-20    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> PAT-2024-0032    70 F     Melanoma  2024-11-25</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="query-variants">Query variants<a class="anchor" aria-label="anchor" href="#query-variants"></a>
-</h2>
+<div class="section level3">
+<h3 id="query-variants">Query variants<a class="anchor" aria-label="anchor" href="#query-variants"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Pathogenic TP53 variants with VAF &gt; 10%</span></span>
 <span><span class="va">tp53</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mp_query_variants.html">mp_query_variants</a></span><span class="op">(</span><span class="va">db</span>, genes <span class="op">=</span> <span class="st">"TP53"</span>, classification <span class="op">=</span> <span class="st">"Pathogenic"</span>, min_vaf <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
@@ -168,9 +170,9 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> SAM-2024-… TP53  p.R175H SNV          VUS            0.202 17           3.50<span style="color: #949494;">e</span>7</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: ref_allele &lt;chr&gt;, alt_allele &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="visualize">Visualize<a class="anchor" aria-label="anchor" href="#visualize"></a>
-</h2>
+<div class="section level3">
+<h3 id="visualize">Visualize<a class="anchor" aria-label="anchor" href="#visualize"></a>
+</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_plot_variant_landscape.html">mp_plot_variant_landscape</a></span><span class="op">(</span><span class="va">db</span>, top_n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started_files/figure-html/landscape-1.png" class="r-plt" alt="" width="768"></p>
@@ -178,11 +180,28 @@
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_plot_survival.html">mp_plot_survival</a></span><span class="op">(</span><span class="va">db</span>, group_by <span class="op">=</span> <span class="st">"diagnosis"</span>, type <span class="op">=</span> <span class="st">"os"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started_files/figure-html/survival-1.png" class="r-plt" alt="" width="672"></p>
 </div>
-<div class="section level2">
-<h2 id="launch-the-shiny-app">Launch the Shiny app<a class="anchor" aria-label="anchor" href="#launch-the-shiny-app"></a>
-</h2>
+<div class="section level3">
+<h3 id="launch-the-shiny-app">Launch the Shiny app<a class="anchor" aria-label="anchor" href="#launch-the-shiny-app"></a>
+</h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mp_run_app.html">mp_run_app</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="use-of-llm-tools">Use of LLM tools<a class="anchor" aria-label="anchor" href="#use-of-llm-tools"></a>
+</h2>
+<p>Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were <a href="https://kisski.gwdg.de/leistungen/2-02-llm-service/" class="external-link">Chat AI</a>,
+the LLM service of KISSKI (GWDG), and a self-hosted <strong>Mistral
+Small (24B, Apache-2.0)</strong> run locally via <a href="https://ollama.com/" class="external-link">Ollama</a> and the <code>ollamar</code> R
+package — local inference only, with no data sent to third parties for
+the self-hosted model.</p>
+<p>All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
