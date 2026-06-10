@@ -59,3 +59,4 @@ Suggests:
     writexl
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+Config/Needs/website: CTTIR/themakR
