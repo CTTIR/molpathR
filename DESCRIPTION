@@ -7,7 +7,7 @@ Description: A unified platform for ingesting, linking, querying, and visualizin
     a searchable in-memory database and an interactive Shiny application for clinical
     exploration and cohort analysis.
 Version: 0.1.0
-Authors@R: person("Raban", "Heller", email = "raban.heller@charite.de",
+Authors@R: person("R.", "Heller", email = "raban.heller@charite.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 License: MIT + file LICENSE
 URL: https://github.com/cttir/molpathR, https://cttir.github.io/molpathR/
