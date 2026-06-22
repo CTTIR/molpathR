@@ -8,3 +8,10 @@ src/*.so
 src/*.dll
 inst/doc
 _build.R
+.DS_Store
+*.tmp
+*.log
+*~
+*.bak
+*.orig
+*.Rcheck/
