@@ -67,6 +67,8 @@
 
     
     
+<!-- badges: start -->
+<p><a href="https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://r-heller.github.io/molpathR/" class="external-link"><img src="https://github.com/r-heller/molpathR/actions/workflows/pkgdown.yaml/badge.svg" alt="pkgdown"></a> <a href="https://CRAN.R-project.org/package=molpathR" class="external-link"><img src="https://www.r-pkg.org/badges/version/molpathR" alt="CRAN status"></a> <a href="https://app.codecov.io/gh/r-heller/molpathR?branch=main" class="external-link"><img src="https://codecov.io/gh/r-heller/molpathR/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://cran.r-project.org/package=molpathR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/molpathR" alt="CRAN downloads"></a> <a href="https://cran.r-project.org/package=molpathR" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/molpathR" alt="CRAN downloads total"></a> <a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="License: MIT"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <!-- badges: end --></p>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
@@ -93,7 +95,7 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #00BB00;">survival</span>: <span style="color: #0000BB;">50</span> records x <span style="color: #0000BB;">5</span> columns</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample date range: <span style="color: #0000BB;">2021-04-01</span> to <span style="color: #0000BB;">2025-06-26</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Overall completeness: <span style="color: #0000BB;">"93.7%"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Created: <span style="color: #0000BB;">"2026-06-22 08:59:29"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Created: <span style="color: #0000BB;">"2026-06-22 12:02:02"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Source files: <span style="color: #0000BB;">0</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -164,12 +166,12 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
 <span><span class="co">#&gt;   sample_id  gene  variant variant_type classification   vaf chromosome position</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> SAM-2022-… TP53  p.G245S SNV          Benign         0.216 17           3.53<span style="color: #949494;">e</span>6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> SAM-2022-… TP53  c.787_… Indel        VUS            0.650 17           2.83<span style="color: #949494;">e</span>7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> SAM-2022-… TP53  p.R282W SNV          Likely pathog… 0.402 17           1.55<span style="color: #949494;">e</span>7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> SAM-2022-… TP53  p.Y220C SNV          Likely pathog… 0.248 17           1.47<span style="color: #949494;">e</span>8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> SAM-2023-… TP53  p.C176Y SNV          VUS            0.328 17           4.63<span style="color: #949494;">e</span>7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> SAM-2024-… TP53  p.R175H SNV          VUS            0.202 17           3.50<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> SAM-2021-… TP53  TP53 d… CNV          Pathogenic     0.420 17           1.91<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> SAM-2021-… TP53  TP53-U… Fusion       Pathogenic     0.464 17           7.83<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> SAM-2022-… TP53  TP53-U… Fusion       Pathogenic     0.322 17           1.89<span style="color: #949494;">e</span>8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> SAM-2021-… TP53  TP53 l… CNV          Pathogenic     0.214 17           5.81<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> SAM-2022-… TP53  p.R282W SNV          Pathogenic     0.250 17           5.91<span style="color: #949494;">e</span>7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> SAM-2023-… TP53  p.R248W SNV          Pathogenic     0.213 17           1.14<span style="color: #949494;">e</span>8</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: ref_allele &lt;chr&gt;, alt_allele &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">

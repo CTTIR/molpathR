@@ -35,21 +35,21 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-06-10 09:05:59"
+#> ℹ Created: "2026-06-22 13:47:32"
 #> ℹ Source files: 0
 
 # Query pathogenic TP53 variants
 tp53 <- mp_query_variants(db, genes = "TP53", classification = "Pathogenic")
 head(tp53[, c("sample_id", "gene", "variant", "classification", "vaf")])
 #> # A tibble: 6 × 5
-#>   sample_id     gene  variant      classification      vaf
-#>   <chr>         <chr> <chr>        <chr>             <dbl>
-#> 1 SAM-2022-0001 TP53  p.G245S      Benign            0.216
-#> 2 SAM-2022-0001 TP53  c.787_107del VUS               0.650
-#> 3 SAM-2022-0001 TP53  p.R282W      Likely pathogenic 0.402
-#> 4 SAM-2022-0001 TP53  p.Y220C      Likely pathogenic 0.248
-#> 5 SAM-2023-0002 TP53  p.C176Y      VUS               0.328
-#> 6 SAM-2024-0004 TP53  p.R175H      VUS               0.202
+#>   sample_id     gene  variant             classification   vaf
+#>   <chr>         <chr> <chr>               <chr>          <dbl>
+#> 1 SAM-2021-0010 TP53  TP53 deletion       Pathogenic     0.420
+#> 2 SAM-2021-0011 TP53  TP53-UNKNOWN fusion Pathogenic     0.464
+#> 3 SAM-2022-0013 TP53  TP53-UNKNOWN fusion Pathogenic     0.322
+#> 4 SAM-2021-0017 TP53  TP53 loss           Pathogenic     0.214
+#> 5 SAM-2022-0018 TP53  p.R282W             Pathogenic     0.250
+#> 6 SAM-2023-0020 TP53  p.R248W             Pathogenic     0.213
 ```
 
 ``` r

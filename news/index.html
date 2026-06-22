@@ -33,6 +33,15 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="molpathr-010">molpathR 0.1.0<a class="anchor" aria-label="anchor" href="#molpathr-010"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_query_variants.html">mp_query_variants()</a></code> now correctly filters by <code>classification</code> and <code>variant_type</code>. Previously these arguments were shadowed by the columns of the same name during tidy evaluation, so the filters silently returned every variant.</li>
+<li>
+<code><a href="../reference/mp_read_vcf.html">mp_read_vcf()</a></code> now returns an empty result for a header-only VCF instead of a row of <code>NA</code> values, fixing a reversed index range in the text parser.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="features-0-1-0">Features<a class="anchor" aria-label="anchor" href="#features-0-1-0"></a></h3>
 <ul><li>Initial release.</li>
 <li>Parsers for VCF, FASTQ, BAM, XML reports, PDF reports, Nexus pathology/clinical exports, and survival data.</li>
 <li>In-memory relational database (<code>molpath_db</code>) with build, merge, validate, save/load operations.</li>
@@ -41,7 +50,9 @@
 <li>Interactive Shiny application with 6 tabs and cross-tab interactivity.</li>
 <li>Synthetic data generator (<code><a href="../reference/mp_example_db.html">mp_example_db()</a></code>) for demonstration and testing.</li>
 </ul></div>
-  </main></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

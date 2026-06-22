@@ -108,20 +108,20 @@ upper bound.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 422 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: ref_allele &lt;chr&gt;, alt_allele &lt;chr&gt;</span></span>
 <span class="r-in"><span><span class="fu">mp_query_variants</span><span class="op">(</span><span class="va">db</span>, classification <span class="op">=</span> <span class="st">"Pathogenic"</span>, min_vaf <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,773 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 382 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    sample_id gene  variant variant_type classification   vaf chromosome position</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> SAM-2024… BRAF  p.V600E SNV          Benign         0.498 7            2.32<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> SAM-2024… BRAF  p.K601E SNV          Pathogenic     0.177 7            2.80<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> SAM-2024… NRAS  p.Q61L  SNV          VUS            0.237 1            7.48<span style="color: #949494;">e</span>6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> SAM-2024… BRCA2 c.5946… SNV          VUS            0.257 13           1.68<span style="color: #949494;">e</span>8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> SAM-2024… NF1   c.731_… SNV          Likely benign  0.330 17           7.90<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> SAM-2024… BRAF  c.2040… Indel        Pathogenic     0.308 7            6.79<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> SAM-2024… BRAF  p.L597Q SNV          Benign         0.387 7            8.56<span style="color: #949494;">e</span>6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> SAM-2024… NRAS  p.Q61K  SNV          Likely benign  0.270 1            8.79<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> SAM-2024… RB1   RB1 lo… CNV          VUS            0.223 13           8.17<span style="color: #949494;">e</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SAM-2024… NRAS  p.G12V  SNV          VUS            0.279 1            1.50<span style="color: #949494;">e</span>8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,763 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> SAM-2024… BRAF  p.K601E SNV          Pathogenic     0.177 7            2.80<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> SAM-2024… BRAF  c.2040… Indel        Pathogenic     0.308 7            6.79<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> SAM-2024… BRAF  p.V600K SNV          Pathogenic     0.471 7            4.87<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> SAM-2024… CDKN… p.R80*  SNV          Pathogenic     0.589 9            7.38<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> SAM-2024… NRAS  p.Q61K  SNV          Pathogenic     0.403 1            9.98<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> SAM-2024… NRAS  p.G13V  SNV          Pathogenic     0.662 1            1.60<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> SAM-2024… BRAF  c.1419… Indel        Pathogenic     0.483 7            1.83<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> SAM-2024… NF1   c.2041… SNV          Pathogenic     0.101 17           6.25<span style="color: #949494;">e</span>6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> SAM-2024… NF1   NF1 ga… CNV          Pathogenic     0.224 17           1.52<span style="color: #949494;">e</span>8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SAM-2024… BRAF  p.D594G SNV          Pathogenic     0.440 7            2.03<span style="color: #949494;">e</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 372 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: ref_allele &lt;chr&gt;, alt_allele &lt;chr&gt;</span></span>
 </code></pre></div>
     </div>

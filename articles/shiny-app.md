@@ -1,5 +1,20 @@
 # Interactive Shiny Application
 
+[![R-CMD-check](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/r-heller/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://r-heller.github.io/molpathR/)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/molpathR)](https://CRAN.R-project.org/package=molpathR)
+[![Codecov test
+coverage](https://codecov.io/gh/r-heller/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-heller/molpathR?branch=main)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
+[![CRAN downloads
+total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
 ## Launching the app
 
 ``` r
