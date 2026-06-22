@@ -134,7 +134,12 @@ mp_read_vcf <- function(path) {
   header_line <- lines[header_idx[1L]]
   col_names <- strsplit(sub("^#", "", header_line), "\t")[[1L]]
 
-  data_lines <- lines[seq(header_idx[1L] + 1L, length(lines))]
+  data_start <- header_idx[1L] + 1L
+  data_lines <- if (data_start > length(lines)) {
+    character(0)
+  } else {
+    lines[seq(data_start, length(lines))]
+  }
   data_lines <- data_lines[nzchar(data_lines)]
 
   if (length(data_lines) == 0L) {

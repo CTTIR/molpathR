@@ -1,5 +1,16 @@
 # molpathR 0.1.0
 
+## Bug fixes
+
+* `mp_query_variants()` now correctly filters by `classification` and
+  `variant_type`. Previously these arguments were shadowed by the columns of
+  the same name during tidy evaluation, so the filters silently returned every
+  variant.
+* `mp_read_vcf()` now returns an empty result for a header-only VCF instead of
+  a row of `NA` values, fixing a reversed index range in the text parser.
+
+## Features
+
 * Initial release.
 * Parsers for VCF, FASTQ, BAM, XML reports, PDF reports, Nexus pathology/clinical exports, and survival data.
 * In-memory relational database (`molpath_db`) with build, merge, validate, save/load operations.

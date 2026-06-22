@@ -61,7 +61,7 @@ mp_query_variants <- function(db,
     result <- dplyr::filter(result, .data$gene %in% genes)
   }
   if (!is.null(classification)) {
-    result <- dplyr::filter(result, .data$classification %in% classification)
+    result <- dplyr::filter(result, .data$classification %in% .env$classification)
   }
   if (!is.null(min_vaf)) {
     result <- dplyr::filter(result, .data$vaf >= min_vaf)
@@ -72,7 +72,7 @@ mp_query_variants <- function(db,
   }
   if (!is.null(variant_type)) {
     if ("variant_type" %in% names(result)) {
-      result <- dplyr::filter(result, .data$variant_type %in% variant_type)
+      result <- dplyr::filter(result, .data$variant_type %in% .env$variant_type)
     }
   }
   result

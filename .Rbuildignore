@@ -10,3 +10,5 @@
 ^molpathR_icon\.svg$
 ^\.gitignore$
 ^cran-comments\.md$
+^_coverage$
+^codecov\.yml$

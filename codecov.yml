@@ -1,0 +1,16 @@
+comment: false
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        target: auto
+        threshold: 1%
+
+ignore:
+  - "inst/shiny/**/*"   # interactive Shiny app (UI/server), not unit-testable
+  - "R/shiny.R"         # launcher delegates to shiny::runApp()

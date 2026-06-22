@@ -5,7 +5,20 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/cttir/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cttir/molpathR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/r-heller/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://r-heller.github.io/molpathR/)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/molpathR)](https://CRAN.R-project.org/package=molpathR)
+[![Codecov test
+coverage](https://codecov.io/gh/r-heller/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-heller/molpathR?branch=main)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
+[![CRAN downloads
+total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 **molpathR** is a unified molecular pathology data platform that ingests
@@ -41,21 +54,21 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-06-10 09:05:59"
+#> ℹ Created: "2026-06-22 13:47:32"
 #> ℹ Source files: 0
 
 # Query pathogenic TP53 variants
 tp53 <- mp_query_variants(db, genes = "TP53", classification = "Pathogenic")
 head(tp53[, c("sample_id", "gene", "variant", "classification", "vaf")])
 #> # A tibble: 6 × 5
-#>   sample_id     gene  variant      classification      vaf
-#>   <chr>         <chr> <chr>        <chr>             <dbl>
-#> 1 SAM-2022-0001 TP53  p.G245S      Benign            0.216
-#> 2 SAM-2022-0001 TP53  c.787_107del VUS               0.650
-#> 3 SAM-2022-0001 TP53  p.R282W      Likely pathogenic 0.402
-#> 4 SAM-2022-0001 TP53  p.Y220C      Likely pathogenic 0.248
-#> 5 SAM-2023-0002 TP53  p.C176Y      VUS               0.328
-#> 6 SAM-2024-0004 TP53  p.R175H      VUS               0.202
+#>   sample_id     gene  variant             classification   vaf
+#>   <chr>         <chr> <chr>               <chr>          <dbl>
+#> 1 SAM-2021-0010 TP53  TP53 deletion       Pathogenic     0.420
+#> 2 SAM-2021-0011 TP53  TP53-UNKNOWN fusion Pathogenic     0.464
+#> 3 SAM-2022-0013 TP53  TP53-UNKNOWN fusion Pathogenic     0.322
+#> 4 SAM-2021-0017 TP53  TP53 loss           Pathogenic     0.214
+#> 5 SAM-2022-0018 TP53  p.R282W             Pathogenic     0.250
+#> 6 SAM-2023-0020 TP53  p.R248W             Pathogenic     0.213
 ```
 
 ``` r
@@ -98,7 +111,8 @@ mp_run_app(db)
 Portions of this package were prepared with assistance from large
 language model tooling for narrowly defined, non-authorial tasks:
 copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
-boilerplate files (CI configs, build scripts), code refactoring. The tools used were [Chat
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
 AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
 service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
 Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the

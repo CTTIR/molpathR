@@ -15,3 +15,4 @@ _build.R
 *.bak
 *.orig
 *.Rcheck/
+_coverage/
