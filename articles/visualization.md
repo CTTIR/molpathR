@@ -1,11 +1,11 @@
 # Visualization Guide
 
-[![R-CMD-check](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-heller/molpathR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/r-heller/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://r-heller.github.io/molpathR/)
+[![R-CMD-check](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/CTTIR/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/molpathR/)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/molpathR)](https://CRAN.R-project.org/package=molpathR)
 [![Codecov test
-coverage](https://codecov.io/gh/r-heller/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-heller/molpathR?branch=main)
+coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/molpathR?branch=main)
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads
