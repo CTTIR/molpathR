@@ -1,12 +1,12 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   data-import: data-import.html
   getting-started: getting-started.html
   shiny-app: shiny-app.html
   visualization: visualization.html
-last_built: 2026-06-24T09:25Z
+last_built: 2026-07-19T08:50Z
 urls:
   reference: https://cttir.github.io/molpathR/reference
   article: https://cttir.github.io/molpathR/articles
