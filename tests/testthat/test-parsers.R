@@ -27,6 +27,8 @@ test_that("mp_read_vcf parses sample VCF", {
 test_that("mp_read_vcf keeps sample genotype columns after FORMAT", {
   vcf_content <- c(
     "##fileformat=VCFv4.2",
+    "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">",
+    "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
     "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSAMPLE1",
     "chr1\t100\t.\tA\tG\t50\tPASS\tDP=30\tGT\t0/1"
   )
