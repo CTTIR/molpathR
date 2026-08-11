@@ -1,5 +1,7 @@
 # molpathR
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889946.svg)](https://doi.org/10.5281/zenodo.21889946)
+
 **molpathR** is a unified molecular pathology data platform that ingests
 heterogeneous clinical and genomic data sources (VCF, BAM, FASTQ, XML
 reports, PDF reports, clinical information systems, survival data),
@@ -111,3 +113,13 @@ was verified against its DOI, arXiv ID, or ISBN.
 
 MIT License. See
 [LICENSE.md](https://cttir.github.io/molpathR/LICENSE.md) for details.
+
+## Citation
+
+If you use this software, please cite it as:
+
+> Heller, R. (2026). *molpathR: Molecular pathology data platform for
+> clinical NGS integration* (Version 0.1.0) \[Computer software\].
+> Zenodo. <https://doi.org/10.5281/zenodo.21889946>
+
+DOI: [10.5281/zenodo.21889946](https://doi.org/10.5281/zenodo.21889946)

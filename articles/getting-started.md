@@ -44,7 +44,7 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-07-19 08:50:44"
+#> ℹ Created: "2026-08-11 14:39:28"
 #> ℹ Source files: 0
 ```
 
