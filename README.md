@@ -3,6 +3,8 @@
 
 # molpathR <img src="man/figures/logo.svg" align="right" height="139" alt="" />
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889946.svg)](https://doi.org/10.5281/zenodo.21889946)
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml)
@@ -127,3 +129,11 @@ was verified against its DOI, arXiv ID, or ISBN.
 ## License
 
 MIT License. See [LICENSE.md](LICENSE.md) for details.
+
+## Citation
+
+If you use this software, please cite it as:
+
+> Heller, R. (2026). *molpathR: Molecular pathology data platform for clinical NGS integration* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21889946
+
+DOI: [10.5281/zenodo.21889946](https://doi.org/10.5281/zenodo.21889946)

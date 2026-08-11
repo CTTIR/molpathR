@@ -1,0 +1,36 @@
+{
+  "upload_type": "software",
+  "title": "molpathR: Molecular pathology data platform for clinical NGS integration",
+  "version": "0.1.0",
+  "publication_date": "2026-08-11",
+  "description": "<p>molpathR brings together molecular pathology data from sources that normally live apart, including next-generation sequencing files, XML variant interpretation reports, structured pathology PDF reports, pathology and clinical information systems, and survival outcome data. It links these records into a searchable in-memory database so that variant, report and outcome information for a case can be queried as one dataset. An interactive application supports clinical exploration and cohort-level analysis over the linked data. It is intended for molecular pathology and clinical genomics groups that need an integrated view across heterogeneous diagnostic outputs.</p>",
+  "creators": [
+    {
+      "name": "Heller, Raban",
+      "orcid": "0000-0001-8006-9742"
+    }
+  ],
+  "contributors": [],
+  "license": "mit",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "molecular-pathology",
+    "clinical-genomics",
+    "ngs",
+    "variant-analysis",
+    "oncology",
+    "bioinformatics",
+    "r-package",
+    "rstats"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/CTTIR/molpathR",
+      "relation": "isSupplementTo",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "Prepared draft. Not yet published."
+}
