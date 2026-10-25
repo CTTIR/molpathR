@@ -52,7 +52,7 @@ parsed
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "vcf"
 #> ℹ Source file: sample1.vcf
-#> ℹ Parsed: "2026-10-14 13:10:41"
+#> ℹ Parsed: "2026-10-25 16:47:11"
 #> ℹ Data: 1 row x 2 columns
 #> ℹ Columns: gene and variant
 #> ℹ Completeness: "100%"
