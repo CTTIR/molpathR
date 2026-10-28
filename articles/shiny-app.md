@@ -1,5 +1,8 @@
 # Interactive Shiny Application
 
+![molpathR logo](figures/logo.svg)![molpathR
+logo](figures/logo-dark.svg)
+
 [![R-CMD-check](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/molpathR/)
 [![CRAN

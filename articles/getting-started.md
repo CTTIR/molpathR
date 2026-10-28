@@ -1,5 +1,8 @@
 # Getting Started with molpathR
 
+![molpathR logo](figures/logo.svg)![molpathR
+logo](figures/logo-dark.svg)
+
 [![R-CMD-check](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/molpathR/)
 [![CRAN
@@ -44,7 +47,7 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-10-26 17:26:07"
+#> ℹ Created: "2026-10-28 07:37:31"
 #> ℹ Source files: 0
 ```
 
