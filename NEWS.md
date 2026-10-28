@@ -1,5 +1,9 @@
 # molpathR 0.1.0
 
+* Standardize the named v5 package logo across README, documentation pages
+  and available application headers, with matching light and dark artwork.
+
+
 ## Bug fixes
 
 * `mp_query_variants()` now correctly filters by `classification` and

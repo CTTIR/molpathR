@@ -11,8 +11,9 @@ for (f in list.files(file.path(app_dir, "helpers"), full.names = TRUE, pattern =
 # ---- UI ----------------------------------------------------------------------
 
 ui <- bslib::page_navbar(
+    window_title = "molpathR",
   title = shiny::tags$span(
-    shiny::tags$img(src = "logo.svg", height = "30px", style = "margin-right: 8px;"),
+    utils::getFromNamespace(".cttir_brand_logo", "molpathR")(),
     "molpathR"
   ),
   theme = bslib::bs_theme(
