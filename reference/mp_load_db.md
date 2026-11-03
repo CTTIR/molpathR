@@ -40,12 +40,12 @@ mp_save_db(db, tmp)
 #> • Patients with reports: 100%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to /tmp/Rtmp8P51yP/file196a7456fdb8.rds (38.3 KB).
+#> ✔ Database saved to C:\Users\raban\AppData\Local\Temp\RtmpeEwZuU\file7708ed3b26.rds (38.3 KB).
 db2 <- mp_load_db(tmp)
 #> 
 #> ── Loading molpath database ──
 #> 
-#> ✔ Database loaded from /tmp/Rtmp8P51yP/file196a7456fdb8.rds.
+#> ✔ Database loaded from C:\Users\raban\AppData\Local\Temp\RtmpeEwZuU\file7708ed3b26.rds.
 #> ℹ Contents: 5 patients, 11 samples, 2011 variants, 11 reports, 20 clinical records, 5 survival records.
 unlink(tmp)
 # }

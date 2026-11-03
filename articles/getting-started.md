@@ -1,31 +1,12 @@
 # Getting Started with molpathR
 
-![molpathR logo](figures/logo.svg)![molpathR
-logo](figures/logo-dark.svg)
-
-[![R-CMD-check](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/molpathR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/molpathR/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/molpathR)](https://CRAN.R-project.org/package=molpathR)
-[![Codecov test
-coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/molpathR?branch=main)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
-[![CRAN downloads
-total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License:
-MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 ## Installation
 
 Install molpathR from GitHub:
 
 ``` r
-
 # install.packages("remotes")
-remotes::install_github("cttir/molpathR")
+remotes::install_github("r-heller/molpathR")
 ```
 
 ## Quick start
@@ -33,7 +14,6 @@ remotes::install_github("cttir/molpathR")
 Load the package and create an example database:
 
 ``` r
-
 library(molpathR)
 db <- mp_example_db(n_patients = 50, seed = 42)
 db
@@ -47,7 +27,7 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-10-28 07:37:31"
+#> ℹ Created: "2026-04-17 17:35:57"
 #> ℹ Source files: 0
 ```
 
@@ -56,7 +36,6 @@ db
 Get a cohort summary:
 
 ``` r
-
 mp_summary(db)
 #> 
 #> ── molpathR Database Summary ───────────────────────────────────────────────────
@@ -100,7 +79,6 @@ mp_summary(db)
 ## Query patients
 
 ``` r
-
 # Find melanoma patients over 60
 melanoma <- mp_query_patients(db, diagnosis == "Melanoma", age > 60)
 head(melanoma)
@@ -115,33 +93,30 @@ head(melanoma)
 ## Query variants
 
 ``` r
-
 # Pathogenic TP53 variants with VAF > 10%
 tp53 <- mp_query_variants(db, genes = "TP53", classification = "Pathogenic", min_vaf = 0.1)
 head(tp53)
 #> # A tibble: 6 × 10
 #>   sample_id  gene  variant variant_type classification   vaf chromosome position
 #>   <chr>      <chr> <chr>   <chr>        <chr>          <dbl> <chr>         <int>
-#> 1 SAM-2021-… TP53  TP53 d… CNV          Pathogenic     0.420 17           1.91e7
-#> 2 SAM-2021-… TP53  TP53-U… Fusion       Pathogenic     0.464 17           7.83e7
-#> 3 SAM-2022-… TP53  TP53-U… Fusion       Pathogenic     0.322 17           1.89e8
-#> 4 SAM-2021-… TP53  TP53 l… CNV          Pathogenic     0.214 17           5.81e7
-#> 5 SAM-2022-… TP53  p.R282W SNV          Pathogenic     0.250 17           5.91e7
-#> 6 SAM-2023-… TP53  p.R248W SNV          Pathogenic     0.213 17           1.14e8
+#> 1 SAM-2022-… TP53  p.G245S SNV          Benign         0.216 17           3.53e6
+#> 2 SAM-2022-… TP53  c.787_… Indel        VUS            0.650 17           2.83e7
+#> 3 SAM-2022-… TP53  p.R282W SNV          Likely pathog… 0.402 17           1.55e7
+#> 4 SAM-2022-… TP53  p.Y220C SNV          Likely pathog… 0.248 17           1.47e8
+#> 5 SAM-2023-… TP53  p.C176Y SNV          VUS            0.328 17           4.63e7
+#> 6 SAM-2024-… TP53  p.R175H SNV          VUS            0.202 17           3.50e7
 #> # ℹ 2 more variables: ref_allele <chr>, alt_allele <chr>
 ```
 
 ## Visualize
 
 ``` r
-
 mp_plot_variant_landscape(db, top_n = 10)
 ```
 
 ![](getting-started_files/figure-html/landscape-1.png)
 
 ``` r
-
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ```
 
@@ -150,6 +125,5 @@ mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ## Launch the Shiny app
 
 ``` r
-
 mp_run_app(db)
 ```

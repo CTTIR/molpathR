@@ -2,22 +2,22 @@
 
 ## Authors
 
-- **R. Heller**. Author, maintainer.
+- **Raban Heller**. Author, maintainer.
   [](https://orcid.org/0000-0001-8006-9742)
 
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/cttir/molpathR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/r-heller/molpathR/blob/HEAD/DESCRIPTION)
 
 Heller R (2026). *molpathR: Molecular Pathology Data Platform for
 Clinical NGS Integration*. R package version 0.1.0,
-<https://github.com/cttir/molpathR>.
+<https://github.com/r-heller/molpathR>.
 
     @Manual{,
       title = {molpathR: Molecular Pathology Data Platform for Clinical NGS Integration},
-      author = {R. Heller},
+      author = {Raban Heller},
       year = {2026},
       note = {R package version 0.1.0},
-      url = {https://github.com/cttir/molpathR},
+      url = {https://github.com/r-heller/molpathR},
     }

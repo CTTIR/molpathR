@@ -12,18 +12,13 @@ analysis.
 
 Useful links:
 
-- <https://github.com/cttir/molpathR>
+- <https://github.com/r-heller/molpathR>
 
-- <https://cttir.github.io/molpathR/>
+- <https://r-heller.github.io/molpathR/>
 
-- Report bugs at <https://github.com/cttir/molpathR/issues>
+- Report bugs at <https://github.com/r-heller/molpathR/issues>
 
 ## Author
 
-**Maintainer**: R. Heller <raban.heller@charite.de>
+**Maintainer**: Raban Heller <raban.heller@charite.de>
 ([ORCID](https://orcid.org/0000-0001-8006-9742))
-
-Authors:
-
-- R. Heller <raban.heller@charite.de>
-  ([ORCID](https://orcid.org/0000-0001-8006-9742))

@@ -2,23 +2,6 @@
 
 ## molpathR 0.1.0
 
-- Standardize the named v5 package logo across README, documentation
-  pages and available application headers, with matching light and dark
-  artwork.
-
-### Bug fixes
-
-- [`mp_query_variants()`](https://cttir.github.io/molpathR/reference/mp_query_variants.md)
-  now correctly filters by `classification` and `variant_type`.
-  Previously these arguments were shadowed by the columns of the same
-  name during tidy evaluation, so the filters silently returned every
-  variant.
-- [`mp_read_vcf()`](https://cttir.github.io/molpathR/reference/mp_read_vcf.md)
-  now returns an empty result for a header-only VCF instead of a row of
-  `NA` values, fixing a reversed index range in the text parser.
-
-### Features
-
 - Initial release.
 - Parsers for VCF, FASTQ, BAM, XML reports, PDF reports, Nexus
   pathology/clinical exports, and survival data.
@@ -30,5 +13,5 @@
   survival curves, cohort overview, VAF distribution, patient timeline.
 - Interactive Shiny application with 6 tabs and cross-tab interactivity.
 - Synthetic data generator
-  ([`mp_example_db()`](https://cttir.github.io/molpathR/reference/mp_example_db.md))
+  ([`mp_example_db()`](https://r-heller.github.io/molpathR/reference/mp_example_db.md))
   for demonstration and testing.

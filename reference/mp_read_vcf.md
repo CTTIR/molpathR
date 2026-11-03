@@ -24,9 +24,8 @@ and any sample-level columns present in the file.
 
 ## Details
 
-The function first attempts to use
-[`VariantAnnotation::readVcf()`](https://rdrr.io/pkg/VariantAnnotation/man/readVcf-methods.html)
-from Bioconductor. If the package is not installed it falls back to a
+The function first attempts to use `VariantAnnotation::readVcf()` from
+Bioconductor. If the package is not installed it falls back to a
 lightweight text parser that handles single- and multi-sample VCFs.
 
 ## Examples

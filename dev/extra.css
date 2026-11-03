@@ -1,0 +1,4 @@
+/* Scientific figures retain their encoded colours in either site theme. */
+html[data-bs-theme] img.r-plt {
+  filter: none;
+}
