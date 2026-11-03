@@ -16,7 +16,8 @@ Currently supported: \code{"molecular_health"} (default).}
 A \code{molpath_parsed} object whose \code{data} slot is a
 \link[tibble]{tibble} with one row per variant and columns for patient
 info, sample info, gene, variant description, classification, evidence
-level, and therapeutic implications.
+level, therapeutic implications and an explicit VAF proportion when supplied.
+VAF must be between 0 and 1, inclusive; percentages or other units are not inferred.
 }
 \description{
 Parse a structured XML variant interpretation report (e.g. from

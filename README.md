@@ -3,8 +3,6 @@
 
 # molpathR <picture class="cttir-readme-logo"><source class="cttir-logo-dark-source" media="(prefers-color-scheme: dark)" srcset="man/figures/logo-with-name-dark.png" /><img src="man/figures/logo-with-name.png" align="right" alt="molpathR logo" width="120" height="139" /></picture>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889946.svg)](https://doi.org/10.5281/zenodo.21889946)
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/molpathR/actions/workflows/R-CMD-check.yaml)
@@ -26,15 +24,39 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 **molpathR** is a unified molecular pathology data platform that ingests
 heterogeneous clinical and genomic data sources (VCF, BAM, FASTQ, XML
 reports, PDF reports, clinical information systems, survival data),
-builds a queryable in-memory database, and provides an interactive Shiny
-application for clinical exploration and visualization.
+builds a queryable in-memory database from explicitly identified
+records, and provides an interactive Shiny application for exploratory
+cohort analysis. Raw FASTQ/BAM readers expose sequences and alignments
+separately; they do not perform variant calling or clinical
+interpretation. Unknown patient links and annotations remain unknown.
+The package has not been qualified for diagnostic decision making.
 
 ## Installation
 
-Install the development version from GitHub:
+Use R 4.1 or later. On Windows and macOS, install the CRAN binaries from
+R:
 
 ``` r
-# install.packages("remotes")
+install.packages("pdftools", repos = "https://cloud.r-project.org")
+```
+
+For a source installation of `pdftools`, install its system library
+first:
+
+``` sh
+# Debian or Ubuntu
+sudo apt-get install libpoppler-cpp-dev
+# macOS with Homebrew, only when building pdftools from source
+brew install poppler
+```
+
+See the [pdftools installation
+requirements](https://docs.ropensci.org/pdftools/) for other platforms.
+These commands assume R and the platform’s R compilation toolchain are
+already installed. Then install the development source:
+
+``` r
+install.packages("remotes", repos = "https://cloud.r-project.org")
 remotes::install_github("cttir/molpathR")
 ```
 
@@ -56,7 +78,7 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-06-22 13:47:32"
+#> ℹ Created: "2026-11-03 12:42:46"
 #> ℹ Source files: 0
 
 # Query pathogenic TP53 variants
@@ -78,7 +100,7 @@ head(tp53[, c("sample_id", "gene", "variant", "classification", "vaf")])
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ```
 
-<img src="man/figures/README-plot-1.png" alt="" width="100%" />
+<img src="man/figures/README-plot-1.png" alt="Kaplan-Meier curves by diagnosis for a synthetic cohort; time is measured in months." width="100%" />
 
 ## Launch the Shiny app
 
@@ -88,14 +110,38 @@ mp_run_app(db)
 
 ## Features
 
-- **Parsers** for VCF, FASTQ, BAM, XML reports, PDF reports, clinical
-  systems, and survival data
+- **Parsers** for VCF, raw FASTQ/BAM, XML reports, PDF text, clinical
+  exports and survival data
 - **Relational in-memory database** linking patients, samples, variants,
   reports, clinical, and survival data
 - **Query engine** with tidy evaluation and free-text search
-- **Publication-ready plots**: variant landscapes, mutation spectra,
-  survival curves, cohort overviews
+- **Exploratory plots**: variant landscapes, mutation spectra, survival
+  curves, cohort overviews
 - **Interactive Shiny application** with 6 tabs for clinical exploration
+
+## Data integrity
+
+`mp_validate_db(db)` reports incomplete patient/sample links, including
+missing parent tables. The constructor rejects malformed schemas,
+conflicting primary identities, impossible event codes and nonfinite
+measures. `mp_save_db()` verifies a staged file before replacement;
+`mp_load_db()` validates its contents. Resolve reported linkage issues
+before interpreting a cohort. Use one writer per saved file.
+
+The [data import
+guide](https://cttir.github.io/molpathR/articles/data-import.html)
+contains a runnable synthetic pathology/clinical/survival import and
+explains VCF and raw-read boundaries. Optional Bioconductor packages
+provide BAM/FASTQ readers; strict text FASTQ and VCF paths are available
+as documented.
+
+## Citation
+
+Run `citation("molpathR")` and record the source version or commit used.
+This is a development source milestone (0.1.0.9001), not a new release
+or Zenodo deposit. The previously advertised draft DOI did not resolve
+during the maintenance audit; use the repository citation until a public
+deposit is verified.
 
 ## Documentation
 
@@ -112,32 +158,26 @@ mp_run_app(db)
 
 MIT License. See [LICENSE.md](LICENSE.md) for details.
 
-## Citation
-
-If you use this software, please cite it as:
-
-> Heller, R. (2026). *molpathR: Molecular pathology data platform for clinical NGS integration* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21889946
-
-DOI: [10.5281/zenodo.21889946](https://doi.org/10.5281/zenodo.21889946)
-
 ## Use of LLM tools
 
-Where applicable, LLM tools were used for narrowly defined, non-authorial tasks:
-copyediting, prose refinement, Markdown/LaTeX formatting, boilerplate scaffolding
-(such as CI configurations and build scripts), and code refactoring. Tools included
-[Chat AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the KISSKI
-(GWDG) service, and self-hosted **Mistral Small (24B, Apache-2.0)** served through
-a local **vLLM architecture** on an Ubuntu Linux workstation with Intel
-processors and NVIDIA GPUs. The self-hosted model ran locally, with no data sent
-to third parties.
+Where applicable, LLM tools were used for narrowly defined,
+non-authorial tasks: copyediting, prose refinement, Markdown/LaTeX
+formatting, boilerplate scaffolding (such as CI configurations and build
+scripts), and code refactoring. Tools included [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the KISSKI
+(GWDG) service, and self-hosted **Mistral Small (24B, Apache-2.0)**
+served through a local **vLLM architecture** on an Ubuntu Linux
+workstation with Intel processors and NVIDIA GPUs. The self-hosted model
+ran locally, with no data sent to third parties.
 
-All scientific claims, methodological choices, analyses, interpretations and
-conclusions remain the authors' own. Where applicable, LLM-generated material
-must be reviewed and revised before inclusion, and references must be verified
-against their DOI, arXiv ID or ISBN.
+All scientific claims, methodological choices, analyses, interpretations
+and conclusions remain the authors’ own. Where applicable, LLM-generated
+material must be reviewed and revised before inclusion, and references
+must be verified against their DOI, arXiv ID or ISBN.
 
 Local software setup: vLLM with Python/PyTorch, plus R and RStudio.
 
 ## Branding
 
-Editable R artwork and regeneration instructions are in [tools/branding](https://github.com/CTTIR/molpathR/blob/main/tools/branding/README.md).
+Editable R artwork and regeneration instructions are in
+[tools/branding](https://github.com/CTTIR/molpathR/blob/main/tools/branding/README.md).

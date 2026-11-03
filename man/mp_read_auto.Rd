@@ -4,10 +4,14 @@
 \alias{mp_read_auto}
 \title{Automatically read a molecular pathology file}
 \usage{
-mp_read_auto(path)
+mp_read_auto(path, source_name = NULL)
 }
 \arguments{
 \item{path}{Character scalar. Path to the file.}
+
+\item{source_name}{Optional original filename for an extensionless upload.
+Dispatch uses its basename, and the result retains that basename as source
+identity. A disposable copy is removed after reading.}
 }
 \value{
 A \code{molpath_parsed} object produced by the appropriate parser.

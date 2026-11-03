@@ -20,6 +20,11 @@ data. If a \code{molpath_db} object is provided, the app launches pre-loaded
 with that database. Otherwise, the user can upload data through the app
 interface.
 }
+\details{
+CSV/TSV downloads require a working \code{zip} executable (or \code{R_ZIPCMD}).
+Excel downloads additionally require the optional \code{writexl} package. Uploaded
+files are staged and validated as one batch before changing session data.
+}
 \examples{
 \dontrun{
 # Launch with example data

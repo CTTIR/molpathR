@@ -49,3 +49,14 @@ pre {
 .dataTables_wrapper {
   font-size: 0.9em;
 }
+
+/* Retain the active underline while keeping normal-sized navigation text legible. */
+.navbar .navbar-nav .nav-link.active {
+  color: #ffffff;
+}
+
+/* Light teal paging controls need dark text; retain the dark active/hover theme. */
+.dataTables_wrapper .pagination .page-item:not(.active) .page-link:not(:hover),
+.dataTables_wrapper .pagination .page-item.disabled .page-link {
+  color: #173d35;
+}

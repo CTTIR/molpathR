@@ -10,7 +10,8 @@ mp_example_db(n_patients = 150, seed = 42)
 \item{n_patients}{Integer. Number of patients to generate.
 Default \code{150}.}
 
-\item{seed}{Integer. Random seed for reproducibility. Default \code{42}.}
+\item{seed}{Integer. Random seed for reproducibility. Default \code{42}.
+The caller's random-number state is restored, including on error.}
 }
 \value{
 A \code{molpath_db} object (S3 list) containing:

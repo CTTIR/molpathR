@@ -21,7 +21,10 @@ Recommendations).
 }
 \description{
 Extract structured information from a pathology PDF report using
-\code{pdftools::pdf_text()} and regex-based section parsing.
+\code{pdftools::pdf_text()} and regex-based section parsing. Complete extracted
+pages and text are retained in metadata even when section heuristics match
+only part of the report. Database report summaries use that complete text.
+This does not perform OCR or validate extraction accuracy against the PDF.
 }
 \examples{
 \donttest{

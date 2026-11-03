@@ -11,8 +11,9 @@ mp_plot_survival(db, group_by = NULL, type = c("os", "pfs"))
 
 \item{group_by}{Optional character string. If it matches a column in the
 patients table (e.g., \code{"diagnosis"}), stratify by that variable. If it
-matches a gene name present in the variants table, stratify into
-"Mutated" vs "Wild-type".}
+matches a gene name present in the variants table, stratify by presence
+of a recorded variant. Absence of a record does not establish a negative
+assay or wild-type genotype.}
 
 \item{type}{Character; \code{"os"} for overall survival or \code{"pfs"} for
 progression-free survival.}

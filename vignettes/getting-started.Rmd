@@ -96,11 +96,11 @@ head(tp53)
 
 ## Visualize
 
-```{r landscape, fig.width = 8, fig.height = 5}
+```{r landscape, fig.width = 8, fig.height = 5, fig.alt = "Recorded variant classifications across synthetic patients for the ten most frequent genes."}
 mp_plot_variant_landscape(db, top_n = 10)
 ```
 
-```{r survival, fig.width = 7, fig.height = 5}
+```{r survival, fig.width = 7, fig.height = 5, fig.alt = "Kaplan-Meier curves by diagnosis for synthetic overall survival times measured in months."}
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
 ```
 

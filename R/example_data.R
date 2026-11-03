@@ -128,6 +128,7 @@ generate_hgvs_variant <- function(gene, variant_type) {
 #' @param n_patients Integer. Number of patients to generate.
 #'   Default \code{150}.
 #' @param seed Integer. Random seed for reproducibility. Default \code{42}.
+#'   The caller's random-number state is restored, including on error.
 #'
 #' @return A \code{molpath_db} object (S3 list) containing:
 #'   \describe{
@@ -156,8 +157,12 @@ generate_hgvs_variant <- function(gene, variant_type) {
 #'
 #' @export
 mp_example_db <- function(n_patients = 150, seed = 42) {
-
-  set.seed(seed)
+  if (!is.numeric(n_patients) || length(n_patients) != 1L || is.na(n_patients) ||
+      !is.finite(n_patients) || n_patients < 1 || n_patients != floor(n_patients) ||
+      n_patients > .Machine$integer.max)
+    cli::cli_abort("'n_patients' must be one positive integer.")
+  restore_rng <- .mp_example_seed(seed)
+  on.exit(restore_rng(), add = TRUE)
 
 
   # ---- Patients ----
@@ -367,15 +372,13 @@ mp_example_db <- function(n_patients = 150, seed = 42) {
       gene           = brca_genes,
       variant        = vapply(seq_len(n_force), function(k) {
         generate_hgvs_variant(
-          sample(c("BRCA1", "BRCA2"), 1), "SNV")
+          brca_genes[k], "SNV")
       }, character(1)),
       variant_type   = "SNV",
       classification = sample(c("Pathogenic", "Likely pathogenic"),
                               n_force, replace = TRUE),
       vaf            = round(stats::rbeta(n_force, 2, 4), 4),
-      chromosome     = ifelse(
-        grepl("BRCA1", brca_genes, fixed = TRUE), "17", "13"
-      ),
+      chromosome     = unname(gene_chr[brca_genes]),
       position       = sample(30e6:80e6, n_force, replace = TRUE),
       ref_allele     = sample(bases, n_force, replace = TRUE),
       alt_allele     = sample(bases, n_force, replace = TRUE)
@@ -520,7 +523,10 @@ mp_example_db <- function(n_patients = 150, seed = 42) {
 #' @param dir Character. Directory where files are written.
 #'   Default \code{tempdir()}.
 #' @param seed Integer. Random seed for reproducibility. Default \code{42}.
+#'   The caller's random-number state is restored, including on error.
 #'
+#' @param reference_date Date. Fixed anchor for synthetic report dates; default
+#'   2025-01-01. File contents do not depend on the day they are generated.
 #' @return A named list of file paths:
 #'   \describe{
 #'     \item{vcf}{Character vector of 5 VCF file paths.}
@@ -537,9 +543,13 @@ mp_example_db <- function(n_patients = 150, seed = 42) {
 #' }
 #'
 #' @export
-mp_example_files <- function(dir = tempdir(), seed = 42) {
-
-  set.seed(seed)
+mp_example_files <- function(dir = tempdir(), seed = 42,
+                             reference_date = as.Date("2025-01-01")) {
+  if (!inherits(reference_date, "Date") || length(reference_date) != 1L ||
+      is.na(reference_date) || !is.finite(as.numeric(reference_date)))
+    cli::cli_abort("'reference_date' must be one finite Date.")
+  restore_rng <- .mp_example_seed(seed)
+  on.exit(restore_rng(), add = TRUE)
 
   bases <- c("A", "T", "G", "C")
 
@@ -616,7 +626,7 @@ mp_example_files <- function(dir = tempdir(), seed = 42) {
       '<MolecularReport>',
       paste0('  <Patient id="PAT-2024-', sprintf("%04d", i), '">'),
       paste0('    <Sample id="', sample_ids[i], '">'),
-      paste0('      <AnalysisDate>', Sys.Date() - sample(30:365, 1),
+      paste0('      <AnalysisDate>', reference_date - sample(30:365, 1),
              '</AnalysisDate>'),
       '      <Variants>'
     )
@@ -666,7 +676,7 @@ mp_example_files <- function(dir = tempdir(), seed = 42) {
       paste0("Patient ID:    PAT-2024-", sprintf("%04d", i)),
       paste0("Sample ID:     ", sample_ids[i]),
       paste0("Diagnosis:     ", diag),
-      paste0("Report Date:   ", Sys.Date() - sample(10:200, 1)),
+      paste0("Report Date:   ", reference_date - sample(10:200, 1)),
       paste0("Ordering MD:   Dr. ", sample(c("Mueller", "Schmidt",
         "Weber", "Fischer", "Meyer"), 1)),
       "",
@@ -752,4 +762,21 @@ mp_example_files <- function(dir = tempdir(), seed = 42) {
     survival = surv_path,
     fastq    = fastq_path
   )
+}
+
+# Return a cleanup closure so both generators restore an existing RNG state,
+# or remove the state they created when the caller had none.
+.mp_example_seed <- function(seed) {
+  if (!is.numeric(seed) || length(seed) != 1L || is.na(seed) ||
+      !is.finite(seed) || seed != floor(seed) || abs(seed) > .Machine$integer.max)
+    cli::cli_abort("'seed' must be one representable integer.")
+  had_seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+  previous <- if (had_seed) get(".Random.seed", envir = .GlobalEnv, inherits = FALSE) else NULL
+  set.seed(seed)
+  function() {
+    if (had_seed) assign(".Random.seed", previous, envir = .GlobalEnv)
+    else if (exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
+      rm(".Random.seed", envir = .GlobalEnv)
+    invisible(NULL)
+  }
 }

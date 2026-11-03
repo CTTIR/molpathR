@@ -13,3 +13,8 @@
 ^_coverage$
 ^codecov\.yml$
 ^tools/branding$
+^planning$
+^CITATION\.cff$
+^\.zenodo\.json$
+(^|/)Rplots\.pdf$
+^\.git$

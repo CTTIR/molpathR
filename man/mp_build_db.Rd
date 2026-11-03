@@ -17,13 +17,16 @@ variants, reports, clinical, survival, and metadata tables.
 \description{
 Constructs a unified \code{molpath_db} database object from one or more
 \code{molpath_parsed} objects. Each parsed object is categorized by its
-\code{source_type} and merged into the appropriate database table.
+\code{source_type} and merged into the appropriate database table. Raw FASTQ/BAM
+reads remain available through their readers but cannot be interpreted as
+variant calls by this function. Unknown gene annotations, pathogenicity and
+patient links remain missing. Use \code{\link[=mp_validate_db]{mp_validate_db()}} to assess incomplete links.
 }
 \details{
 Source types map to database tables as follows:
 \itemize{
-\item \code{"vcf"}, \code{"fastq"}, \code{"bam"} -- variants
-\item \code{"xml_report"} -- variants and reports
+\item \code{"vcf"} -- non-reference GT calls or explicitly normalized variants
+\item \code{"xml_report"} -- variants and explicitly identified patients/samples
 \item \code{"pdf_report"} -- reports
 \item \code{"nexus_pathology"} -- patients and samples
 \item \code{"nexus_clinical"} -- clinical

@@ -49,70 +49,133 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Overview
+## Scope
 
-molpathR provides dedicated parsers for each molecular pathology data source.
-All parsers return `molpath_parsed` objects that can be combined into a unified
-database using `mp_build_db()`.
+The six linked tables contain patients, samples, interpreted variants, reports,
+clinical measurements and survival outcomes. Readers retain source observations;
+the database does not infer patient identity, annotation, pathogenicity or assay
+coverage from absent fields. Raw FASTQ reads and BAM alignments remain inspectable
+reader results and cannot be added as interpreted variants.
 
-## Available parsers
+## A runnable import
 
-| Function | File types | Description |
-|----------|-----------|-------------|
-| `mp_read_vcf()` | .vcf, .vcf.gz | Variant Call Format files |
-| `mp_read_fastq()` | .fastq, .fq | FASTQ sequence files |
-| `mp_read_bam()` | .bam | BAM alignment files |
-| `mp_read_xml_report()` | .xml | XML variant interpretation reports |
-| `mp_read_pdf_report()` | .pdf | Pathology PDF reports |
-| `mp_read_nexus_pathology()` | .csv, .xml | Nexus Pathology exports |
-| `mp_read_nexus_clinical()` | .csv | Nexus clinical data exports |
-| `mp_read_survival()` | .xlsx, .csv | Survival/outcome data |
-| `mp_read_auto()` | any | Auto-detect and dispatch |
+This example uses only synthetic records and creates its own temporary files.
+Identifiers are supplied explicitly, including the link from each sample to a
+patient.
 
-## Example: parsing VCF files
-
-```{r vcf, eval = FALSE}
+```{r import}
 library(molpathR)
-
-# Parse a single VCF file
-parsed_vcf <- mp_read_vcf("path/to/variants.vcf")
-parsed_vcf
-
-# View the data
-head(parsed_vcf$data)
+source_dir <- tempfile("molpath-example-")
+dir.create(source_dir)
+pathology <- file.path(source_dir, "pathology.csv")
+clinical <- file.path(source_dir, "clinical.csv")
+survival_file <- file.path(source_dir, "survival.csv")
+writeLines(c(
+  "patient_id,name,sex,sample_id,sample_type,diagnosis,report_date",
+  "P1,Synthetic One,F,S1,FFPE,Example A,2025-01-01",
+  "P2,Synthetic Two,M,S2,FFPE,Example B,2025-01-02"
+), pathology)
+writeLines(c(
+  "patient_id;parameter;value;unit;date;source",
+  "P1;marker;17;U;2025-01-01;synthetic",
+  "P2;marker;23;U;2025-01-02;synthetic"
+), clinical)
+writeLines(c(
+  "patient_id,os_months,os_status,pfs_months,pfs_status",
+  "P1,12,0,8,0",
+  "P2,18,1,10,1"
+), survival_file)
+db <- mp_build_db(
+  mp_read_nexus_pathology(pathology),
+  mp_read_nexus_clinical(clinical),
+  mp_read_survival(survival_file)
+)
+mp_validate_db(db)$valid
+mp_get_patient(db, "P1")$clinical
 ```
 
-## Building a database from multiple sources
+CSV, semicolon-delimited and tab-delimited exports are detected by their actual
+fields. Field aliases match whole column names, ignoring case and surrounding
+header whitespace. `patient_id_backup` is preserved as an extra source column;
+it does not replace `patient_id`. Multiple recognized aliases for one field are
+ambiguous and require reconciliation. Survival event values must be exactly 0
+(censored), 1 (event), or missing; fractional values are never truncated. Observed
+times must be finite and nonnegative. Dates use ISO `YYYY-MM-DD` values.
 
-```{r build, eval = FALSE}
-# Parse several files
-vcf1 <- mp_read_vcf("sample1.vcf")
-vcf2 <- mp_read_vcf("sample2.vcf")
-surv <- mp_read_survival("survival_data.xlsx")
+## VCF calls and missing annotations
 
-# Build the database
-db <- mp_build_db(vcf1, vcf2, surv)
+The reader preserves ID, INFO, FORMAT and each sample's raw token regardless of
+optional typed-reader installations. Original header lines and declared sample
+names are in `parsed$metadata`. Database integration expands observed
+non-reference GT alleles, while retaining source genomic fields and genotype
+information. Each normalized row keeps its original sample token in
+`sample_fields`, interpreted by `format`; raw sample names cannot overwrite gene
+annotations or model identifiers. It does not derive gene effects or pathogenicity from coordinates.
 
-# Validate integrity
-mp_validate_db(db)
-
-# Save for later use
-mp_save_db(db, "my_database.rds")
+```{r vcf}
+vcf <- file.path(source_dir, "calls.vcf")
+writeLines(c(
+  "##fileformat=VCFv4.2",
+  "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tS1\tS2",
+  "1\t100\t.\tA\tG\t50\tPASS\tDP=50\tGT:DP\t0/1:20\t0/0:30"
+), vcf)
+parsed <- mp_read_vcf(vcf)
+parsed$data
+linked <- mp_add_data(db, parsed)
+linked$variants[, c("sample_id", "variant", "genotype", "gene", "classification")]
+mp_validate_db(linked)$valid
 ```
 
-## Auto-detection with mp_read_auto()
+A site-only VCF or sample measurements without GT do not establish a usable
+sample call. Inspect the parsed table, then supply an explicitly normalized
+`sample_id`/`variant` table after independent calling/annotation if that is the
+intended input. Reference or uncalled genotypes are not evidence of a wild-type
+gene: the package has no assay-coverage model.
 
-```{r auto, eval = FALSE}
-# Automatically detects file type and uses the correct parser
-parsed <- mp_read_auto("unknown_file.vcf")
-parsed$source_type
+## Reports and raw sequencing
+
+| Reader | Stored observations and boundary |
+|---|---|
+| `mp_read_xml_report()` | Explicit XML patient/sample IDs and variant text; namespace-aware generic template |
+| `mp_read_pdf_report()` | Extracted text sections; no OCR or inferred patient/sample identity |
+| `mp_read_fastq()` | Raw read IDs, sequences and qualities; `n` selects the first records, not a random sample |
+| `mp_read_bam()` | Explicit alignment fields, optionally restricted to one genomic region |
+| `mp_read_auto()` | Recognized source schema; unrecognized or ambiguous tabular layouts raise an error |
+
+The generic report templates are not vendor-certified. XML without a known link
+and PDF text can remain incomplete report evidence; inspect it before assigning
+an identity. The complete extracted PDF pages and text are retained in parser metadata; report
+summaries use the full text even when heuristic sections omit a heading.
+Image-only PDF reports require an external, verified transcription
+or OCR process. FASTQ/BAM database integration is refused because alignment and
+variant interpretation are separate tasks. The raw reader results remain usable.
+
+For an extensionless uploaded file, pass its original filename using
+`mp_read_auto(path, source_name = "clinical.csv")`. Dispatch uses a disposable
+copy with that filename and records its basename, not a deleted upload path.
+
+## Validation, merging and persistence
+
+Constructed databases always contain the six typed tables. Missing patient/sample
+links remain explicit and make `mp_validate_db(db)$valid` false, even when the
+parent table is empty. Malformed schemas, nonfinite measures, invalid event codes
+and duplicate primary IDs raise an error. Merge identical records or complementary
+missing attributes; resolve conflicting observed attributes deliberately.
+
+```{r persistence}
+saved <- file.path(source_dir, "database.rds")
+mp_save_db(linked, saved)
+restored <- mp_load_db(saved)
+identical(restored, linked)
+unlink(source_dir, recursive = TRUE)
 ```
 
-## Handling parse errors
+Saving stages and verifies the complete RDS before replacement. A failed
+replacement restores the previous destination or reports the preserved recovery
+path. Use one writer per destination. Incomplete links are reported on save and
+remain inspectable after reload; they are not silently repaired.
 
-All parsers use defensive parsing with informative error messages:
-
-```{r errors, eval = FALSE}
-# Malformed files produce warnings, not crashes
-result <- mp_read_vcf("possibly_broken.vcf")
-```
+Older zero-column empty tables and one-row metadata tibbles are normalized on
+load. ISO date strings are normalized to `Date`. Malformed nonempty tables or
+conflicting identities require explicit repair; keep the original RDS and review
+the reported field rather than fabricating missing clinical information.

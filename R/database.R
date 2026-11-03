@@ -11,52 +11,7 @@
 #'   containing a tibble (or NULL) extracted from the parsed object.
 #' @noRd
 .categorize_parsed <- function(parsed) {
-  source_type <- parsed[["source_type"]]
-  data <- parsed[["data"]]
-
-
-  tables <- list(
-    patients = NULL,
-    samples = NULL,
-    variants = NULL,
-    reports = NULL,
-    clinical = NULL,
-    survival = NULL
-  )
-
-
-  if (source_type %in% c("vcf", "fastq", "bam")) {
-    tables[["variants"]] <- data
-  } else if (source_type == "xml_report") {
-    if (is.list(data) && !inherits(data, "data.frame")) {
-      tables[["variants"]] <- data[["variants"]]
-      tables[["reports"]] <- data[["reports"]]
-    } else {
-      tables[["variants"]] <- data
-    }
-  } else if (source_type == "pdf_report") {
-    tables[["reports"]] <- data
-  } else if (source_type == "nexus_pathology") {
-    if (is.list(data) && !inherits(data, "data.frame")) {
-      tables[["patients"]] <- data[["patients"]]
-      tables[["samples"]] <- data[["samples"]]
-    } else {
-      tables[["patients"]] <- data
-    }
-  } else if (source_type == "nexus_clinical") {
-    tables[["clinical"]] <- data
-  } else if (source_type == "survival") {
-    tables[["survival"]] <- data
-  } else {
-    rlang::warn(
-      c("Unknown source type encountered.",
-        "i" = paste0("source_type '", source_type, "' is not recognized."),
-        "i" = "Data will be skipped."),
-      class = "molpathR_unknown_source_type"
-    )
-  }
-
-  tables
+  .mp_source_tables(parsed)
 }
 
 
@@ -197,12 +152,15 @@
 #'
 #' Constructs a unified `molpath_db` database object from one or more
 #' `molpath_parsed` objects. Each parsed object is categorized by its
-#' `source_type` and merged into the appropriate database table.
+#' `source_type` and merged into the appropriate database table. Raw FASTQ/BAM
+#' reads remain available through their readers but cannot be interpreted as
+#' variant calls by this function. Unknown gene annotations, pathogenicity and
+#' patient links remain missing. Use [mp_validate_db()] to assess incomplete links.
 #'
 #' Source types map to database tables as follows:
 #' \itemize{
-#'   \item `"vcf"`, `"fastq"`, `"bam"` -- variants
-#'   \item `"xml_report"` -- variants and reports
+#'   \item `"vcf"` -- non-reference GT calls or explicitly normalized variants
+#'   \item `"xml_report"` -- variants and explicitly identified patients/samples
 #'   \item `"pdf_report"` -- reports
 #'   \item `"nexus_pathology"` -- patients and samples
 #'   \item `"nexus_clinical"` -- clinical
@@ -233,74 +191,7 @@
 #' db <- mp_build_db(surv_parsed)
 #' }
 mp_build_db <- function(...) {
-  parsed_list <- .collect_parsed(...)
-
-  cli::cli_h2("Building molpath database")
-  cli::cli_alert_info("Processing {length(parsed_list)} parsed object{?s}.")
-
-  # Initialize empty tables
-  patients <- tibble::tibble()
-  samples <- tibble::tibble()
-  variants <- tibble::tibble()
-  reports <- tibble::tibble()
-  clinical <- tibble::tibble()
-  survival <- tibble::tibble()
-
-  source_files <- character(0)
-  parser_versions <- character(0)
-
-  for (i in seq_along(parsed_list)) {
-    parsed <- parsed_list[[i]]
-    tables <- .categorize_parsed(parsed)
-
-    patients <- .safe_bind_rows(patients, tables[["patients"]])
-    samples <- .safe_bind_rows(samples, tables[["samples"]])
-    variants <- .safe_bind_rows(variants, tables[["variants"]])
-    reports <- .safe_bind_rows(reports, tables[["reports"]])
-    clinical <- .safe_bind_rows(clinical, tables[["clinical"]])
-    survival <- .safe_bind_rows(survival, tables[["survival"]])
-
-    # Collect metadata from parsed objects
-    if (!is.null(parsed[["source_file"]])) {
-      source_files <- c(source_files, parsed[["source_file"]])
-    }
-    if (!is.null(parsed[["parser_version"]])) {
-      parser_versions <- c(parser_versions, parsed[["parser_version"]])
-    }
-  }
-
-  # Deduplicate all tables
-  patients <- .dedup(patients)
-  samples <- .dedup(samples)
-  variants <- .dedup(variants)
-  reports <- .dedup(reports)
-  clinical <- .dedup(clinical)
-  survival <- .dedup(survival)
-
-  metadata <- tibble::tibble(
-    creation_date = Sys.time(),
-    source_files = list(unique(source_files)),
-    parser_versions = list(unique(parser_versions))
-  )
-
-  db <- new_molpath_db(
-    patients = patients,
-    samples = samples,
-    variants = variants,
-    reports = reports,
-    clinical = clinical,
-    survival = survival,
-    metadata = metadata
-  )
-
-  cli::cli_alert_success("Database built successfully.")
-  cli::cli_alert_info(
-    "Tables: {nrow(patients)} patient{?s}, {nrow(samples)} sample{?s}, \\
-     {nrow(variants)} variant{?s}, {nrow(reports)} report{?s}, \\
-     {nrow(clinical)} clinical record{?s}, {nrow(survival)} survival record{?s}."
-  )
-
-  db
+  .mp_add_sources(new_molpath_db(), .collect_parsed(...))
 }
 
 
@@ -327,89 +218,8 @@ mp_build_db <- function(...) {
 #' db <- mp_add_data(db, new_data)
 #' }
 mp_add_data <- function(db, parsed) {
-  if (!inherits(db, "molpath_db")) {
-    rlang::abort(
-      c("`db` must be a `molpath_db` object.",
-        "i" = paste0("Got class: ", paste(class(db), collapse = "/"))),
-      class = "molpathR_invalid_db"
-    )
-  }
-
-  parsed_list <- .normalize_parsed_input(parsed)
-
-  cli::cli_h2("Adding data to molpath database")
-  cli::cli_alert_info("Processing {length(parsed_list)} parsed object{?s}.")
-
-  patients <- .ensure_tibble(db[["patients"]])
-  samples <- .ensure_tibble(db[["samples"]])
-  variants <- .ensure_tibble(db[["variants"]])
-  reports <- .ensure_tibble(db[["reports"]])
-  clinical <- .ensure_tibble(db[["clinical"]])
-  survival <- .ensure_tibble(db[["survival"]])
-
-  source_files <- if (!is.null(db[["metadata"]][["source_files"]])) {
-    unlist(db[["metadata"]][["source_files"]])
-  } else {
-    character(0)
-  }
-
-  parser_versions <- if (!is.null(db[["metadata"]][["parser_versions"]])) {
-    unlist(db[["metadata"]][["parser_versions"]])
-  } else {
-    character(0)
-  }
-
-  for (parsed_obj in parsed_list) {
-    tables <- .categorize_parsed(parsed_obj)
-
-    patients <- .safe_bind_rows(patients, tables[["patients"]])
-    samples <- .safe_bind_rows(samples, tables[["samples"]])
-    variants <- .safe_bind_rows(variants, tables[["variants"]])
-    reports <- .safe_bind_rows(reports, tables[["reports"]])
-    clinical <- .safe_bind_rows(clinical, tables[["clinical"]])
-    survival <- .safe_bind_rows(survival, tables[["survival"]])
-
-    if (!is.null(parsed_obj[["source_file"]])) {
-      source_files <- c(source_files, parsed_obj[["source_file"]])
-    }
-    if (!is.null(parsed_obj[["parser_version"]])) {
-      parser_versions <- c(parser_versions, parsed_obj[["parser_version"]])
-    }
-  }
-
-  # Deduplicate all tables
-  patients <- .dedup(patients)
-  samples <- .dedup(samples)
-  variants <- .dedup(variants)
-  reports <- .dedup(reports)
-  clinical <- .dedup(clinical)
-  survival <- .dedup(survival)
-
-  metadata <- tibble::tibble(
-    creation_date = db[["metadata"]][["creation_date"]],
-    last_updated = Sys.time(),
-    source_files = list(unique(source_files)),
-    parser_versions = list(unique(parser_versions))
-  )
-
-  db <- new_molpath_db(
-    patients = patients,
-    samples = samples,
-    variants = variants,
-    reports = reports,
-    clinical = clinical,
-    survival = survival,
-    metadata = metadata
-  )
-
-  cli::cli_alert_success("Data added successfully.")
-  cli::cli_alert_info(
-    "Updated tables: {nrow(patients)} patient{?s}, {nrow(samples)} sample{?s}, \\
-     {nrow(variants)} variant{?s}, {nrow(reports)} report{?s}, \\
-     {nrow(clinical)} clinical record{?s}, {nrow(survival)} survival record{?s}."
-  )
-
-  db
+  if (!inherits(db, "molpath_db")) rlang::abort("`db` must be a `molpath_db` object.", class = "molpathR_invalid_db")
+  .mp_add_sources(db, .normalize_parsed_input(parsed))
 }
 
 
@@ -417,7 +227,9 @@ mp_add_data <- function(db, parsed) {
 #'
 #' Combines all tables from two `molpath_db` objects into a single unified
 #' database. Records are deduplicated after merging. Metadata source files are
-#' combined as a union.
+#' combined as a union. Identical primary-key rows are deduplicated and missing
+#' attributes may be filled from the other source. Conflicting observed patient,
+#' sample or survival attributes require explicit reconciliation and cause an error.
 #'
 #' @param db1 A `molpath_db` object.
 #' @param db2 A `molpath_db` object.
@@ -428,90 +240,21 @@ mp_add_data <- function(db, parsed) {
 #' @examples
 #' \donttest{
 #' db1 <- mp_example_db(n_patients = 5, seed = 1)
-#' db2 <- mp_example_db(n_patients = 5, seed = 2)
+#' db2 <- db1
+#' db1$survival <- db1$survival[0, ]
 #' db_combined <- mp_merge_db(db1, db2)
 #' }
 mp_merge_db <- function(db1, db2) {
-  if (!inherits(db1, "molpath_db")) {
-    rlang::abort(
-      c("`db1` must be a `molpath_db` object.",
-        "i" = paste0("Got class: ", paste(class(db1), collapse = "/"))),
-      class = "molpathR_invalid_db"
-    )
-  }
-  if (!inherits(db2, "molpath_db")) {
-    rlang::abort(
-      c("`db2` must be a `molpath_db` object.",
-        "i" = paste0("Got class: ", paste(class(db2), collapse = "/"))),
-      class = "molpathR_invalid_db"
-    )
-  }
-
-  cli::cli_h2("Merging molpath databases")
-
-  table_names <- c("patients", "samples", "variants", "reports",
-                    "clinical", "survival")
-
-  merged <- stats::setNames(
-    lapply(table_names, function(nm) {
-      .dedup(.safe_bind_rows(
-        .ensure_tibble(db1[[nm]]),
-        .ensure_tibble(db2[[nm]])
-      ))
-    }),
-    table_names
-  )
-
-  # Merge metadata
-  source_files_1 <- if (!is.null(db1[["metadata"]][["source_files"]])) {
-    unlist(db1[["metadata"]][["source_files"]])
-  } else {
-    character(0)
-  }
-  source_files_2 <- if (!is.null(db2[["metadata"]][["source_files"]])) {
-    unlist(db2[["metadata"]][["source_files"]])
-  } else {
-    character(0)
-  }
-
-  parser_versions_1 <- if (!is.null(db1[["metadata"]][["parser_versions"]])) {
-    unlist(db1[["metadata"]][["parser_versions"]])
-  } else {
-    character(0)
-  }
-  parser_versions_2 <- if (!is.null(db2[["metadata"]][["parser_versions"]])) {
-    unlist(db2[["metadata"]][["parser_versions"]])
-  } else {
-    character(0)
-  }
-
-  metadata <- tibble::tibble(
-    creation_date = Sys.time(),
-    source_files = list(unique(c(source_files_1, source_files_2))),
-    parser_versions = list(unique(c(parser_versions_1, parser_versions_2)))
-  )
-
-  db <- new_molpath_db(
-    patients = merged[["patients"]],
-    samples = merged[["samples"]],
-    variants = merged[["variants"]],
-    reports = merged[["reports"]],
-    clinical = merged[["clinical"]],
-    survival = merged[["survival"]],
-    metadata = metadata
-  )
-
-  cli::cli_alert_success("Databases merged successfully.")
-  cli::cli_alert_info(
-    "Merged tables: {nrow(merged[['patients']])} patient{?s}, \\
-     {nrow(merged[['samples']])} sample{?s}, \\
-     {nrow(merged[['variants']])} variant{?s}, \\
-     {nrow(merged[['reports']])} report{?s}, \\
-     {nrow(merged[['clinical']])} clinical record{?s}, \\
-     {nrow(merged[['survival']])} survival record{?s}."
-  )
-
-  db
+  if (!inherits(db1, "molpath_db") || !inherits(db2, "molpath_db")) rlang::abort("Both inputs must be molpath_db objects.", class = "molpathR_invalid_db")
+  db1 <- .mp_normalize_db(db1, legacy = TRUE)
+  db2 <- .mp_normalize_db(db2, legacy = TRUE)
+  out <- db1
+  for (name in names(.mp_tables())) out[[name]] <- .mp_merge_table(db1[[name]], db2[[name]], name)
+  out[["metadata"]][["source_files"]] <- unique(c(db1[["metadata"]][["source_files"]], db2[["metadata"]][["source_files"]]))
+  out[["metadata"]][["source_records"]] <- c(db1[["metadata"]][["source_records"]], db2[["metadata"]][["source_records"]])
+  out[["metadata"]][["parser_versions"]] <- unique(c(db1[["metadata"]][["parser_versions"]], db2[["metadata"]][["parser_versions"]]))
+  out[["metadata"]][["last_updated"]] <- Sys.time()
+  .mp_normalize_db(out)
 }
 
 
@@ -562,124 +305,16 @@ mp_validate_db <- function(db) {
 
   cli::cli_h2("Validating molpath database")
 
-  issues <- character(0)
-
-  patients <- .ensure_tibble(db[["patients"]])
-  samples <- .ensure_tibble(db[["samples"]])
-  variants <- .ensure_tibble(db[["variants"]])
-  reports <- .ensure_tibble(db[["reports"]])
-  clinical <- .ensure_tibble(db[["clinical"]])
-  survival <- .ensure_tibble(db[["survival"]])
-
-  patient_ids <- if ("patient_id" %in% names(patients)) {
-    unique(patients[["patient_id"]])
-  } else {
-    character(0)
-  }
-
-  sample_ids <- if ("sample_id" %in% names(samples)) {
-    unique(samples[["sample_id"]])
-  } else {
-    character(0)
-  }
-
-  # -- Referential integrity checks --
-
-
-  # 1. samples.patient_id -> patients.patient_id
-  if (nrow(samples) > 0L && "patient_id" %in% names(samples) &&
-      length(patient_ids) > 0L) {
-    orphan_sample_patients <- setdiff(
-      unique(samples[["patient_id"]]),
-      patient_ids
-    )
-    if (length(orphan_sample_patients) > 0L) {
-      msg <- paste0(
-        length(orphan_sample_patients),
-        " sample(s) reference patient_id(s) not found in patients table: ",
-        paste(utils::head(orphan_sample_patients, 5), collapse = ", "),
-        if (length(orphan_sample_patients) > 5) ", ..." else ""
-      )
-      issues <- c(issues, msg)
-      cli::cli_alert_warning(msg)
-    }
-  }
-
-  # 2. variants.sample_id -> samples.sample_id
-  if (nrow(variants) > 0L && "sample_id" %in% names(variants) &&
-      length(sample_ids) > 0L) {
-    orphan_variant_samples <- setdiff(
-      unique(variants[["sample_id"]]),
-      sample_ids
-    )
-    if (length(orphan_variant_samples) > 0L) {
-      msg <- paste0(
-        length(orphan_variant_samples),
-        " variant(s) reference sample_id(s) not found in samples table: ",
-        paste(utils::head(orphan_variant_samples, 5), collapse = ", "),
-        if (length(orphan_variant_samples) > 5) ", ..." else ""
-      )
-      issues <- c(issues, msg)
-      cli::cli_alert_warning(msg)
-    }
-  }
-
-  # 3. reports.sample_id -> samples.sample_id
-  if (nrow(reports) > 0L && "sample_id" %in% names(reports) &&
-      length(sample_ids) > 0L) {
-    orphan_report_samples <- setdiff(
-      unique(reports[["sample_id"]]),
-      sample_ids
-    )
-    if (length(orphan_report_samples) > 0L) {
-      msg <- paste0(
-        length(orphan_report_samples),
-        " report(s) reference sample_id(s) not found in samples table: ",
-        paste(utils::head(orphan_report_samples, 5), collapse = ", "),
-        if (length(orphan_report_samples) > 5) ", ..." else ""
-      )
-      issues <- c(issues, msg)
-      cli::cli_alert_warning(msg)
-    }
-  }
-
-  # 4. clinical.patient_id -> patients.patient_id
-  if (nrow(clinical) > 0L && "patient_id" %in% names(clinical) &&
-      length(patient_ids) > 0L) {
-    orphan_clinical_patients <- setdiff(
-      unique(clinical[["patient_id"]]),
-      patient_ids
-    )
-    if (length(orphan_clinical_patients) > 0L) {
-      msg <- paste0(
-        length(orphan_clinical_patients),
-        " clinical record(s) reference patient_id(s) not found in patients table: ",
-        paste(utils::head(orphan_clinical_patients, 5), collapse = ", "),
-        if (length(orphan_clinical_patients) > 5) ", ..." else ""
-      )
-      issues <- c(issues, msg)
-      cli::cli_alert_warning(msg)
-    }
-  }
-
-  # 5. survival.patient_id -> patients.patient_id
-  if (nrow(survival) > 0L && "patient_id" %in% names(survival) &&
-      length(patient_ids) > 0L) {
-    orphan_survival_patients <- setdiff(
-      unique(survival[["patient_id"]]),
-      patient_ids
-    )
-    if (length(orphan_survival_patients) > 0L) {
-      msg <- paste0(
-        length(orphan_survival_patients),
-        " survival record(s) reference patient_id(s) not found in patients table: ",
-        paste(utils::head(orphan_survival_patients, 5), collapse = ", "),
-        if (length(orphan_survival_patients) > 5) ", ..." else ""
-      )
-      issues <- c(issues, msg)
-      cli::cli_alert_warning(msg)
-    }
-  }
+  db <- .mp_normalize_db(db, legacy = TRUE)
+  issues <- .mp_link_issues(db)
+  patients <- db[["patients"]]
+  samples <- db[["samples"]]
+  variants <- db[["variants"]]
+  reports <- db[["reports"]]
+  clinical <- db[["clinical"]]
+  survival <- db[["survival"]]
+  patient_ids <- patients[["patient_id"]]
+  sample_ids <- samples[["sample_id"]]
 
   # -- Completeness report --
 
@@ -797,7 +432,11 @@ mp_validate_db <- function(db) {
 
 #' Save a molpath_db to disk
 #'
-#' Validates the database and saves it as a compressed RDS file. The file
+#' Validates the database and saves it as a compressed RDS file. Serialization
+#' and read-back verification occur in a sibling temporary file before replacement.
+#' If replacement fails, the previous destination is restored or an explicit
+#' recovery path is reported. Use one writer per destination; this is not a
+#' multi-process database transaction. The file
 #' path is returned invisibly for use in pipelines.
 #'
 #' @param db A `molpath_db` object to save.
@@ -822,7 +461,7 @@ mp_save_db <- function(db, path) {
       class = "molpathR_invalid_db"
     )
   }
-  if (!is.character(path) || length(path) != 1L || is.na(path)) {
+  if (!is.character(path) || length(path) != 1L || is.na(path) || !nzchar(trimws(path))) {
     rlang::abort(
       c("`path` must be a single character string.",
         "i" = "Provide a file path ending in '.rds'."),
@@ -843,13 +482,8 @@ mp_save_db <- function(db, path) {
     )
   }
 
-  # Ensure output directory exists
-  out_dir <- dirname(path)
-  if (!dir.exists(out_dir)) {
-    dir.create(out_dir, recursive = TRUE)
-  }
-
-  saveRDS(db, file = path, compress = "gzip")
+  db <- .mp_normalize_db(db, legacy = TRUE)
+  .mp_write_rds(db, path)
 
   file_size <- file.info(path)[["size"]]
   file_size_fmt <- if (file_size < 1024) {
@@ -871,7 +505,10 @@ mp_save_db <- function(db, path) {
 #' Load a molpath_db from disk
 #'
 #' Reads an RDS file, verifies it contains a valid `molpath_db` object,
-#' and prints a summary of the loaded database.
+#' and prints a summary of the loaded database. Known legacy zero-column empty
+#' tables and one-row metadata tibbles are normalized explicitly. Malformed
+#' schemas or values are rejected; incomplete foreign-key links remain visible
+#' through [mp_validate_db()] rather than being invented.
 #'
 #' @param path Character string giving the file path to an RDS file
 #'   containing a `molpath_db` object.
@@ -888,7 +525,7 @@ mp_save_db <- function(db, path) {
 #' unlink(tmp)
 #' }
 mp_load_db <- function(path) {
-  if (!is.character(path) || length(path) != 1L || is.na(path)) {
+  if (!is.character(path) || length(path) != 1L || is.na(path) || !nzchar(trimws(path))) {
     rlang::abort(
       c("`path` must be a single character string.",
         "i" = "Provide a path to an existing '.rds' file."),
@@ -915,6 +552,8 @@ mp_load_db <- function(path) {
       class = "molpathR_invalid_db"
     )
   }
+
+  db <- .mp_normalize_db(db, legacy = TRUE)
 
   cli::cli_alert_success("Database loaded from {.file {path}}.")
 

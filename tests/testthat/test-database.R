@@ -152,6 +152,14 @@ test_that("mp_add_data errors on bad parsed input", {
 test_that("mp_merge_db combines two databases", {
   db1 <- mp_example_db(n_patients = 5, seed = 1)
   db2 <- mp_example_db(n_patients = 5, seed = 2)
+  # The second source represents different people and specimens, so give its
+  # identifiers a disjoint namespace before merging.
+  for (name in c("patients", "samples", "clinical", "survival")) {
+    db2[[name]]$patient_id <- paste0("second-", db2[[name]]$patient_id)
+  }
+  for (name in c("samples", "variants", "reports")) {
+    db2[[name]]$sample_id <- paste0("second-", db2[[name]]$sample_id)
+  }
   merged <- mp_merge_db(db1, db2)
   expect_s3_class(merged, "molpath_db")
   expect_equal(nrow(merged$patients), nrow(db1$patients) + nrow(db2$patients))

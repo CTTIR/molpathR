@@ -3,6 +3,7 @@
 mod_reports_ui <- function(id) {
   ns <- shiny::NS(id)
   bslib::layout_sidebar(
+    fillable = FALSE,
     sidebar = bslib::sidebar(
       title = "Filters",
       shinyWidgets::pickerInput(ns("report_type_filter"), "Report Type",
@@ -12,8 +13,10 @@ mod_reports_ui <- function(id) {
       shiny::dateRangeInput(ns("date_range"), "Date Range",
         start = "2021-01-01", end = Sys.Date()
       ),
+      shiny::checkboxInput(ns("include_missing"), "Include missing filter values", TRUE),
       shiny::textInput(ns("patient_search"), "Patient ID", placeholder = "PAT-2024-...")
     ),
+    shiny::uiOutput(ns("cohort_label")),
     DT::dataTableOutput(ns("report_table")),
     shiny::hr(),
     shiny::uiOutput(ns("report_detail"))
@@ -31,8 +34,11 @@ mod_reports_server <- function(id, shared) {
         choices = types, selected = types
       )
       if (nrow(db$reports) > 0 && "report_date" %in% names(db$reports)) {
-        dr <- range(db$reports$report_date, na.rm = TRUE)
-        shiny::updateDateRangeInput(session, "date_range", start = dr[1], end = dr[2])
+        dates <- db$reports$report_date[!is.na(db$reports$report_date)]
+        if (length(dates)) {
+          dr <- range(dates)
+          shiny::updateDateRangeInput(session, "date_range", start = dr[1], end = dr[2])
+        }
       }
     })
 
@@ -43,27 +49,45 @@ mod_reports_server <- function(id, shared) {
 
       # Filter by selected patient
       if (!is.null(shared$selected_patient)) {
-        sids <- db$samples$sample_id[db$samples$patient_id == shared$selected_patient]
-        reps <- dplyr::filter(reps, .data$sample_id %in% sids)
+        sids <- get_patient_sample_ids(db, shared$selected_patient)
+        reps <- dplyr::filter(reps, .data$sample_id %in% .env$sids)
       }
 
-      if (!is.null(input$report_type_filter) && length(input$report_type_filter) > 0) {
-        reps <- dplyr::filter(reps, .data$report_type %in% input$report_type_filter)
-      }
+      missing <- isTRUE(input$include_missing)
+      reps <- dplyr::filter(reps, .data$report_type %in% .env$input$report_type_filter |
+        (.env$missing & is.na(.data$report_type)))
       if ("report_date" %in% names(reps)) {
         reps <- dplyr::filter(reps,
-          .data$report_date >= input$date_range[1],
-          .data$report_date <= input$date_range[2]
+          (.data$report_date >= .env$input$date_range[1] & .data$report_date <= .env$input$date_range[2]) |
+            (.env$missing & is.na(.data$report_date))
         )
       }
-      if (nchar(input$patient_search) > 0) {
+      if (!is.null(input$patient_search) && nzchar(input$patient_search)) {
         pat_sids <- db$samples$sample_id[
-          grepl(input$patient_search, db$samples$patient_id, ignore.case = TRUE)
+          grepl(tolower(input$patient_search), tolower(db$samples$patient_id), fixed = TRUE)
         ]
-        reps <- dplyr::filter(reps, .data$sample_id %in% pat_sids)
+        reps <- dplyr::filter(reps, .data$sample_id %in% .env$pat_sids)
       }
       reps
     })
+
+    output$cohort_label <- shiny::renderUI({
+      shiny::tags$p(if (is.null(shared$selected_patient)) "Cohort: all patients" else
+        paste("Cohort: selected patient", shared$selected_patient))
+    })
+    selected_report <- shiny::reactiveVal(NULL)
+    shiny::observeEvent(filtered_reports(), {
+      selected_report(NULL)
+      if (length(input$report_table_rows_selected)) {
+        DT::selectRows(DT::dataTableProxy("report_table", session = session), NULL)
+      }
+    }, ignoreInit = TRUE, priority = 10)
+    shiny::observeEvent(input$report_table_rows_selected, {
+      sel <- input$report_table_rows_selected
+      rows <- filtered_reports()
+      selected_report(if (length(sel) == 1L && is.finite(sel) && sel == floor(sel) && sel >= 1L &&
+        sel <= nrow(rows)) rows[sel, ] else NULL)
+    }, ignoreNULL = FALSE)
 
     output$report_table <- DT::renderDataTable({
       DT::datatable(
@@ -75,9 +99,8 @@ mod_reports_server <- function(id, shared) {
     })
 
     output$report_detail <- shiny::renderUI({
-      sel <- input$report_table_rows_selected
-      shiny::req(sel)
-      report <- filtered_reports()[sel, ]
+      report <- selected_report()
+      shiny::req(report)
       bslib::card(
         bslib::card_header(paste("Report:", report$report_type)),
         bslib::card_body(

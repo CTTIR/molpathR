@@ -4,13 +4,21 @@
 \alias{mp_example_files}
 \title{Write synthetic example files to a directory}
 \usage{
-mp_example_files(dir = tempdir(), seed = 42)
+mp_example_files(
+  dir = tempdir(),
+  seed = 42,
+  reference_date = as.Date("2025-01-01")
+)
 }
 \arguments{
 \item{dir}{Character. Directory where files are written.
 Default \code{tempdir()}.}
 
-\item{seed}{Integer. Random seed for reproducibility. Default \code{42}.}
+\item{seed}{Integer. Random seed for reproducibility. Default \code{42}.
+The caller's random-number state is restored, including on error.}
+
+\item{reference_date}{Date. Fixed anchor for synthetic report dates; default
+2025-01-01. File contents do not depend on the day they are generated.}
 }
 \value{
 A named list of file paths:

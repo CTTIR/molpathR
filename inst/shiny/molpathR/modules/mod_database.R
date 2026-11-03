@@ -7,8 +7,8 @@ mod_database_ui <- function(id) {
       title = "Load Data",
       shiny::fileInput(ns("file_upload"), "Upload files",
         multiple = TRUE,
-        accept = c(".rds", ".vcf", ".xml", ".pdf", ".csv", ".xlsx", ".xls",
-                   ".fastq", ".fq", ".bam", ".txt")
+        accept = c(".rds", ".vcf", ".xml", ".pdf", ".csv", ".tsv", ".xlsx", ".xls",
+                   ".fastq", ".fq", ".bam", ".vcf.gz", ".fastq.gz", ".fq.gz")
       ),
       shiny::actionButton(ns("load_example"), "Load Example Database",
         class = "btn-primary btn-sm", width = "100%"
@@ -37,43 +37,19 @@ mod_database_server <- function(id, shared) {
       shiny::showNotification("Example database loaded!", type = "message")
     })
 
-    # Upload files
+    # Publish only a complete, validated batch; retain prior state on failure.
     shiny::observeEvent(input$file_upload, {
-      shiny::withProgress(message = "Parsing files...", {
-        files <- input$file_upload
-        parsed_list <- list()
-        for (i in seq_len(nrow(files))) {
-          shiny::incProgress(1 / nrow(files), detail = files$name[i])
-          ext <- tolower(tools::file_ext(files$name[i]))
-          tryCatch({
-            if (ext == "rds") {
-              loaded <- readRDS(files$datapath[i])
-              if (inherits(loaded, "molpath_db")) {
-                shared$db <- loaded
-                shiny::showNotification("Database loaded from RDS!", type = "message")
-                return()
-              }
-            }
-            p <- molpathR::mp_read_auto(files$datapath[i])
-            parsed_list[[i]] <- p
-          }, error = function(e) {
-            shiny::showNotification(
-              paste("Error parsing", files$name[i], ":", e$message),
-              type = "error"
-            )
-          })
-        }
-        parsed_list <- parsed_list[!vapply(parsed_list, is.null, logical(1))]
-        if (length(parsed_list) > 0) {
-          if (is.null(shared$db)) {
-            shared$db <- molpathR::mp_build_db(parsed_list)
-          } else {
-            for (p in parsed_list) {
-              shared$db <- molpathR::mp_add_data(shared$db, p)
-            }
-          }
-          shiny::showNotification("Files parsed and added!", type = "message")
-        }
+      tryCatch({
+        candidate <- shiny::withProgress(message = "Parsing files...", {
+          app_import_files(input$file_upload, shared$db)
+        })
+        shared$selected_patient <- NULL
+        shared$selected_gene <- NULL
+        shared$db <- candidate
+        shiny::showNotification("Uploaded files validated and loaded.", type = "message")
+      }, error = function(e) {
+        shiny::showNotification(paste("Upload failed; current database retained:",
+          conditionMessage(e)), type = "error", duration = NULL)
       })
     })
 
@@ -87,6 +63,11 @@ mod_database_server <- function(id, shared) {
           shiny::p("Upload data files or load the example database to get started.")
         ))
       }
+      status <- molpathR::mp_validate_db(db)
+      shiny::tagList(
+      if (!isTRUE(status$valid)) shiny::div(class = "alert alert-warning",
+        "Database linkage needs review. Records are retained; missing relationships are not inferred.",
+        shiny::tags$pre(paste(status$issues, collapse = "\n"))),
       bslib::layout_column_wrap(
         width = 1 / 4,
         bslib::value_box(
@@ -105,7 +86,7 @@ mod_database_server <- function(id, shared) {
           title = "Reports", value = nrow(db$reports),
           theme = "success", showcase = shiny::icon("file-medical")
         )
-      )
+      ))
     })
 
     # Source table
@@ -130,7 +111,7 @@ mod_database_server <- function(id, shared) {
       filename = function() paste0("molpathR_db_", Sys.Date(), ".rds"),
       content = function(file) {
         shiny::req(shared$db)
-        saveRDS(shared$db, file)
+        molpathR::mp_save_db(shared$db, file)
       }
     )
 

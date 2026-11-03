@@ -1,9 +1,8 @@
 {
   "upload_type": "software",
   "title": "molpathR: Molecular pathology data platform for clinical NGS integration",
-  "version": "0.1.0",
-  "publication_date": "2026-08-11",
-  "description": "<p>molpathR brings together molecular pathology data from sources that normally live apart, including next-generation sequencing files, XML variant interpretation reports, structured pathology PDF reports, pathology and clinical information systems, and survival outcome data. It links these records into a searchable in-memory database so that variant, report and outcome information for a case can be queried as one dataset. An interactive application supports clinical exploration and cohort-level analysis over the linked data. It is intended for molecular pathology and clinical genomics groups that need an integrated view across heterogeneous diagnostic outputs.</p>",
+  "version": "0.1.0.9001",
+  "description": "<p>molpathR supports local exploratory integration of explicitly identified molecular pathology records, interpreted variants, report text, clinical measurements and survival outcomes. It preserves source fields and reports incomplete links. FASTQ and BAM readers expose raw reads and alignments separately; they do not perform variant calling. The Shiny application provides linked cohort queries and visualizations. Clinical diagnostic qualification and vendor-specific production interoperability are outside the verified scope.</p>",
   "creators": [
     {
       "name": "Heller, Raban",
@@ -32,5 +31,5 @@
       "resource_type": "software"
     }
   ],
-  "notes": "Prepared draft. Not yet published."
+  "notes": "Prepared development-source draft. No release or deposit for this version has been published."
 }

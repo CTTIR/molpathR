@@ -8,7 +8,8 @@ new_molpath_parsed(
   data = tibble::tibble(),
   source_type = character(1L),
   source_file = character(1L),
-  parse_date = Sys.time()
+  parse_date = Sys.time(),
+  metadata = list()
 )
 }
 \arguments{
@@ -21,6 +22,8 @@ new_molpath_parsed(
 
 \item{parse_date}{A \code{POSIXct} timestamp of when the data was parsed.
 Defaults to the current time.}
+
+\item{metadata}{A named list of parser-specific provenance, such as original VCF headers.}
 }
 \value{
 An S3 object of class \code{molpath_parsed}.

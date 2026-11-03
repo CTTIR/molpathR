@@ -59,6 +59,10 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
   }
+  if (!is.numeric(top_n) || length(top_n) != 1L || !is.finite(top_n) ||
+      top_n < 1 || top_n != floor(top_n)) {
+    rlang::abort("`top_n` must be one positive integer.")
+  }
   vars <- db$variants
   if (nrow(vars) == 0L) {
     rlang::abort("No variants in the database to plot.")
@@ -71,14 +75,20 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
 
   # Link variants to patients via samples
   plot_data <- dplyr::inner_join(
-    dplyr::filter(vars, .data$gene %in% genes),
+    dplyr::filter(vars, .data$gene %in% .env$genes),
     db$samples[, c("sample_id", "patient_id")],
     by = "sample_id"
   )
 
-  # Keep most severe classification per patient-gene pair
+  if (nrow(plot_data) == 0L) {
+    rlang::abort("No requested variants linked to patients are available to plot.")
+  }
+
+  # Unknown classifications stay visible without implying a known severity.
   class_order <- c("Pathogenic", "Likely pathogenic", "VUS", "Likely benign", "Benign")
-  plot_data$classification <- factor(plot_data$classification, levels = class_order)
+  unknown <- is.na(plot_data$classification) | !plot_data$classification %in% class_order
+  plot_data$classification[unknown] <- "Unclassified"
+  plot_data$classification <- factor(plot_data$classification, levels = c(class_order, "Unclassified"))
 
   plot_data <- dplyr::arrange(plot_data, .data$classification)
   plot_data <- dplyr::distinct(plot_data, .data$patient_id, .data$gene, .keep_all = TRUE)
@@ -93,7 +103,7 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
   )) +
     ggplot2::geom_tile(colour = "white", linewidth = 0.3) +
     ggplot2::scale_fill_manual(
-      values = mp_classification_colors(),
+      values = c(mp_classification_colors(), Unclassified = "#707070"),
       drop = FALSE,
       name = "Classification"
     ) +
@@ -133,7 +143,7 @@ mp_plot_mutation_spectrum <- function(db, sample_id = NULL) {
   }
   vars <- db$variants
   if (!is.null(sample_id)) {
-    vars <- dplyr::filter(vars, .data$sample_id %in% sample_id)
+    vars <- dplyr::filter(vars, .data$sample_id %in% .env$sample_id)
   }
 
   # Extract ref/alt if columns exist; otherwise try to parse from variant string
@@ -212,8 +222,9 @@ mp_plot_mutation_spectrum <- function(db, sample_id = NULL) {
 #' @param db A `molpath_db` object.
 #' @param group_by Optional character string. If it matches a column in the
 #'   patients table (e.g., `"diagnosis"`), stratify by that variable. If it
-#'   matches a gene name present in the variants table, stratify into
-#'   "Mutated" vs "Wild-type".
+#'   matches a gene name present in the variants table, stratify by presence
+#'   of a recorded variant. Absence of a record does not establish a negative
+#'   assay or wild-type genotype.
 #' @param type Character; `"os"` for overall survival or `"pfs"` for
 #'   progression-free survival.
 #'
@@ -248,32 +259,42 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
     rlang::abort("No valid survival data after removing NAs.")
   }
 
-  # Determine grouping
+  # This database records variants, not gene-level assay coverage or negative calls.
   has_group <- FALSE
+  gene_group <- FALSE
   if (!is.null(group_by)) {
+    if (!is.character(group_by) || length(group_by) != 1L ||
+        is.na(group_by) || !nzchar(group_by)) {
+      rlang::abort("`group_by` must be NULL or one nonempty column/gene name.")
+    }
     if (group_by %in% names(db$patients)) {
-      grp <- db$patients[, c("patient_id", group_by)]
+      grp <- tibble::tibble(patient_id = db$patients$patient_id,
+                           group = db$patients[[group_by]])
       plot_df <- dplyr::inner_join(plot_df, grp, by = "patient_id")
-      names(plot_df)[names(plot_df) == group_by] <- "group"
+      missing_group <- is.na(plot_df$group)
+      if (any(missing_group)) {
+        cli::cli_warn("Omitting {sum(missing_group)} survival records with missing group values.")
+        plot_df <- plot_df[!missing_group, , drop = FALSE]
+      }
       has_group <- TRUE
     } else {
-      # Treat as gene name
-      gene_patients <- character()
-      if (nrow(db$variants) > 0L && nrow(db$samples) > 0L) {
-        var_sids <- unique(dplyr::filter(db$variants, .data$gene == group_by)$sample_id)
-        gene_patients <- unique(db$samples$patient_id[db$samples$sample_id %in% var_sids])
+      if (!group_by %in% db$variants$gene) {
+        rlang::abort("No recorded variants for the requested gene; negative assay status is unknown.")
       }
+      var_sids <- unique(dplyr::filter(db$variants, .data$gene == .env$group_by)$sample_id)
+      gene_patients <- unique(db$samples$patient_id[db$samples$sample_id %in% var_sids])
       plot_df$group <- ifelse(
         plot_df$patient_id %in% gene_patients,
-        paste0(group_by, " Mutated"),
-        paste0(group_by, " Wild-type")
+        paste0(group_by, ": recorded variant"),
+        paste0(group_by, ": no recorded variant")
       )
       has_group <- TRUE
+      gene_group <- TRUE
     }
   }
-
-  # Check group count before fitting
-
+  if (nrow(plot_df) == 0L) {
+    rlang::abort("No survival records with available grouping data.")
+  }
   if (has_group && length(unique(plot_df$group)) < 2L) {
     cli::cli_warn("Only one group found for {.val {group_by}}. Plotting without stratification.")
     has_group <- FALSE
@@ -300,12 +321,21 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
   if (has_group) {
     p <- p +
       ggplot2::geom_step(ggplot2::aes(colour = .data$strata), linewidth = 1) +
-      ggplot2::scale_colour_brewer(palette = "Set1", name = "Group")
+      if (length(unique(plot_df$group)) <= 9L) {
+        ggplot2::scale_colour_brewer(palette = "Set1", name = "Group")
+      } else {
+        ggplot2::scale_colour_hue(name = "Group")
+      }
 
     # Log-rank test
-    sdiff <- survival::survdiff(survival::Surv(time, status) ~ group, data = plot_df)
-    pval <- stats::pchisq(sdiff$chisq, length(sdiff$n) - 1L, lower.tail = FALSE)
-    pval_label <- if (pval < 0.001) "p < 0.001" else paste0("p = ", round(pval, 3))
+    pval <- NA_real_
+    if (any(plot_df$status == 1)) {
+      sdiff <- survival::survdiff(survival::Surv(time, status) ~ group, data = plot_df)
+      pval <- stats::pchisq(sdiff$chisq, length(sdiff$n) - 1L, lower.tail = FALSE)
+    }
+    pval_label <- if (!is.finite(pval)) "unavailable (no informative events)" else if (pval < 0.001) {
+      "p < 0.001"
+    } else paste0("p = ", round(pval, 3))
     p <- p + ggplot2::annotate(
       "text", x = max(surv_df$time) * 0.7, y = 0.95,
       label = paste("Log-rank:", pval_label),
@@ -315,14 +345,18 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
     p <- p + ggplot2::geom_step(colour = "#7B2D8E", linewidth = 1)
   }
 
-  p +
+  p <- p +
     ggplot2::labs(
       title = type_label,
+      subtitle = if (gene_group) "No recorded variant does not establish a negative assay or wild-type genotype." else NULL,
       x = "Time (months)",
       y = "Survival probability"
     ) +
     ggplot2::coord_cartesian(ylim = c(0, 1)) +
     theme_molpath()
+  attr(p, "molpath_survival_data") <- plot_df
+  attr(p, "molpath_survival_fit") <- fit
+  p
 }
 
 #' Convert survfit object to data frame
@@ -457,13 +491,14 @@ mp_plot_vaf_distribution <- function(db, gene = NULL) {
   }
   vars <- db$variants
   if (!is.null(gene)) {
-    vars <- dplyr::filter(vars, .data$gene %in% gene)
+    vars <- dplyr::filter(vars, .data$gene %in% .env$gene)
   }
   if (nrow(vars) == 0L) {
     rlang::abort("No variants to plot.")
   }
 
   vars <- dplyr::filter(vars, !is.na(.data$vaf))
+  if (nrow(vars) == 0L) rlang::abort("No measured VAF values to plot.")
 
   if (!is.null(gene) && length(gene) > 1L) {
     p <- ggplot2::ggplot(vars, ggplot2::aes(x = .data$vaf, fill = .data$gene)) +

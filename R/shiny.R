@@ -12,6 +12,9 @@
 #' @param db Optional `molpath_db` object to pre-load into the application.
 #' @param ... Additional arguments passed to [shiny::runApp()].
 #'
+#' @details CSV/TSV downloads require a working `zip` executable (or `R_ZIPCMD`).
+#' Excel downloads additionally require the optional `writexl` package. Uploaded
+#' files are staged and validated as one batch before changing session data.
 #' @return This function does not return a value; it launches a Shiny app.
 #' @export
 #'
@@ -35,10 +38,12 @@ mp_run_app <- function(db = NULL, ...) {
     if (!inherits(db, "molpath_db")) {
       rlang::abort("`db` must be a molpath_db object or NULL.")
     }
-    .molpathR_env$shiny_db <- db
-    on.exit(.molpathR_env$shiny_db <- NULL, add = TRUE)
+    validate_molpath_db(db)
   }
 
+  previous <- .molpathR_env$shiny_db
+  .molpathR_env$shiny_db <- db
+  on.exit(.molpathR_env$shiny_db <- previous, add = TRUE)
   shiny::runApp(app_dir, ...)
 }
 

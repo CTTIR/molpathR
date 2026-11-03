@@ -1,0 +1,8 @@
+bibentry(
+  bibtype = "Manual",
+  title = "molpathR: Molecular Pathology Data Platform for Clinical NGS Integration",
+  author = person("R.", "Heller", comment = c(ORCID = "0000-0001-8006-9742")),
+  year = "2026",
+  note = paste("Development source version", meta$Version),
+  url = "https://github.com/CTTIR/molpathR"
+)

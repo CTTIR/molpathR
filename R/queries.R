@@ -55,25 +55,37 @@ mp_query_variants <- function(db,
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
   }
+  validate_molpath_db(db)
+  for (bound in c("min_vaf", "max_vaf")) {
+    value <- get(bound)
+    if (!is.null(value) && (!is.numeric(value) || length(value) != 1L ||
+        !is.finite(value) || value < 0 || value > 1)) {
+      rlang::abort(paste0("`", bound, "` must be NULL or one finite number between 0 and 1."))
+    }
+  }
+  if (!is.null(min_vaf) && !is.null(max_vaf) && min_vaf > max_vaf) {
+    rlang::abort("`min_vaf` must not exceed `max_vaf`.")
+  }
   result <- db$variants
 
   if (!is.null(genes)) {
-    result <- dplyr::filter(result, .data$gene %in% genes)
+    result <- dplyr::filter(result, .data$gene %in% .env$genes)
   }
   if (!is.null(classification)) {
     result <- dplyr::filter(result, .data$classification %in% .env$classification)
   }
   if (!is.null(min_vaf)) {
-    result <- dplyr::filter(result, .data$vaf >= min_vaf)
+    result <- dplyr::filter(result, .data$vaf >= .env$min_vaf)
   }
 
   if (!is.null(max_vaf)) {
-    result <- dplyr::filter(result, .data$vaf <= max_vaf)
+    result <- dplyr::filter(result, .data$vaf <= .env$max_vaf)
   }
   if (!is.null(variant_type)) {
-    if ("variant_type" %in% names(result)) {
-      result <- dplyr::filter(result, .data$variant_type %in% .env$variant_type)
+    if (!"variant_type" %in% names(result)) {
+      rlang::abort("Cannot filter by `variant_type`: this database has no variant_type column.")
     }
+    result <- dplyr::filter(result, .data$variant_type %in% .env$variant_type)
   }
   result
 }
@@ -139,8 +151,8 @@ mp_get_patient <- function(db, patient_id) {
   samples <- dplyr::filter(db$samples, .data$patient_id == !!patient_id)
   sample_ids <- samples$sample_id
 
-  variants <- dplyr::filter(db$variants, .data$sample_id %in% sample_ids)
-  reports  <- dplyr::filter(db$reports, .data$sample_id %in% sample_ids)
+  variants <- dplyr::filter(db$variants, .data$sample_id %in% .env$sample_ids)
+  reports  <- dplyr::filter(db$reports, .data$sample_id %in% .env$sample_ids)
   clinical <- dplyr::filter(db$clinical, .data$patient_id == !!patient_id)
   surv     <- dplyr::filter(db$survival, .data$patient_id == !!patient_id)
 
@@ -200,9 +212,10 @@ mp_summary <- function(db) {
   }
 
   date_range <- if (nrow(db$samples) > 0L && "date" %in% names(db$samples)) {
-    range(db$samples$date, na.rm = TRUE)
+    dates <- db$samples$date[!is.na(db$samples$date)]
+    if (length(dates)) range(dates) else as.Date(rep(NA_character_, 2L))
   } else {
-    c(NA, NA)
+    as.Date(rep(NA_character_, 2L))
   }
 
   result <- list(

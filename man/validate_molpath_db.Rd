@@ -10,13 +10,14 @@ validate_molpath_db(x)
 \item{x}{An object of class \code{molpath_db}.}
 }
 \value{
-The validated \code{molpath_db} object (invisibly). Throws an error if
-validation fails.
+The original \code{molpath_db} object (invisibly). Structural or value
+corruption raises an error. Incomplete links warn and remain unchanged.
 }
 \description{
 Checks that all required tables are present, that each is a tibble, and that
-mandatory columns exist in each table. Validates referential integrity
-between patient and sample identifiers across tables.
+mandatory columns, types, value ranges and primary identifiers are valid.
+Incomplete cross-table links are reported as warnings; use \code{\link[=mp_validate_db]{mp_validate_db()}}
+for a structured link report. Missing parent evidence is not fabricated.
 }
 \examples{
 db <- new_molpath_db()

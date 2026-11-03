@@ -407,12 +407,11 @@ test_that("mp_read_auto routes clinical-like csv to clinical reader", {
   expect_equal(result$source_type, "nexus_clinical")
 })
 
-test_that("mp_read_auto defaults ambiguous tabular to survival reader", {
+test_that("mp_read_auto refuses unrecognized tabular schemas", {
   csv <- c("patient_id,foo,bar", "P1,1,2")
   tmp <- withr::local_tempfile(fileext = ".csv")
   writeLines(csv, tmp)
-  result <- mp_read_auto(tmp)
-  expect_equal(result$source_type, "survival")
+  expect_error(mp_read_auto(tmp), "Cannot determine the tabular source")
 })
 
 test_that("mp_read_auto aborts on unknown extension", {

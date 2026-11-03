@@ -86,90 +86,31 @@ new_molpath_db <- function(patients = tibble::tibble(
     metadata  = metadata
   )
 
-  structure(obj, class = "molpath_db")
+  .mp_normalize_db(obj, legacy = TRUE)
 }
 
 
 #' Validate a molpath_db object
 #'
 #' Checks that all required tables are present, that each is a tibble, and that
-#' mandatory columns exist in each table. Validates referential integrity
-#' between patient and sample identifiers across tables.
+#' mandatory columns, types, value ranges and primary identifiers are valid.
+#' Incomplete cross-table links are reported as warnings; use [mp_validate_db()]
+#' for a structured link report. Missing parent evidence is not fabricated.
 #'
 #' @param x An object of class `molpath_db`.
 #'
-#' @return The validated `molpath_db` object (invisibly). Throws an error if
-#'   validation fails.
+#' @return The original `molpath_db` object (invisibly). Structural or value
+#'   corruption raises an error. Incomplete links warn and remain unchanged.
 #' @export
 #'
 #' @examples
 #' db <- new_molpath_db()
 #' validate_molpath_db(db)
 validate_molpath_db <- function(x) {
-  if (!inherits(x, "molpath_db")) {
-    cli::cli_abort("{.arg x} must be a {.cls molpath_db} object.")
-  }
-
-  # Required table names
-
-  table_names <- c("patients", "samples", "variants", "reports",
-                   "clinical", "survival")
-
-  for (tbl in table_names) {
-    if (!tbl %in% names(x)) {
-      cli::cli_abort("Missing required table {.val {tbl}} in molpath_db.")
-    }
-    if (!tibble::is_tibble(x[[tbl]])) {
-      cli::cli_abort("Table {.val {tbl}} must be a tibble, not {.cls {class(x[[tbl]])[1]}}.")
-    }
-  }
-
-  # Required columns per table
-  required_cols <- list(
-    patients  = c("patient_id", "age", "sex", "diagnosis"),
-    samples   = c("sample_id", "patient_id", "sample_type", "date",
-                   "source_file"),
-    variants  = c("sample_id", "gene", "variant", "classification", "vaf"),
-    reports   = c("sample_id", "report_type", "report_date", "summary_text",
-                   "source_file"),
-    clinical  = c("patient_id", "parameter", "value", "date", "source"),
-    survival  = c("patient_id", "os_months", "os_status", "pfs_months",
-                   "pfs_status")
-  )
-
-  for (tbl in names(required_cols)) {
-    missing <- setdiff(required_cols[[tbl]], names(x[[tbl]]))
-    if (length(missing) > 0L) {
-      cli::cli_abort(
-        "Table {.val {tbl}} is missing required column{?s}: {.field {missing}}."
-      )
-    }
-  }
-
-  # Validate metadata structure
-  if (!"metadata" %in% names(x)) {
-    cli::cli_abort("Missing {.val metadata} list in molpath_db.")
-  }
-
-  meta_fields <- c("creation_date", "source_files", "parser_versions")
-  missing_meta <- setdiff(meta_fields, names(x$metadata))
-  if (length(missing_meta) > 0L) {
-    cli::cli_abort(
-      "Metadata is missing required field{?s}: {.field {missing_meta}}."
-    )
-  }
-
-  # Referential integrity: sample patient_ids should be in patients
-  if (nrow(x$samples) > 0L && nrow(x$patients) > 0L) {
-    orphan_samples <- setdiff(x$samples$patient_id, x$patients$patient_id)
-    if (length(orphan_samples) > 0L) {
-      cli::cli_warn(
-        c("!" = "{length(orphan_samples)} sample patient_id{?s} not found in patients table.",
-          "i" = "First orphan IDs: {.val {utils::head(orphan_samples, 5)}}.")
-      )
-    }
-  }
-
+  if (!inherits(x, "molpath_db")) cli::cli_abort("{.arg x} must be a {.cls molpath_db} object.")
+  .mp_normalize_db(x)
+  issues <- .mp_link_issues(x)
+  if (length(issues)) cli::cli_warn(c("Database has incomplete referential links.", stats::setNames(issues, rep("i", length(issues)))))
   invisible(x)
 }
 
@@ -349,6 +290,7 @@ summary.molpath_db <- function(object, ...) {
 #' @param source_type A character string identifying the source type (e.g.,
 #'   `"vcf"`, `"xml_report"`, `"pdf_report"`, `"excel"`, `"csv"`).
 #' @param source_file A character string with the path to the source file.
+#' @param metadata A named list of parser-specific provenance, such as original VCF headers.
 #' @param parse_date A `POSIXct` timestamp of when the data was parsed.
 #'   Defaults to the current time.
 #'
@@ -365,7 +307,7 @@ summary.molpath_db <- function(object, ...) {
 new_molpath_parsed <- function(data = tibble::tibble(),
                                source_type = character(1L),
                                source_file = character(1L),
-                               parse_date = Sys.time()) {
+                               parse_date = Sys.time(), metadata = list()) {
   if (!tibble::is_tibble(data) && !is.data.frame(data)) {
     cli::cli_abort("{.arg data} must be a tibble or data frame.")
   }
@@ -378,6 +320,12 @@ new_molpath_parsed <- function(data = tibble::tibble(),
     cli::cli_abort("{.arg source_file} must be a single character string.")
   }
 
+  .mp_string(source_type, "source_type")
+  .mp_string(source_file, "source_file")
+  if (!inherits(parse_date, "POSIXct") || length(parse_date) != 1L || is.na(parse_date) || !is.finite(as.numeric(parse_date))) cli::cli_abort("parse_date must be one finite POSIXct timestamp.")
+  if (!is.list(metadata)) cli::cli_abort("metadata must be a list.")
+  if (length(metadata)) .mp_named(metadata, "Parsed metadata")
+
   # Coerce data frames to tibble
 
   if (!tibble::is_tibble(data)) {
@@ -389,7 +337,9 @@ new_molpath_parsed <- function(data = tibble::tibble(),
     data        = data,
     source_type = source_type,
     source_file = source_file,
-    parse_date  = parse_date
+    parse_date  = parse_date,
+    metadata    = metadata,
+    parser_version = as.character(utils::packageVersion("molpathR"))
   )
 
   structure(obj, class = "molpath_parsed")

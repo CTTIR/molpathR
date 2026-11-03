@@ -20,10 +20,12 @@ mod_variants_ui <- function(id) {
       shiny::sliderInput(ns("vaf_range"), "VAF range",
         min = 0, max = 1, value = c(0, 1), step = 0.01
       ),
+      shiny::checkboxInput(ns("include_missing"), "Include missing filter values", TRUE),
       shiny::downloadButton(ns("download_variants"), "Download CSV",
         class = "btn-outline-secondary btn-sm"
       )
     ),
+    shiny::uiOutput(ns("cohort_label")),
     bslib::navset_card_tab(
       bslib::nav_panel("Table",
         DT::dataTableOutput(ns("variant_table"))
@@ -60,22 +62,38 @@ mod_variants_server <- function(id, shared) {
 
       # If a patient is selected in the Patients tab, filter to that patient
       if (!is.null(shared$selected_patient)) {
-        sids <- db$samples$sample_id[db$samples$patient_id == shared$selected_patient]
-        vars <- dplyr::filter(vars, .data$sample_id %in% sids)
+        sids <- get_patient_sample_ids(db, shared$selected_patient)
+        vars <- dplyr::filter(vars, .data$sample_id %in% .env$sids)
       }
 
-      if (!is.null(input$gene_filter) && length(input$gene_filter) > 0) {
-        vars <- dplyr::filter(vars, .data$gene %in% input$gene_filter)
-      }
-      if (!is.null(input$class_filter) && length(input$class_filter) > 0) {
-        vars <- dplyr::filter(vars, .data$classification %in% input$class_filter)
-      }
+      shiny::req(length(input$vaf_range) == 2L)
+      missing <- isTRUE(input$include_missing)
       vars <- dplyr::filter(vars,
-        .data$vaf >= input$vaf_range[1],
-        .data$vaf <= input$vaf_range[2]
-      )
+        .data$gene %in% .env$input$gene_filter | (.env$missing & is.na(.data$gene)),
+        .data$classification %in% .env$input$class_filter | (.env$missing & is.na(.data$classification)),
+        (.data$vaf >= .env$input$vaf_range[1] & .data$vaf <= .env$input$vaf_range[2]) |
+          (.env$missing & is.na(.data$vaf)))
       vars
     })
+
+    output$cohort_label <- shiny::renderUI({
+      shiny::tags$p(if (is.null(shared$selected_patient)) "Cohort: all patients" else
+        paste("Cohort: selected patient", shared$selected_patient),
+        "— figures and CSV use the table filters.")
+    })
+    filtered_db <- shiny::reactive({
+      db <- shared$db
+      shiny::req(db)
+      db$variants <- filtered_variants()
+      shiny::validate(shiny::need(nrow(db$variants) > 0, "No variants match the current filters."))
+      db
+    })
+    shiny::observeEvent(filtered_variants(), {
+      shared$selected_gene <- NULL
+      if (length(input$variant_table_rows_selected)) {
+        DT::selectRows(DT::dataTableProxy("variant_table", session = session), NULL)
+      }
+    }, ignoreInit = TRUE, priority = 10)
 
     output$variant_table <- DT::renderDataTable({
       DT::datatable(
@@ -87,20 +105,18 @@ mod_variants_server <- function(id, shared) {
     })
 
     output$landscape_plot <- plotly::renderPlotly({
-      db <- shared$db
-      shiny::req(db, nrow(db$variants) > 0)
-      p <- molpathR::mp_plot_variant_landscape(db, top_n = 15)
+      db <- filtered_db()
+      p <- app_plot(molpathR::mp_plot_variant_landscape(db, top_n = 15))
       plotly::ggplotly(p, tooltip = c("x", "y", "fill"))
     })
 
     output$spectrum_plot <- plotly::renderPlotly({
-      db <- shared$db
-      shiny::req(db, nrow(db$variants) > 0)
+      db <- filtered_db()
       p <- tryCatch(
         molpathR::mp_plot_mutation_spectrum(db),
         error = function(e) {
           ggplot2::ggplot() +
-            ggplot2::annotate("text", x = 1, y = 1, label = "No SNV data available") +
+            ggplot2::annotate("text", x = 1, y = 1, label = conditionMessage(e)) +
             ggplot2::theme_void()
         }
       )
@@ -108,23 +124,23 @@ mod_variants_server <- function(id, shared) {
     })
 
     output$vaf_plot <- plotly::renderPlotly({
-      db <- shared$db
-      shiny::req(db, nrow(db$variants) > 0)
-      p <- molpathR::mp_plot_vaf_distribution(db)
+      db <- filtered_db()
+      p <- app_plot(molpathR::mp_plot_vaf_distribution(db))
       plotly::ggplotly(p)
     })
 
     # Propagate gene selection to survival tab
     shiny::observeEvent(input$variant_table_rows_selected, {
       sel <- input$variant_table_rows_selected
-      if (!is.null(sel)) {
-        shared$selected_gene <- filtered_variants()$gene[sel]
-      }
-    })
+      rows <- filtered_variants()
+      shared$selected_gene <- if (length(sel) == 1L && is.finite(sel) && sel == floor(sel) &&
+        sel >= 1L && sel <= nrow(rows)) rows$gene[[sel]] else NULL
+    }, ignoreNULL = FALSE)
 
     output$download_variants <- shiny::downloadHandler(
       filename = function() paste0("variants_", Sys.Date(), ".csv"),
-      content = function(file) utils::write.csv(filtered_variants(), file, row.names = FALSE)
+      content = function(file) app_download(utils::write.csv(
+        app_flat_table(filtered_variants(), "variants"), file, row.names = FALSE))
     )
   })
 }

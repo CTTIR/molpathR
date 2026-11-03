@@ -23,6 +23,7 @@ mod_export_ui <- function(id) {
             choices = c("CSV" = "csv", "TSV" = "tsv", "Excel (.xlsx)" = "xlsx", "RDS" = "rds"),
             selected = "csv"
           ),
+          shiny::p("Exports contain the selected full database layers, independent of table filters. CSV/TSV require a zip executable; Excel requires writexl. Structured cells are JSON in CSV/TSV/Excel; RDS retains their R structures."),
           shiny::hr(),
           shiny::downloadButton(ns("download_export"), "Download Dataset",
             class = "btn-primary"
@@ -86,44 +87,7 @@ mod_export_server <- function(id, shared) {
         layers <- input$layers
         shiny::req(layers)
 
-        if (input$format == "rds") {
-          export_db <- db
-          for (l in c("patients", "samples", "variants", "reports", "clinical", "survival")) {
-            if (!(l %in% layers)) export_db[[l]] <- export_db[[l]][0, ]
-          }
-          saveRDS(export_db, file)
-
-        } else if (input$format == "xlsx") {
-          if (requireNamespace("writexl", quietly = TRUE)) {
-            data_list <- stats::setNames(
-              lapply(layers, function(l) db[[l]]),
-              layers
-            )
-            writexl::write_xlsx(data_list, file)
-          } else {
-            # Fallback to CSV zip
-            tmpdir <- tempdir()
-            files <- character()
-            for (l in layers) {
-              f <- file.path(tmpdir, paste0(l, ".csv"))
-              utils::write.csv(db[[l]], f, row.names = FALSE)
-              files <- c(files, f)
-            }
-            utils::zip(file, files, flags = "-j")
-          }
-
-        } else {
-          sep <- if (input$format == "csv") "," else "\t"
-          ext <- if (input$format == "csv") "csv" else "tsv"
-          tmpdir <- tempdir()
-          files <- character()
-          for (l in layers) {
-            f <- file.path(tmpdir, paste0(l, ".", ext))
-            utils::write.table(db[[l]], f, sep = sep, row.names = FALSE, quote = TRUE)
-            files <- c(files, f)
-          }
-          utils::zip(file, files, flags = "-j")
-        }
+        app_download(app_export_layers(db, layers, input$format, file))
       }
     )
   })

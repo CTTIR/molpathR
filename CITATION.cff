@@ -1,10 +1,8 @@
 cff-version: 1.2.0
-message: If you use this software, please cite it as below.
+message: Cite this development source and record the version or commit used.
 type: software
 title: 'molpathR: Molecular pathology data platform for clinical NGS integration'
-version: 0.1.0
-date-released: '2026-08-11'
-doi: 10.5281/zenodo.21889946
+version: 0.1.0.9001
 authors:
 - family-names: Heller
   given-names: Raban

@@ -51,6 +51,11 @@ server <- function(input, output, session) {
     }
   })
 
+  shiny::observeEvent(shared$db, {
+    shared$selected_patient <- NULL
+    shared$selected_gene <- NULL
+  }, priority = 200, ignoreNULL = FALSE)
+
   mod_database_server("database", shared)
   mod_patients_server("patients", shared)
   mod_variants_server("variants", shared)
