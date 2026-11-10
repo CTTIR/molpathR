@@ -112,10 +112,10 @@ strict text FASTQ and VCF paths are available as documented.
 
 ## Citation
 
-Run `citation("molpathR")` and record the source version or commit used. This is a
-development source milestone (0.1.0.9001), not a new release or Zenodo deposit.
-The previously advertised draft DOI did not resolve during the maintenance audit;
-use the repository citation until a public deposit is verified.
+Run `citation("molpathR")` and record the package version (0.2.0) or commit
+used. No Zenodo deposit has been published for this version. The previously
+advertised draft DOI did not resolve during the maintenance audit; use the
+repository citation until a public deposit is verified.
 
 ## Documentation
 

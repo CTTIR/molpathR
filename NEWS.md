@@ -1,4 +1,19 @@
-# molpathR 0.1.0.9001
+# molpathR 0.2.0
+
+* Prepared the package for a first CRAN submission.
+* Examples now run on synthetic files written to the temporary directory
+  (`mp_example_files()`) instead of referring to files that were not shipped;
+  fast examples are no longer wrapped in `\donttest{}` and the Shiny example
+  runs only in interactive sessions.
+* The BAM example is skipped unless the optional 'Rsamtools' package is
+  installed.
+* `DESCRIPTION`: reworded description, added `Language`, removed the unused
+  `LazyData` field and updated the maintainer address.
+* Citation metadata describe the package version instead of a development
+  milestone.
+
+## Changes since 0.1.0
+
 
 * Database construction, merging and persistence share typed table and value
   contracts. Conflicting primary identities are refused; incomplete links remain
