@@ -199,12 +199,12 @@ mp_save_db(linked, saved)
 #> • Patients with reports: 0%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to /tmp/RtmpPHsQGS/molpath-example-1d08264420cd/database.rds (1.2 KB).
+#> ✔ Database saved to /tmp/RtmpM59SsD/molpath-example-1ce03e43b067/database.rds (1.2 KB).
 restored <- mp_load_db(saved)
 #> 
 #> ── Loading molpath database ──
 #> 
-#> ✔ Database loaded from /tmp/RtmpPHsQGS/molpath-example-1d08264420cd/database.rds.
+#> ✔ Database loaded from /tmp/RtmpM59SsD/molpath-example-1ce03e43b067/database.rds.
 #> ℹ Contents: 2 patients, 2 samples, 1 variant, 0 reports, 2 clinical records, 2 survival records.
 identical(restored, linked)
 #> [1] TRUE
