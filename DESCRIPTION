@@ -1,21 +1,24 @@
 Package: molpathR
 Title: Molecular Pathology Data Platform for Clinical NGS Integration
-Description: A unified platform for ingesting, linking, querying, and visualizing
-    molecular pathology data from heterogeneous sources including NGS files (FASTQ,
-    BAM, VCF), XML variant interpretation reports, structured pathology PDF reports,
-    pathology and clinical information systems, and survival outcome data. Provides
-    a searchable in-memory database and an interactive Shiny application for clinical
+Description: Ingests, links, queries and visualizes molecular pathology data
+    from heterogeneous sources, including next-generation sequencing (NGS)
+    files (FASTQ, BAM, VCF), XML variant interpretation reports, structured
+    pathology reports in PDF format, exports from pathology and clinical
+    information systems, and survival outcome data. Provides a searchable
+    in-memory database and an interactive 'shiny' application for clinical
     exploration and cohort analysis. Raw sequence and alignment readers do not
-    perform variant calling or clinical interpretation.
-Version: 0.1.0.9001
-Authors@R: person("R.", "Heller", email = "raban.heller@charite.de",
+    perform variant calling or clinical interpretation. The optional
+    'Bioconductor' packages 'Rsamtools', 'ShortRead' and 'Biostrings' are
+    used when installed.
+Version: 0.2.0
+Authors@R: person("R.", "Heller", email = "raban.heller@uni-ulm.de",
     role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 License: MIT + file LICENSE
-URL: https://github.com/cttir/molpathR, https://cttir.github.io/molpathR/
-BugReports: https://github.com/cttir/molpathR/issues
+URL: https://github.com/CTTIR/molpathR, https://cttir.github.io/molpathR/
+BugReports: https://github.com/CTTIR/molpathR/issues
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
-LazyData: true
 Depends:
     R (>= 4.1.0)
 Imports:
@@ -60,4 +63,4 @@ Suggests:
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Config/Needs/website: CTTIR/themakR
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

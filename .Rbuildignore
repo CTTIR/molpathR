@@ -12,7 +12,7 @@
 ^cran-comments\.md$
 ^_coverage$
 ^codecov\.yml$
-^tools/branding$
+^tools$
 ^planning$
 ^CITATION\.cff$
 ^\.zenodo\.json$
