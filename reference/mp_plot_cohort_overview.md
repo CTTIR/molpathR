@@ -25,10 +25,7 @@ objects: `diagnosis`, `age`, `sample_types`, `top_genes`.
 ## Examples
 
 ``` r
-# \donttest{
 db <- mp_example_db(n_patients = 20, seed = 1)
 plots <- mp_plot_cohort_overview(db)
 plots$diagnosis
-
-# }
 ```

@@ -52,7 +52,6 @@ When called interactively, results are printed using `cli` formatting.
 ## Examples
 
 ``` r
-# \donttest{
 db <- mp_example_db(n_patients = 10, seed = 1)
 validation <- mp_validate_db(db)
 #> 
@@ -68,5 +67,4 @@ validation <- mp_validate_db(db)
 #>   • Patients with survival: 100%
 validation$valid
 #> [1] TRUE
-# }
 ```

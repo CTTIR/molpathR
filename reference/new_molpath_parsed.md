@@ -11,7 +11,8 @@ new_molpath_parsed(
   data = tibble::tibble(),
   source_type = character(1L),
   source_file = character(1L),
-  parse_date = Sys.time()
+  parse_date = Sys.time(),
+  metadata = list()
 )
 ```
 
@@ -35,6 +36,11 @@ new_molpath_parsed(
   A `POSIXct` timestamp of when the data was parsed. Defaults to the
   current time.
 
+- metadata:
+
+  A named list of parser-specific provenance, such as original VCF
+  headers.
+
 ## Value
 
 An S3 object of class `molpath_parsed`.
@@ -52,7 +58,7 @@ parsed
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "vcf"
 #> ℹ Source file: sample1.vcf
-#> ℹ Parsed: "2026-04-17 17:35:49"
+#> ℹ Parsed: "2026-11-10 00:03:39"
 #> ℹ Data: 1 row x 2 columns
 #> ℹ Columns: gene and variant
 #> ℹ Completeness: "100%"

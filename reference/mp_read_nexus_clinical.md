@@ -25,12 +25,20 @@ columns `patient_id`, `parameter`, `value`, `unit`, `date`, and
 ## Examples
 
 ``` r
-# \donttest{
-clin_file <- system.file("extdata", "nexus_clinical.csv",
-                         package = "molpathR")
-if (nzchar(clin_file)) {
-  result <- mp_read_nexus_clinical(clin_file)
-  print(result)
-}
-# }
+clin_file <- tempfile(fileext = ".csv")
+utils::write.csv(data.frame(
+  patient_id = c("P1", "P1"), parameter = c("CEA", "LDH"),
+  value = c("3.1", "210"), unit = c("ng/mL", "U/L"),
+  date = c("2025-01-10", "2025-01-10")
+), clin_file, row.names = FALSE)
+result <- mp_read_nexus_clinical(clin_file)
+#> ℹ Reading Nexus clinical export: file19e256f0f36f.csv
+#> ✔ Parsed 2 clinical record(s)
+result$data
+#> # A tibble: 2 × 6
+#>   patient_id parameter value unit  date       source
+#>   <chr>      <chr>     <chr> <chr> <chr>      <chr> 
+#> 1 P1         CEA       3.1   ng/mL 2025-01-10 NA    
+#> 2 P1         LDH       210   U/L   2025-01-10 NA    
+unlink(clin_file)
 ```

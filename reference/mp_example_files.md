@@ -7,7 +7,11 @@ reports, a survival CSV, and a tiny FASTQ file.
 ## Usage
 
 ``` r
-mp_example_files(dir = tempdir(), seed = 42)
+mp_example_files(
+  dir = tempdir(),
+  seed = 42,
+  reference_date = as.Date("2025-01-01")
+)
 ```
 
 ## Arguments
@@ -19,7 +23,13 @@ mp_example_files(dir = tempdir(), seed = 42)
 
 - seed:
 
-  Integer. Random seed for reproducibility. Default `42`.
+  Integer. Random seed for reproducibility. Default `42`. The caller's
+  random-number state is restored, including on error.
+
+- reference_date:
+
+  Date. Fixed anchor for synthetic report dates; default 2025-01-01.
+  File contents do not depend on the day they are generated.
 
 ## Value
 
@@ -48,13 +58,18 @@ A named list of file paths:
 ## Examples
 
 ``` r
-# \donttest{
-files <- mp_example_files()
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+str(files)
+#> List of 5
+#>  $ vcf     : chr [1:5] "/tmp/RtmphP3vAW/molpathR-example/vcf/SAM-2024-0001.vcf" "/tmp/RtmphP3vAW/molpathR-example/vcf/SAM-2024-0002.vcf" "/tmp/RtmphP3vAW/molpathR-example/vcf/SAM-2024-0003.vcf" "/tmp/RtmphP3vAW/molpathR-example/vcf/SAM-2024-0004.vcf" ...
+#>  $ xml     : chr [1:5] "/tmp/RtmphP3vAW/molpathR-example/xml/SAM-2024-0001_report.xml" "/tmp/RtmphP3vAW/molpathR-example/xml/SAM-2024-0002_report.xml" "/tmp/RtmphP3vAW/molpathR-example/xml/SAM-2024-0003_report.xml" "/tmp/RtmphP3vAW/molpathR-example/xml/SAM-2024-0004_report.xml" ...
+#>  $ pdf     : chr [1:5] "/tmp/RtmphP3vAW/molpathR-example/pdf/SAM-2024-0001_report.txt" "/tmp/RtmphP3vAW/molpathR-example/pdf/SAM-2024-0002_report.txt" "/tmp/RtmphP3vAW/molpathR-example/pdf/SAM-2024-0003_report.txt" "/tmp/RtmphP3vAW/molpathR-example/pdf/SAM-2024-0004_report.txt" ...
+#>  $ survival: chr "/tmp/RtmphP3vAW/molpathR-example/survival.csv"
+#>  $ fastq   : chr "/tmp/RtmphP3vAW/molpathR-example/ngs/sample.fastq"
 readLines(files$vcf[1], n = 5)
 #> [1] "##fileformat=VCFv4.2"                                               
 #> [2] "##source=molpathR_synthetic_v0.1"                                   
 #> [3] "##reference=GRCh38"                                                 
 #> [4] "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total Depth\">"   
 #> [5] "##INFO=<ID=AF,Number=A,Type=Float,Description=\"Allele Frequency\">"
-# }
 ```

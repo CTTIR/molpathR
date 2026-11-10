@@ -2,7 +2,10 @@
 
 Combines all tables from two `molpath_db` objects into a single unified
 database. Records are deduplicated after merging. Metadata source files
-are combined as a union.
+are combined as a union. Identical primary-key rows are deduplicated and
+missing attributes may be filled from the other source. Conflicting
+observed patient, sample or survival attributes require explicit
+reconciliation and cause an error.
 
 ## Usage
 
@@ -27,14 +30,8 @@ A new `molpath_db` object containing merged data from both inputs.
 ## Examples
 
 ``` r
-# \donttest{
 db1 <- mp_example_db(n_patients = 5, seed = 1)
-db2 <- mp_example_db(n_patients = 5, seed = 2)
+db2 <- db1
+db1$survival <- db1$survival[0, ]
 db_combined <- mp_merge_db(db1, db2)
-#> 
-#> ── Merging molpath databases ──
-#> 
-#> ✔ Databases merged successfully.
-#> ℹ Merged tables: 10 patients, 23 samples, 4018 variants, 23 reports, 39 clinical records, 10 survival records.
-# }
 ```

@@ -27,11 +27,8 @@ object.
 ## Examples
 
 ``` r
-# \donttest{
 db <- mp_example_db(n_patients = 20, seed = 1)
 mp_plot_vaf_distribution(db)
 
 mp_plot_vaf_distribution(db, gene = "TP53")
-
-# }
 ```

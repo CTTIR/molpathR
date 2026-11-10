@@ -26,12 +26,20 @@ columns `patient_id`, `name`, `dob`, `sex`, `sample_id`, `sample_type`,
 ## Examples
 
 ``` r
-# \donttest{
-nexus_file <- system.file("extdata", "nexus_pathology.csv",
-                          package = "molpathR")
-if (nzchar(nexus_file)) {
-  result <- mp_read_nexus_pathology(nexus_file)
-  print(result)
-}
-# }
+nexus_file <- tempfile(fileext = ".csv")
+utils::write.csv(data.frame(
+  patient_id = c("P1", "P2"), sample_id = c("S1", "S2"),
+  sex = c("F", "M"), diagnosis = c("NSCLC", "CRC"),
+  report_date = c("2025-01-10", "2025-02-03")
+), nexus_file, row.names = FALSE)
+result <- mp_read_nexus_pathology(nexus_file)
+#> ℹ Reading Nexus pathology export: file19e24bbb0e8f.csv
+#> ✔ Parsed 2 record(s) from Nexus pathology export
+result$data
+#> # A tibble: 2 × 9
+#>   patient_id   age name  dob   sex   sample_id sample_type diagnosis report_date
+#>   <chr>      <dbl> <chr> <chr> <chr> <chr>     <chr>       <chr>     <chr>      
+#> 1 P1            NA NA    NA    F     S1        NA          NSCLC     2025-01-10 
+#> 2 P2            NA NA    NA    M     S2        NA          CRC       2025-02-03 
+unlink(nexus_file)
 ```

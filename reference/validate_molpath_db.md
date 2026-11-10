@@ -1,8 +1,10 @@
 # Validate a molpath_db object
 
 Checks that all required tables are present, that each is a tibble, and
-that mandatory columns exist in each table. Validates referential
-integrity between patient and sample identifiers across tables.
+that mandatory columns, types, value ranges and primary identifiers are
+valid. Incomplete cross-table links are reported as warnings; use
+[`mp_validate_db()`](https://cttir.github.io/molpathR/reference/mp_validate_db.md)
+for a structured link report. Missing parent evidence is not fabricated.
 
 ## Usage
 
@@ -18,8 +20,8 @@ validate_molpath_db(x)
 
 ## Value
 
-The validated `molpath_db` object (invisibly). Throws an error if
-validation fails.
+The original `molpath_db` object (invisibly). Structural or value
+corruption raises an error. Incomplete links warn and remain unchanged.
 
 ## Examples
 

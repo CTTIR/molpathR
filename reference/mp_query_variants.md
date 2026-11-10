@@ -70,19 +70,19 @@ mp_query_variants(db, genes = c("TP53", "KRAS"))
 #> # ℹ 422 more rows
 #> # ℹ 2 more variables: ref_allele <chr>, alt_allele <chr>
 mp_query_variants(db, classification = "Pathogenic", min_vaf = 0.1)
-#> # A tibble: 1,773 × 10
+#> # A tibble: 382 × 10
 #>    sample_id gene  variant variant_type classification   vaf chromosome position
 #>    <chr>     <chr> <chr>   <chr>        <chr>          <dbl> <chr>         <int>
-#>  1 SAM-2024… BRAF  p.V600E SNV          Benign         0.498 7            2.32e7
-#>  2 SAM-2024… BRAF  p.K601E SNV          Pathogenic     0.177 7            2.80e7
-#>  3 SAM-2024… NRAS  p.Q61L  SNV          VUS            0.237 1            7.48e6
-#>  4 SAM-2024… BRCA2 c.5946… SNV          VUS            0.257 13           1.68e8
-#>  5 SAM-2024… NF1   c.731_… SNV          Likely benign  0.330 17           7.90e7
-#>  6 SAM-2024… BRAF  c.2040… Indel        Pathogenic     0.308 7            6.79e7
-#>  7 SAM-2024… BRAF  p.L597Q SNV          Benign         0.387 7            8.56e6
-#>  8 SAM-2024… NRAS  p.Q61K  SNV          Likely benign  0.270 1            8.79e7
-#>  9 SAM-2024… RB1   RB1 lo… CNV          VUS            0.223 13           8.17e7
-#> 10 SAM-2024… NRAS  p.G12V  SNV          VUS            0.279 1            1.50e8
-#> # ℹ 1,763 more rows
+#>  1 SAM-2024… BRAF  p.K601E SNV          Pathogenic     0.177 7            2.80e7
+#>  2 SAM-2024… BRAF  c.2040… Indel        Pathogenic     0.308 7            6.79e7
+#>  3 SAM-2024… BRAF  p.V600K SNV          Pathogenic     0.471 7            4.87e7
+#>  4 SAM-2024… CDKN… p.R80*  SNV          Pathogenic     0.589 9            7.38e7
+#>  5 SAM-2024… NRAS  p.Q61K  SNV          Pathogenic     0.403 1            9.98e7
+#>  6 SAM-2024… NRAS  p.G13V  SNV          Pathogenic     0.662 1            1.60e8
+#>  7 SAM-2024… BRAF  c.1419… Indel        Pathogenic     0.483 7            1.83e8
+#>  8 SAM-2024… NF1   c.2041… SNV          Pathogenic     0.101 17           6.25e6
+#>  9 SAM-2024… NF1   NF1 ga… CNV          Pathogenic     0.224 17           1.52e8
+#> 10 SAM-2024… BRAF  p.D594G SNV          Pathogenic     0.440 7            2.03e7
+#> # ℹ 372 more rows
 #> # ℹ 2 more variables: ref_allele <chr>, alt_allele <chr>
 ```

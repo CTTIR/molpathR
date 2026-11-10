@@ -19,8 +19,9 @@ mp_plot_survival(db, group_by = NULL, type = c("os", "pfs"))
 
   Optional character string. If it matches a column in the patients
   table (e.g., `"diagnosis"`), stratify by that variable. If it matches
-  a gene name present in the variants table, stratify into "Mutated" vs
-  "Wild-type".
+  a gene name present in the variants table, stratify by presence of a
+  recorded variant. Absence of a record does not establish a negative
+  assay or wild-type genotype.
 
 - type:
 
@@ -35,11 +36,8 @@ object.
 ## Examples
 
 ``` r
-# \donttest{
 db <- mp_example_db(n_patients = 50, seed = 1)
 mp_plot_survival(db, type = "os")
 
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
-
-# }
 ```

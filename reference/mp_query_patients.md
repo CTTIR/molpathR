@@ -30,7 +30,7 @@ db <- mp_example_db(n_patients = 20, seed = 1)
 mp_query_patients(db, diagnosis == "Melanoma")
 #> # A tibble: 5 × 5
 #>   patient_id      age sex   diagnosis diagnosis_date
-#>   <chr>         <int> <chr> <chr>     <date>        
+#>   <chr>         <dbl> <chr> <chr>     <date>        
 #> 1 PAT-2024-0001    54 F     Melanoma  2023-04-23    
 #> 2 PAT-2024-0010    58 M     Melanoma  2021-09-09    
 #> 3 PAT-2024-0016    61 M     Melanoma  2022-09-06    
@@ -39,7 +39,7 @@ mp_query_patients(db, diagnosis == "Melanoma")
 mp_query_patients(db, age > 60, sex == "F")
 #> # A tibble: 9 × 5
 #>   patient_id      age sex   diagnosis            diagnosis_date
-#>   <chr>         <int> <chr> <chr>                <date>        
+#>   <chr>         <dbl> <chr> <chr>                <date>        
 #> 1 PAT-2024-0002    64 F     Lung adenocarcinoma  2022-04-10    
 #> 2 PAT-2024-0004    81 F     Lung adenocarcinoma  2024-04-14    
 #> 3 PAT-2024-0005    65 F     Breast carcinoma     2024-09-30    

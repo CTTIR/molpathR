@@ -27,10 +27,7 @@ object.
 ## Examples
 
 ``` r
-# \donttest{
 db <- mp_example_db(n_patients = 20, seed = 1)
 pid <- db$patients$patient_id[1]
 mp_plot_timeline(db, pid)
-
-# }
 ```

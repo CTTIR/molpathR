@@ -2,7 +2,12 @@
 
 Constructs a unified `molpath_db` database object from one or more
 `molpath_parsed` objects. Each parsed object is categorized by its
-`source_type` and merged into the appropriate database table.
+`source_type` and merged into the appropriate database table. Raw
+FASTQ/BAM reads remain available through their readers but cannot be
+interpreted as variant calls by this function. Unknown gene annotations,
+pathogenicity and patient links remain missing. Use
+[`mp_validate_db()`](https://cttir.github.io/molpathR/reference/mp_validate_db.md)
+to assess incomplete links.
 
 ## Usage
 
@@ -26,9 +31,9 @@ reports, clinical, survival, and metadata tables.
 
 Source types map to database tables as follows:
 
-- `"vcf"`, `"fastq"`, `"bam"` – variants
+- `"vcf"` – non-reference GT calls or explicitly normalized variants
 
-- `"xml_report"` – variants and reports
+- `"xml_report"` – variants and explicitly identified patients/samples
 
 - `"pdf_report"` – reports
 
@@ -41,7 +46,6 @@ Source types map to database tables as follows:
 ## Examples
 
 ``` r
-# \donttest{
 # Build from a molpath_parsed object
 surv_parsed <- new_molpath_parsed(
   data = tibble::tibble(
@@ -55,11 +59,4 @@ surv_parsed <- new_molpath_parsed(
   source_file = "test.csv"
 )
 db <- mp_build_db(surv_parsed)
-#> 
-#> ── Building molpath database ──
-#> 
-#> ℹ Processing 1 parsed object.
-#> ✔ Database built successfully.
-#> ℹ Tables: 0 patients, 0 samples, 0 variants, 0 reports, 0 clinical records, 2 survival records.
-# }
 ```

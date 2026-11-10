@@ -1,6 +1,10 @@
 # Save a molpath_db to disk
 
-Validates the database and saves it as a compressed RDS file. The file
+Validates the database and saves it as a compressed RDS file.
+Serialization and read-back verification occur in a sibling temporary
+file before replacement. If replacement fails, the previous destination
+is restored or an explicit recovery path is reported. Use one writer per
+destination; this is not a multi-process database transaction. The file
 path is returned invisibly for use in pipelines.
 
 ## Usage
@@ -27,7 +31,6 @@ The file `path`, returned invisibly.
 ## Examples
 
 ``` r
-# \donttest{
 db <- mp_example_db(n_patients = 5, seed = 1)
 tmp <- tempfile(fileext = ".rds")
 mp_save_db(db, tmp)
@@ -44,7 +47,6 @@ mp_save_db(db, tmp)
 #> • Patients with reports: 100%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to C:\Users\raban\AppData\Local\Temp\RtmpeEwZuU\file77083a807e6d.rds (38.3 KB).
+#> ✔ Database saved to /tmp/RtmphP3vAW/file19e213d95018.rds (38.3 KB).
 unlink(tmp)
-# }
 ```

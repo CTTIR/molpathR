@@ -21,7 +21,8 @@ mp_example_db(n_patients = 150, seed = 42)
 
 - seed:
 
-  Integer. Random seed for reproducibility. Default `42`.
+  Integer. Random seed for reproducibility. Default `42`. The caller's
+  random-number state is restored, including on error.
 
 ## Value
 
@@ -63,7 +64,7 @@ db <- mp_example_db()
 db$patients
 #> # A tibble: 150 × 5
 #>    patient_id      age sex   diagnosis            diagnosis_date
-#>    <chr>         <int> <chr> <chr>                <date>        
+#>    <chr>         <dbl> <chr> <chr>                <date>        
 #>  1 PAT-2024-0001    78 M     Colorectal carcinoma 2021-04-10    
 #>  2 PAT-2024-0002    55 F     Lung adenocarcinoma  2023-10-17    
 #>  3 PAT-2024-0003    66 F     Breast carcinoma     2022-08-26    

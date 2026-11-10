@@ -26,15 +26,22 @@ mp_run_app(db = NULL, ...)
 
 This function does not return a value; it launches a Shiny app.
 
+## Details
+
+CSV/TSV downloads require a working `zip` executable (or `R_ZIPCMD`).
+Excel downloads additionally require the optional `writexl` package.
+Uploaded files are staged and validated as one batch before changing
+session data.
+
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Launch with example data
-db <- mp_example_db()
-mp_run_app(db)
+if (interactive()) {
+  # Launch with example data
+  db <- mp_example_db()
+  mp_run_app(db)
 
-# Launch empty — upload data in browser
-mp_run_app()
-} # }
+  # Launch empty and upload data in the browser
+  mp_run_app()
+}
 ```
