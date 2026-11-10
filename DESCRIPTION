@@ -12,7 +12,7 @@ Description: Ingests, links, queries and visualizes molecular pathology data
     used when installed.
 Version: 0.2.0
 Authors@R: person("R.", "Heller", email = "raban.heller@uni-ulm.de",
-    role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
+    role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0001-8006-9742"))
 License: MIT + file LICENSE
 URL: https://github.com/CTTIR/molpathR, https://cttir.github.io/molpathR/
 BugReports: https://github.com/CTTIR/molpathR/issues
