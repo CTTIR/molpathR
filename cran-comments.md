@@ -5,8 +5,9 @@ This is a new submission of `molpathR` (version 0.2.0).
 ## Test environments
 
 * local macOS (aarch64), R 4.6.1:
-  `R CMD check --as-cran --no-manual` (LaTeX is not installed locally, so
-  the PDF manual was not built here)
+  `R CMD check --as-cran --no-manual` (the PDF manual was built locally
+  with TinyTeX (TeX Live 2026) via `R CMD Rd2pdf` without errors; the check
+  run itself used `--no-manual`)
 * GitHub Actions (r-lib/actions v2, `--as-cran`):
   macos-latest (release), windows-latest (release),
   ubuntu-latest (devel, release, oldrel-1)
