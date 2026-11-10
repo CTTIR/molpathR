@@ -37,9 +37,7 @@ The following referential integrity checks are performed:
 When called interactively, results are printed using \code{cli} formatting.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 10, seed = 1)
 validation <- mp_validate_db(db)
 validation$valid
-}
 }

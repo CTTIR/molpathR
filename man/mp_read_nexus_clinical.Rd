@@ -20,13 +20,14 @@ Parse a clinical data export (CSV format) from a clinical information system
 such as Nexus.
 }
 \examples{
-\donttest{
-clin_file <- system.file("extdata", "nexus_clinical.csv",
-                         package = "molpathR")
-if (nzchar(clin_file)) {
-  result <- mp_read_nexus_clinical(clin_file)
-  print(result)
-}
-}
+clin_file <- tempfile(fileext = ".csv")
+utils::write.csv(data.frame(
+  patient_id = c("P1", "P1"), parameter = c("CEA", "LDH"),
+  value = c("3.1", "210"), unit = c("ng/mL", "U/L"),
+  date = c("2025-01-10", "2025-01-10")
+), clin_file, row.names = FALSE)
+result <- mp_read_nexus_clinical(clin_file)
+result$data
+unlink(clin_file)
 
 }

@@ -21,13 +21,14 @@ Parse an export from a pathology information system (e.g. Nexus) in either
 CSV or XML format.
 }
 \examples{
-\donttest{
-nexus_file <- system.file("extdata", "nexus_pathology.csv",
-                          package = "molpathR")
-if (nzchar(nexus_file)) {
-  result <- mp_read_nexus_pathology(nexus_file)
-  print(result)
-}
-}
+nexus_file <- tempfile(fileext = ".csv")
+utils::write.csv(data.frame(
+  patient_id = c("P1", "P2"), sample_id = c("S1", "S2"),
+  sex = c("F", "M"), diagnosis = c("NSCLC", "CRC"),
+  report_date = c("2025-01-10", "2025-02-03")
+), nexus_file, row.names = FALSE)
+result <- mp_read_nexus_pathology(nexus_file)
+result$data
+unlink(nexus_file)
 
 }

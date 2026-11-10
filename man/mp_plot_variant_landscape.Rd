@@ -21,8 +21,6 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 Creates a tile plot showing variant classifications across samples and genes.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 20, seed = 1)
 mp_plot_variant_landscape(db, top_n = 10)
-}
 }

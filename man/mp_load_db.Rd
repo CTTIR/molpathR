@@ -21,11 +21,9 @@ schemas or values are rejected; incomplete foreign-key links remain visible
 through \code{\link[=mp_validate_db]{mp_validate_db()}} rather than being invented.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 5, seed = 1)
 tmp <- tempfile(fileext = ".rds")
 mp_save_db(db, tmp)
 db2 <- mp_load_db(tmp)
 unlink(tmp)
-}
 }

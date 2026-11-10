@@ -22,10 +22,8 @@ attributes may be filled from the other source. Conflicting observed patient,
 sample or survival attributes require explicit reconciliation and cause an error.
 }
 \examples{
-\donttest{
 db1 <- mp_example_db(n_patients = 5, seed = 1)
 db2 <- db1
 db1$survival <- db1$survival[0, ]
 db_combined <- mp_merge_db(db1, db2)
-}
 }

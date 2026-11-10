@@ -26,12 +26,12 @@ Excel downloads additionally require the optional \code{writexl} package. Upload
 files are staged and validated as one batch before changing session data.
 }
 \examples{
-\dontrun{
-# Launch with example data
-db <- mp_example_db()
-mp_run_app(db)
+if (interactive()) {
+  # Launch with example data
+  db <- mp_example_db()
+  mp_run_app(db)
 
-# Launch empty — upload data in browser
-mp_run_app()
+  # Launch empty and upload data in the browser
+  mp_run_app()
 }
 }

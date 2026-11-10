@@ -8,23 +8,23 @@
 \description{
 \if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
-A unified platform for ingesting, linking, querying, and visualizing molecular pathology data from heterogeneous sources including NGS files (FASTQ, BAM, VCF), XML variant interpretation reports, structured pathology PDF reports, pathology and clinical information systems, and survival outcome data. Provides a searchable in-memory database and an interactive Shiny application for clinical exploration and cohort analysis. Raw sequence and alignment readers do not perform variant calling or clinical interpretation.
+Ingests, links, queries and visualizes molecular pathology data from heterogeneous sources, including next-generation sequencing (NGS) files (FASTQ, BAM, VCF), XML variant interpretation reports, structured pathology reports in PDF format, exports from pathology and clinical information systems, and survival outcome data. Provides a searchable in-memory database and an interactive 'shiny' application for clinical exploration and cohort analysis. Raw sequence and alignment readers do not perform variant calling or clinical interpretation. The optional 'Bioconductor' packages 'Rsamtools', 'ShortRead' and 'Biostrings' are used when installed.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/cttir/molpathR}
+  \item \url{https://github.com/CTTIR/molpathR}
   \item \url{https://cttir.github.io/molpathR/}
-  \item Report bugs at \url{https://github.com/cttir/molpathR/issues}
+  \item Report bugs at \url{https://github.com/CTTIR/molpathR/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: R. Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+\strong{Maintainer}: R. Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
 
 Authors:
 \itemize{
-  \item R. Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+  \item R. Heller \email{raban.heller@uni-ulm.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
 }
 
 }

@@ -24,10 +24,8 @@ multi-process database transaction. The file
 path is returned invisibly for use in pipelines.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 5, seed = 1)
 tmp <- tempfile(fileext = ".rds")
 mp_save_db(db, tmp)
 unlink(tmp)
-}
 }

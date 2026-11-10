@@ -18,3 +18,7 @@ The \code{molpath_db} object (invisibly).
 Prints a detailed summary of a \code{molpath_db}, including per-table
 completeness, unique counts for key columns, and metadata.
 }
+\examples{
+db <- mp_example_db(n_patients = 10, seed = 1)
+summary(db)
+}

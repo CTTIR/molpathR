@@ -43,8 +43,10 @@ importFrom(bslib,bs_theme)
 importFrom(jsonlite,toJSON)
 importFrom(methods,as)
 importFrom(plotly,ggplotly)
-importFrom(rlang,"%||%")
-importFrom(rlang,.data)
-importFrom(rlang,.env)
+importFrom(rlang,
+  "%||%",
+  .data,
+  .env
+)
 importFrom(shinyWidgets,pickerInput)
 importFrom(tidyr,pivot_longer)

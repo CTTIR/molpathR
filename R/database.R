@@ -175,7 +175,6 @@
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' # Build from a molpath_parsed object
 #' surv_parsed <- new_molpath_parsed(
 #'   data = tibble::tibble(
@@ -189,7 +188,6 @@
 #'   source_file = "test.csv"
 #' )
 #' db <- mp_build_db(surv_parsed)
-#' }
 mp_build_db <- function(...) {
   .mp_add_sources(new_molpath_db(), .collect_parsed(...))
 }
@@ -208,7 +206,6 @@ mp_build_db <- function(...) {
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 5, seed = 1)
 #' new_data <- new_molpath_parsed(
 #'   data = tibble::tibble(patient_id = "P99", os_months = 12,
@@ -216,7 +213,6 @@ mp_build_db <- function(...) {
 #'   source_type = "survival", source_file = "new.csv"
 #' )
 #' db <- mp_add_data(db, new_data)
-#' }
 mp_add_data <- function(db, parsed) {
   if (!inherits(db, "molpath_db")) rlang::abort("`db` must be a `molpath_db` object.", class = "molpathR_invalid_db")
   .mp_add_sources(db, .normalize_parsed_input(parsed))
@@ -238,12 +234,10 @@ mp_add_data <- function(db, parsed) {
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' db1 <- mp_example_db(n_patients = 5, seed = 1)
 #' db2 <- db1
 #' db1$survival <- db1$survival[0, ]
 #' db_combined <- mp_merge_db(db1, db2)
-#' }
 mp_merge_db <- function(db1, db2) {
   if (!inherits(db1, "molpath_db") || !inherits(db2, "molpath_db")) rlang::abort("Both inputs must be molpath_db objects.", class = "molpathR_invalid_db")
   db1 <- .mp_normalize_db(db1, legacy = TRUE)
@@ -289,11 +283,9 @@ mp_merge_db <- function(db1, db2) {
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 10, seed = 1)
 #' validation <- mp_validate_db(db)
 #' validation$valid
-#' }
 mp_validate_db <- function(db) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort(
@@ -447,12 +439,10 @@ mp_validate_db <- function(db) {
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 5, seed = 1)
 #' tmp <- tempfile(fileext = ".rds")
 #' mp_save_db(db, tmp)
 #' unlink(tmp)
-#' }
 mp_save_db <- function(db, path) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort(
@@ -517,13 +507,11 @@ mp_save_db <- function(db, path) {
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 5, seed = 1)
 #' tmp <- tempfile(fileext = ".rds")
 #' mp_save_db(db, tmp)
 #' db2 <- mp_load_db(tmp)
 #' unlink(tmp)
-#' }
 mp_load_db <- function(path) {
   if (!is.character(path) || length(path) != 1L || is.na(path) || !nzchar(trimws(path))) {
     rlang::abort(

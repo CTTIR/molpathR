@@ -34,12 +34,8 @@ format detection
 }
 }
 \examples{
-\donttest{
-f <- system.file("extdata", "example.vcf", package = "molpathR")
-if (nzchar(f)) {
-  result <- mp_read_auto(f)
-  print(result)
-}
-}
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+mp_read_auto(files$vcf[1])
+mp_read_auto(files$survival)
 
 }

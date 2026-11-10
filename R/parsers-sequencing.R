@@ -25,13 +25,10 @@
 #'   Sample names conflicting with these fixed output names are rejected.
 #'
 #' @examples
-#' \donttest{
-#' vcf_file <- system.file("extdata", "example.vcf", package = "molpathR")
-#' if (nzchar(vcf_file)) {
-#'   result <- mp_read_vcf(vcf_file)
-#'   print(result)
-#' }
-#' }
+#' files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+#' result <- mp_read_vcf(files$vcf[1])
+#' result
+#' result$data
 #'
 #' @export
 mp_read_vcf <- function(path) {
@@ -141,12 +138,12 @@ mp_read_vcf <- function(path) {
 #'   \code{quality}, and \code{seq_length}.
 #'
 #' @examples
+#' files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
 #' \donttest{
-#' fq_file <- system.file("extdata", "example.fastq", package = "molpathR")
-#' if (nzchar(fq_file)) {
-#'   result <- mp_read_fastq(fq_file, n = 100)
-#'   print(result)
-#' }
+#' # Loading the optional 'ShortRead' backend, when installed, can take
+#' # several seconds.
+#' result <- mp_read_fastq(files$fastq, n = 10)
+#' result$data
 #' }
 #'
 #' @export
@@ -255,12 +252,19 @@ mp_read_fastq <- function(path, n = NULL) {
 #'   \code{qual}.
 #'
 #' @examples
-#' \donttest{
-#' bam_file <- system.file("extdata", "example.bam", package = "molpathR")
-#' if (nzchar(bam_file)) {
-#'   result <- mp_read_bam(bam_file)
-#'   print(result)
-#' }
+#' # Building a BAM file requires the optional Bioconductor package Rsamtools.
+#' if (requireNamespace("Rsamtools", quietly = TRUE)) {
+#'   root <- tempfile("molpathR-bam-")
+#'   dir.create(root)
+#'   sam <- file.path(root, "tiny.sam")
+#'   writeLines(c(
+#'     "@HD\tVN:1.6\tSO:coordinate", "@SQ\tSN:chr1\tLN:1000",
+#'     "q1\t0\tchr1\t11\t60\t4M\t*\t0\t0\tACGT\tIIII",
+#'     "q2\t0\tchr1\t21\t40\t4M\t*\t0\t0\tTGCA\tJJJJ"
+#'   ), sam)
+#'   bam <- Rsamtools::asBam(sam, destination = file.path(root, "tiny"))
+#'   mp_read_bam(bam)$data
+#'   unlink(root, recursive = TRUE)
 #' }
 #'
 #' @export

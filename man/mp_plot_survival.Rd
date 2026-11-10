@@ -26,9 +26,7 @@ Creates Kaplan-Meier curves from the survival table. Optionally stratifies
 by a clinical variable or gene mutation status.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 50, seed = 1)
 mp_plot_survival(db, type = "os")
 mp_plot_survival(db, group_by = "diagnosis", type = "os")
-}
 }

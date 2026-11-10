@@ -537,10 +537,9 @@ mp_example_db <- function(n_patients = 150, seed = 42) {
 #'   }
 #'
 #' @examples
-#' \donttest{
-#' files <- mp_example_files()
+#' files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+#' str(files)
 #' readLines(files$vcf[1], n = 5)
-#' }
 #'
 #' @export
 mp_example_files <- function(dir = tempdir(), seed = 42,

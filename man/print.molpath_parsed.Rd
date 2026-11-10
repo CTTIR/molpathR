@@ -18,3 +18,10 @@ The \code{molpath_parsed} object (invisibly).
 Displays a compact summary of a parsed data source, including source
 metadata and a preview of the data.
 }
+\examples{
+parsed <- new_molpath_parsed(
+  data = tibble::tibble(patient_id = "P1", os_months = 12),
+  source_type = "survival", source_file = "example.csv"
+)
+print(parsed)
+}

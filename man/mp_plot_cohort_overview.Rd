@@ -19,9 +19,7 @@ diagnosis distribution, age by sex, sample types, and top mutated genes.
 Arrange with \code{patchwork} or \code{cowplot} as needed.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 20, seed = 1)
 plots <- mp_plot_cohort_overview(db)
 plots$diagnosis
-}
 }

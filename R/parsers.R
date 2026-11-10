@@ -16,13 +16,10 @@
 #'   VAF must be between 0 and 1, inclusive; percentages or other units are not inferred.
 #'
 #' @examples
-#' \donttest{
-#' xml_file <- system.file("extdata", "report.xml", package = "molpathR")
-#' if (nzchar(xml_file)) {
-#'   result <- mp_read_xml_report(xml_file, provider = "molecular_health")
-#'   print(result)
-#' }
-#' }
+#' files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+#' result <- mp_read_xml_report(files$xml[1], provider = "molecular_health")
+#' result
+#' result$data
 #'
 #' @export
 mp_read_xml_report <- function(path, provider = "molecular_health") {
@@ -205,13 +202,19 @@ mp_read_xml_report <- function(path, provider = "molecular_health") {
 #'   Recommendations).
 #'
 #' @examples
-#' \donttest{
-#' pdf_file <- system.file("extdata", "report.pdf", package = "molpathR")
-#' if (nzchar(pdf_file)) {
-#'   result <- mp_read_pdf_report(pdf_file)
-#'   print(result)
-#' }
-#' }
+#' # Write a small text PDF to a temporary file and parse it.
+#' pdf_file <- tempfile(fileext = ".pdf")
+#' grDevices::pdf(pdf_file)
+#' graphics::plot.new()
+#' graphics::text(0.02, c(0.9, 0.8, 0.7, 0.6), adj = 0, labels = c(
+#'   "Patient: P001", "Sample: S001",
+#'   "Findings: KRAS G12D detected",
+#'   "Interpretation: pathogenic variant"
+#' ))
+#' grDevices::dev.off()
+#' result <- mp_read_pdf_report(pdf_file)
+#' result$data
+#' unlink(pdf_file)
 #'
 #' @export
 mp_read_pdf_report <- function(path, template = "generic") {
@@ -307,14 +310,15 @@ mp_read_pdf_report <- function(path, template = "generic") {
 #'   \code{diagnosis}, and \code{report_date}.
 #'
 #' @examples
-#' \donttest{
-#' nexus_file <- system.file("extdata", "nexus_pathology.csv",
-#'                           package = "molpathR")
-#' if (nzchar(nexus_file)) {
-#'   result <- mp_read_nexus_pathology(nexus_file)
-#'   print(result)
-#' }
-#' }
+#' nexus_file <- tempfile(fileext = ".csv")
+#' utils::write.csv(data.frame(
+#'   patient_id = c("P1", "P2"), sample_id = c("S1", "S2"),
+#'   sex = c("F", "M"), diagnosis = c("NSCLC", "CRC"),
+#'   report_date = c("2025-01-10", "2025-02-03")
+#' ), nexus_file, row.names = FALSE)
+#' result <- mp_read_nexus_pathology(nexus_file)
+#' result$data
+#' unlink(nexus_file)
 #'
 #' @export
 mp_read_nexus_pathology <- function(path_or_connection) {
@@ -451,14 +455,15 @@ mp_read_nexus_pathology <- function(path_or_connection) {
 #'   \code{value}, \code{unit}, \code{date}, and \code{source}.
 #'
 #' @examples
-#' \donttest{
-#' clin_file <- system.file("extdata", "nexus_clinical.csv",
-#'                          package = "molpathR")
-#' if (nzchar(clin_file)) {
-#'   result <- mp_read_nexus_clinical(clin_file)
-#'   print(result)
-#' }
-#' }
+#' clin_file <- tempfile(fileext = ".csv")
+#' utils::write.csv(data.frame(
+#'   patient_id = c("P1", "P1"), parameter = c("CEA", "LDH"),
+#'   value = c("3.1", "210"), unit = c("ng/mL", "U/L"),
+#'   date = c("2025-01-10", "2025-01-10")
+#' ), clin_file, row.names = FALSE)
+#' result <- mp_read_nexus_clinical(clin_file)
+#' result$data
+#' unlink(clin_file)
 #'
 #' @export
 mp_read_nexus_clinical <- function(path_or_connection) {
@@ -516,13 +521,9 @@ mp_read_nexus_clinical <- function(path_or_connection) {
 #'   \code{os_status}, \code{pfs_months}, and \code{pfs_status}.
 #'
 #' @examples
-#' \donttest{
-#' surv_file <- system.file("extdata", "survival.csv", package = "molpathR")
-#' if (nzchar(surv_file)) {
-#'   result <- mp_read_survival(surv_file)
-#'   print(result)
-#' }
-#' }
+#' files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+#' result <- mp_read_survival(files$survival)
+#' head(result$data)
 #'
 #' @export
 mp_read_survival <- function(path) {
@@ -590,13 +591,9 @@ mp_read_survival <- function(path) {
 #' }
 #'
 #' @examples
-#' \donttest{
-#' f <- system.file("extdata", "example.vcf", package = "molpathR")
-#' if (nzchar(f)) {
-#'   result <- mp_read_auto(f)
-#'   print(result)
-#' }
-#' }
+#' files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+#' mp_read_auto(files$vcf[1])
+#' mp_read_auto(files$survival)
 #'
 #' @export
 mp_read_auto <- function(path, source_name = NULL) {

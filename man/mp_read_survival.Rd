@@ -20,12 +20,8 @@ Read a survival data file in Excel or CSV format and standardise the column
 names to a canonical schema.
 }
 \examples{
-\donttest{
-surv_file <- system.file("extdata", "survival.csv", package = "molpathR")
-if (nzchar(surv_file)) {
-  result <- mp_read_survival(surv_file)
-  print(result)
-}
-}
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+result <- mp_read_survival(files$survival)
+head(result$data)
 
 }

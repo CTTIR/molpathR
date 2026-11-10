@@ -36,9 +36,8 @@ Creates a set of realistic mock files that can be used to test the
 PDF-like reports, a survival CSV, and a tiny FASTQ file.
 }
 \examples{
-\donttest{
-files <- mp_example_files()
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+str(files)
 readLines(files$vcf[1], n = 5)
-}
 
 }

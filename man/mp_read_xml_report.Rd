@@ -24,12 +24,9 @@ Parse a structured XML variant interpretation report (e.g. from
 Molecular Health or similar providers) into a tidy tibble.
 }
 \examples{
-\donttest{
-xml_file <- system.file("extdata", "report.xml", package = "molpathR")
-if (nzchar(xml_file)) {
-  result <- mp_read_xml_report(xml_file, provider = "molecular_health")
-  print(result)
-}
-}
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+result <- mp_read_xml_report(files$xml[1], provider = "molecular_health")
+result
+result$data
 
 }

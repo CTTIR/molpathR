@@ -27,12 +27,18 @@ only part of the report. Database report summaries use that complete text.
 This does not perform OCR or validate extraction accuracy against the PDF.
 }
 \examples{
-\donttest{
-pdf_file <- system.file("extdata", "report.pdf", package = "molpathR")
-if (nzchar(pdf_file)) {
-  result <- mp_read_pdf_report(pdf_file)
-  print(result)
-}
-}
+# Write a small text PDF to a temporary file and parse it.
+pdf_file <- tempfile(fileext = ".pdf")
+grDevices::pdf(pdf_file)
+graphics::plot.new()
+graphics::text(0.02, c(0.9, 0.8, 0.7, 0.6), adj = 0, labels = c(
+  "Patient: P001", "Sample: S001",
+  "Findings: KRAS G12D detected",
+  "Interpretation: pathogenic variant"
+))
+grDevices::dev.off()
+result <- mp_read_pdf_report(pdf_file)
+result$data
+unlink(pdf_file)
 
 }

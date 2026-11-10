@@ -19,8 +19,6 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 Bar chart of SNV substitution types (C>A, C>G, C>T, T>A, T>C, T>G).
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 20, seed = 1)
 mp_plot_mutation_spectrum(db)
-}
 }

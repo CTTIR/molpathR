@@ -20,7 +20,6 @@ Appends new data from one or more \code{molpath_parsed} objects to an existing
 \code{molpath_db} database. Records are deduplicated after appending.
 }
 \examples{
-\donttest{
 db <- mp_example_db(n_patients = 5, seed = 1)
 new_data <- new_molpath_parsed(
   data = tibble::tibble(patient_id = "P99", os_months = 12,
@@ -28,5 +27,4 @@ new_data <- new_molpath_parsed(
   source_type = "survival", source_file = "new.csv"
 )
 db <- mp_add_data(db, new_data)
-}
 }

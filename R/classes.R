@@ -125,6 +125,9 @@ validate_molpath_db <- function(x) {
 #'
 #' @return The `molpath_db` object (invisibly).
 #' @export
+#' @examples
+#' db <- mp_example_db(n_patients = 10, seed = 1)
+#' print(db)
 print.molpath_db <- function(x, ...) {
   cli::cli_h1("molpath_db")
 
@@ -185,6 +188,9 @@ print.molpath_db <- function(x, ...) {
 #'
 #' @return The `molpath_db` object (invisibly).
 #' @export
+#' @examples
+#' db <- mp_example_db(n_patients = 10, seed = 1)
+#' summary(db)
 summary.molpath_db <- function(object, ...) {
   cli::cli_h1("molpath_db Summary")
 
@@ -356,6 +362,12 @@ new_molpath_parsed <- function(data = tibble::tibble(),
 #'
 #' @return The `molpath_parsed` object (invisibly).
 #' @export
+#' @examples
+#' parsed <- new_molpath_parsed(
+#'   data = tibble::tibble(patient_id = "P1", os_months = 12),
+#'   source_type = "survival", source_file = "example.csv"
+#' )
+#' print(parsed)
 print.molpath_parsed <- function(x, ...) {
   cli::cli_h1("molpath_parsed")
   cli::cli_alert_info("Source type: {.val {x$source_type}}")
@@ -395,6 +407,12 @@ print.molpath_parsed <- function(x, ...) {
 #'
 #' @return The `molpath_parsed` object (invisibly).
 #' @export
+#' @examples
+#' parsed <- new_molpath_parsed(
+#'   data = tibble::tibble(patient_id = "P1", os_months = 12),
+#'   source_type = "survival", source_file = "example.csv"
+#' )
+#' summary(parsed)
 summary.molpath_parsed <- function(object, ...) {
 
   cli::cli_h1("molpath_parsed Summary")

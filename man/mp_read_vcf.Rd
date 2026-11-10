@@ -27,12 +27,9 @@ VariantAnnotation does not change the returned representation. Header lines
 and declared sample names are retained in the result metadata.
 }
 \examples{
-\donttest{
-vcf_file <- system.file("extdata", "example.vcf", package = "molpathR")
-if (nzchar(vcf_file)) {
-  result <- mp_read_vcf(vcf_file)
-  print(result)
-}
-}
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
+result <- mp_read_vcf(files$vcf[1])
+result
+result$data
 
 }

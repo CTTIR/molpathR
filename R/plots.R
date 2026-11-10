@@ -51,10 +51,8 @@ mp_diagnosis_colors <- function() {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 20, seed = 1)
 #' mp_plot_variant_landscape(db, top_n = 10)
-#' }
 mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
@@ -133,10 +131,8 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 20, seed = 1)
 #' mp_plot_mutation_spectrum(db)
-#' }
 mp_plot_mutation_spectrum <- function(db, sample_id = NULL) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
@@ -232,11 +228,9 @@ mp_plot_mutation_spectrum <- function(db, sample_id = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 50, seed = 1)
 #' mp_plot_survival(db, type = "os")
 #' mp_plot_survival(db, group_by = "diagnosis", type = "os")
-#' }
 mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
@@ -405,11 +399,9 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 20, seed = 1)
 #' plots <- mp_plot_cohort_overview(db)
 #' plots$diagnosis
-#' }
 mp_plot_cohort_overview <- function(db) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
@@ -480,11 +472,9 @@ mp_plot_cohort_overview <- function(db) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 20, seed = 1)
 #' mp_plot_vaf_distribution(db)
 #' mp_plot_vaf_distribution(db, gene = "TP53")
-#' }
 mp_plot_vaf_distribution <- function(db, gene = NULL) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
@@ -533,11 +523,9 @@ mp_plot_vaf_distribution <- function(db, gene = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' db <- mp_example_db(n_patients = 20, seed = 1)
 #' pid <- db$patients$patient_id[1]
 #' mp_plot_timeline(db, pid)
-#' }
 mp_plot_timeline <- function(db, patient_id) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")

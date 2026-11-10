@@ -34,7 +34,6 @@ Source types map to database tables as follows:
 }
 }
 \examples{
-\donttest{
 # Build from a molpath_parsed object
 surv_parsed <- new_molpath_parsed(
   data = tibble::tibble(
@@ -48,5 +47,4 @@ surv_parsed <- new_molpath_parsed(
   source_file = "test.csv"
 )
 db <- mp_build_db(surv_parsed)
-}
 }

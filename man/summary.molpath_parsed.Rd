@@ -18,3 +18,10 @@ The \code{molpath_parsed} object (invisibly).
 Prints a detailed summary of a parsed data source, including column types,
 missing value counts, and a preview of distinct values.
 }
+\examples{
+parsed <- new_molpath_parsed(
+  data = tibble::tibble(patient_id = "P1", os_months = 12),
+  source_type = "survival", source_file = "example.csv"
+)
+summary(parsed)
+}

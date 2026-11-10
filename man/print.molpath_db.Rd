@@ -18,3 +18,7 @@ The \code{molpath_db} object (invisibly).
 Displays a human-readable summary of a \code{molpath_db}, including table
 dimensions, date ranges, and data completeness.
 }
+\examples{
+db <- mp_example_db(n_patients = 10, seed = 1)
+print(db)
+}

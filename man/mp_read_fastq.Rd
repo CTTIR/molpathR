@@ -27,12 +27,12 @@ than sampling. Otherwise a strict 4-line text parser is used. Invalid or
 incomplete records raise an error; backend parse errors are not hidden.
 }
 \examples{
+files <- mp_example_files(file.path(tempdir(), "molpathR-example"))
 \donttest{
-fq_file <- system.file("extdata", "example.fastq", package = "molpathR")
-if (nzchar(fq_file)) {
-  result <- mp_read_fastq(fq_file, n = 100)
-  print(result)
-}
+# Loading the optional 'ShortRead' backend, when installed, can take
+# several seconds.
+result <- mp_read_fastq(files$fastq, n = 10)
+result$data
 }
 
 }
