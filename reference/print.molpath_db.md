@@ -39,6 +39,6 @@ print(db)
 #> ℹ survival: 10 records x 5 columns
 #> ℹ Sample date range: 2021-08-02 to 2025-10-19
 #> ℹ Overall completeness: "93.3%"
-#> ℹ Created: "2026-11-14 22:04:03"
+#> ℹ Created: "2026-11-14 23:14:42"
 #> ℹ Source files: 0
 ```

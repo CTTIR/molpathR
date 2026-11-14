@@ -36,7 +36,7 @@ summary(parsed)
 #> ── molpath_parsed Summary ──────────────────────────────────────────────────────
 #> ℹ Source type: "survival"
 #> ℹ Source file: example.csv
-#> ℹ Parsed: "2026-11-14 22:04:04"
+#> ℹ Parsed: "2026-11-14 23:14:42"
 #> ℹ Dimensions: 1 row x 2 columns
 #> 
 #> ── Column Details ──
