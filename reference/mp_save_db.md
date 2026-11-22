@@ -47,6 +47,6 @@ mp_save_db(db, tmp)
 #> • Patients with reports: 100%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to /tmp/Rtmp9qGwkX/file19c367796307.rds (38.3 KB).
+#> ✔ Database saved to /tmp/RtmpYMvdo5/file194e444e162c.rds (38.3 KB).
 unlink(tmp)
 ```

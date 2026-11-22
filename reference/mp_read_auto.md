@@ -55,8 +55,8 @@ mp_read_auto(files$vcf[1])
 #> 
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "vcf"
-#> ℹ Source file: /tmp/Rtmp9qGwkX/molpathR-example/vcf/SAM-2024-0001.vcf
-#> ℹ Parsed: "2026-11-14 23:14:25"
+#> ℹ Source file: /tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0001.vcf
+#> ℹ Parsed: "2026-11-22 05:43:52"
 #> ℹ Data: 8 rows x 10 columns
 #> ℹ Columns: chrom, pos, id, ref, alt, qual, filter, info, format, and SAM-2024-0001
 #> ℹ Completeness: "100%"
@@ -67,8 +67,8 @@ mp_read_auto(files$survival)
 #> 
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "survival"
-#> ℹ Source file: /tmp/Rtmp9qGwkX/molpathR-example/survival.csv
-#> ℹ Parsed: "2026-11-14 23:14:25"
+#> ℹ Source file: /tmp/RtmpYMvdo5/molpathR-example/survival.csv
+#> ℹ Parsed: "2026-11-22 05:43:52"
 #> ℹ Data: 30 rows x 5 columns
 #> ℹ Columns: patient_id, os_months, os_status, pfs_months, and pfs_status
 #> ℹ Completeness: "100%"

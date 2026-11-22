@@ -97,7 +97,7 @@ with `R_ZIPCMD`. Excel requires the optional `writexl` package; if it is
 unavailable, the app reports this rather than disguising another format.
 Structured cells (for example PDF report sections) are encoded as JSON
 strings in CSV, TSV and Excel; decode an individual cell with
-[`jsonlite::fromJSON()`](https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html).
+[`jsonlite::fromJSON()`](https://rdrr.io/pkg/jsonlite/man/fromJSON.html).
 RDS preserves the native R structures. Partial RDS exports preserve all
 six typed tables, with unselected layers empty, so unresolved links may
 need attention after re-import.

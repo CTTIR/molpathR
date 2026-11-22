@@ -1,7 +1,7 @@
 # Read a PDF pathology report
 
 Extract structured information from a pathology PDF report using
-[`pdftools::pdf_text()`](https://docs.ropensci.org/pdftools//reference/pdftools.html)
+[`pdftools::pdf_text()`](https://docs.ropensci.org/pdftools/reference/pdftools.html)
 and regex-based section parsing. Complete extracted pages and text are
 retained in metadata even when section heuristics match only part of the
 report. Database report summaries use that complete text. This does not
@@ -44,10 +44,10 @@ graphics::text(0.02, c(0.9, 0.8, 0.7, 0.6), adj = 0, labels = c(
   "Interpretation: pathogenic variant"
 ))
 grDevices::dev.off()
-#> agg_record_19c32fe6647b 
+#> agg_record_194e5ceff6ad 
 #>                       2 
 result <- mp_read_pdf_report(pdf_file)
-#> ℹ Reading PDF report: file19c342222ea1.pdf (template: generic)
+#> ℹ Reading PDF report: file194e19a7de86.pdf (template: generic)
 #> ✔ Extracted 3 section(s) from PDF report
 result$data
 #> # A tibble: 3 × 2
