@@ -9,11 +9,6 @@ template:
 
 development:
   mode: auto
-navbar:
-  structure:
-    left: [intro, reference, articles]
-    right: [search, github]
-
 reference:
   - title: "Parsers"
     desc: "Functions for reading molecular pathology data files"
