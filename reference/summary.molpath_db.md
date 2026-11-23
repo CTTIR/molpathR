@@ -62,6 +62,6 @@ summary(db)
 #> 
 #> ── Metadata ──
 #> 
-#> ℹ Created: "2026-11-23 09:03:00"
+#> ℹ Created: "2026-11-23 12:47:41"
 #> ℹ Source files: 0
 ```

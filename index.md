@@ -144,7 +144,8 @@ audit; use the repository citation until a public deposit is verified.
 ## Licence
 
 MIT License. See
-[LICENSE.md](https://cttir.github.io/molpathR/LICENSE.md) for details.
+[LICENSE.md](https://github.com/CTTIR/molpathR/blob/main/LICENSE.md) for
+details.
 
 ## Use of LLM tools
 
