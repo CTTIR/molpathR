@@ -31,9 +31,9 @@ Extension mapping:
 \item \code{.pdf}: \code{\link{mp_read_pdf_report}}
 \item \code{.xlsx}, \code{.xls}, \code{.csv}, \code{.tsv}: chooses
 \code{\link{mp_read_survival}}, \code{\link{mp_read_nexus_clinical}}
-or \code{\link{mp_read_nexus_pathology}} from the recognised column
+or \code{\link{mp_read_nexus_pathology}} from the recognized column
 names (survival times, a clinical parameter column or a sample
-identifier); ambiguous or unrecognised tables are refused
+identifier); ambiguous or unrecognized tables are refused
 }
 }
 \examples{
