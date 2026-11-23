@@ -45,9 +45,14 @@
   corner, where it no longer overlaps the curves. The note on genes without a
   recorded variant is dropped when the plot falls back to one group.
 * `mp_plot_timeline()` places each label to the right of its event and moves
-  labels that would overlap onto separate lanes; clinical events show their
-  value and the date axis shows the year. A patient whose events are all undated now gives an informative
-  error instead of an empty panel.
+  labels that would overlap onto separate lanes. The date axis is sized to
+  the labels as well as the dates, so labels are no longer cut off at the
+  right edge; events that all share one date are drawn in a 30-day window
+  with that date as the only tick. Date ticks show the month and year, and
+  also the day when months would repeat. Clinical events show their value,
+  with its unit when a `unit` column is recorded; labels longer than 45
+  characters are shortened. A patient whose events are all undated now gives
+  an informative error instead of an empty panel.
 * `mp_plot_vaf_distribution()` bins start at 0, so no bar extends below a VAF
   of 0; several genes are drawn in one panel each instead of overlaid
   translucent histograms that could not be told apart, and the axis states

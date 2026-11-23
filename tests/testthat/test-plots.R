@@ -175,7 +175,7 @@ test_that("VAF histogram stays within [0, 1] and facets several genes", {
   expect_s3_class(p$facet, "FacetWrap")
 })
 
-test_that("timeline labels do not overlap and carry clinical values", {
+test_that("timeline labels carry clinical values and the axis shows years", {
   db <- mp_example_db(n_patients = 10, seed = 1)
   pid <- db$patients$patient_id[1]
   p <- mp_plot_timeline(db, pid)
@@ -183,14 +183,93 @@ test_that("timeline labels do not overlap and carry clinical values", {
   expect_true(any(grepl(": ", ev$label[ev$type == "Clinical"])))
   x_labels <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_labels()
   expect_true(all(grepl("[0-9]{4}$", stats::na.omit(x_labels))))
-  span <- as.numeric(diff(range(ev$date)))
-  for (lane in split(ev, list(ev$type, ev$y), drop = TRUE)) {
-    lane <- lane[order(lane$date), ]
-    if (nrow(lane) > 1L) {
-      ends <- as.numeric(lane$date) + nchar(lane$label) * 0.0095 * span
-      expect_true(all(utils::head(ends, -1L) < as.numeric(lane$date[-1L])))
+})
+
+# Measures the drawn label widths on a 7 x 5 inch device and checks that every
+# label ends inside the panel and before the next event in its lane.
+expect_timeline_labels_fit <- function(p, width = 7, height = 5) {
+  grDevices::pdf(NULL, width = width, height = height)
+  on.exit(grDevices::dev.off(), add = TRUE)
+  g <- ggplot2::ggplotGrob(p)
+  panel_in <- width - sum(grid::convertWidth(g$widths, "in", valueOnly = TRUE))
+  x_range <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x.range
+  to_in <- function(x) (as.numeric(x) - x_range[1]) / diff(x_range) * panel_in
+  ev <- p$data
+  label_in <- vapply(ev$label, function(s) {
+    grob <- grid::textGrob(s, gp = grid::gpar(fontsize = 2.8 * ggplot2::.pt))
+    grid::convertWidth(grid::grobWidth(grob), "in", valueOnly = TRUE)
+  }, numeric(1))
+  ends <- to_in(ev$label_x) + label_in
+  expect_true(all(to_in(ev$date) >= 0))
+  expect_true(all(ends <= panel_in), label = "every label ends inside the panel")
+  for (lane in split(seq_len(nrow(ev)), list(ev$type, ev$y), drop = TRUE)) {
+    lane <- lane[order(ev$date[lane])]
+    if (length(lane) > 1L) {
+      expect_true(
+        all(utils::head(ends[lane], -1L) < to_in(ev$date[lane[-1L]])),
+        label = "labels in one lane end before the next event"
+      )
     }
   }
+}
+
+test_that("timeline labels fit the panel and do not run into later events", {
+  db <- mp_example_db(n_patients = 20, seed = 1)
+  for (pid in db$patients$patient_id) {
+    expect_timeline_labels_fit(mp_plot_timeline(db, pid))
+  }
+})
+
+test_that("timeline keeps labels next to events that share one date", {
+  db <- mp_example_db(n_patients = 5, seed = 1)
+  pid <- db$patients$patient_id[1]
+  sids <- db$samples$sample_id[db$samples$patient_id == pid]
+  db$samples$date[db$samples$patient_id == pid] <- as.Date("2024-02-20")
+  db$reports$report_date[db$reports$sample_id %in% sids] <- as.Date("2024-02-20")
+  db$clinical$date[db$clinical$patient_id == pid] <- as.Date(NA)
+  p <- mp_plot_timeline(db, pid)
+  panel <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]
+  expect_gte(diff(panel$x.range), 7)
+  expect_equal(as.character(stats::na.omit(panel$x$get_labels())), "20 Feb 2024")
+  expect_timeline_labels_fit(p)
+})
+
+test_that("timeline date ticks stay distinct for short time spans", {
+  db <- mp_example_db(n_patients = 5, seed = 1)
+  pid <- db$patients$patient_id[1]
+  sids <- db$samples$sample_id[db$samples$patient_id == pid]
+  db$samples$date[db$samples$patient_id == pid] <- as.Date("2024-03-01") + 7 * (seq_along(sids) - 1L)
+  db$reports$report_date[db$reports$sample_id %in% sids] <- as.Date("2024-03-12")
+  cl <- which(db$clinical$patient_id == pid)
+  db$clinical$date[cl] <- as.Date("2024-02-25") + 3 * seq_along(cl)
+  p <- mp_plot_timeline(db, pid)
+  x_labels <- stats::na.omit(ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_labels())
+  expect_gt(length(x_labels), 1L)
+  expect_false(anyDuplicated(x_labels) > 0L)
+  expect_true(all(grepl("[0-9]{4}$", x_labels)))
+})
+
+test_that("timeline shows the recorded unit with a clinical value", {
+  db <- mp_example_db(n_patients = 5, seed = 1)
+  pid <- db$patients$patient_id[1]
+  db$clinical <- dplyr::bind_rows(db$clinical, tibble::tibble(
+    patient_id = pid, parameter = "CEA", value = "3.1",
+    date = as.Date("2023-06-01"), source = "LIMS"
+  ))
+  db$clinical$unit <- ifelse(db$clinical$parameter == "CEA", "ng/mL", NA_character_)
+  labels <- mp_plot_timeline(db, pid)$data$label
+  expect_true("CEA: 3.1 ng/mL" %in% labels)
+  expect_false(any(grepl("NA", labels, fixed = TRUE)))
+})
+
+test_that("timeline shortens very long labels", {
+  db <- mp_example_db(n_patients = 5, seed = 1)
+  pid <- db$patients$patient_id[1]
+  i <- which(db$clinical$patient_id == pid)[1]
+  db$clinical$value[i] <- strrep("long free-text result ", 6)
+  p <- mp_plot_timeline(db, pid)
+  expect_lte(max(nchar(p$data$label)), 45L)
+  expect_timeline_labels_fit(p)
 })
 
 test_that("timeline refuses patients whose events are all undated", {

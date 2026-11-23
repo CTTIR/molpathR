@@ -585,9 +585,11 @@ mp_plot_vaf_distribution <- function(db, gene = NULL) {
 #' Plot patient timeline
 #'
 #' Displays a timeline of events for a single patient: sample collections,
-#' report dates, and clinical measurements (with their values). Labels are
-#' placed to the right of each event and moved to separate lanes where they
-#' would otherwise overlap. Events without a date are omitted.
+#' report dates, and clinical measurements (with their values and, when a
+#' `unit` column is present, their units). Labels are placed to the right of
+#' each event and moved to separate lanes where they would otherwise overlap;
+#' the date axis leaves room for them at the default 7-inch figure width.
+#' Events without a date are omitted.
 #'
 #' @param db A `molpath_db` object.
 #' @param patient_id A single patient ID.
@@ -634,8 +636,15 @@ mp_plot_timeline <- function(db, patient_id) {
   # Clinical
   if (nrow(pat$clinical) > 0L && "date" %in% names(pat$clinical)) {
     clin_label <- pat$clinical$parameter
-    has_value <- !is.na(pat$clinical$value) & nzchar(pat$clinical$value)
-    clin_label[has_value] <- paste0(clin_label[has_value], ": ", pat$clinical$value[has_value])
+    clin_value <- as.character(pat$clinical[["value"]])
+    has_value <- !is.na(clin_value) & nzchar(clin_value)
+    # A measured value is only meaningful with its unit, when one is recorded.
+    if ("unit" %in% names(pat$clinical)) {
+      unit <- trimws(as.character(pat$clinical[["unit"]]))
+      has_unit <- has_value & !is.na(unit) & nzchar(unit)
+      clin_value[has_unit] <- paste(clin_value[has_unit], unit[has_unit])
+    }
+    clin_label[has_value] <- paste0(clin_label[has_value], ": ", clin_value[has_value])
     c_data <- tibble::tibble(
       date  = pat$clinical$date,
       label = clin_label,
@@ -672,9 +681,10 @@ mp_plot_timeline <- function(db, patient_id) {
       hjust = 0, size = 2.8, show.legend = FALSE
     ) +
     ggplot2::scale_colour_manual(values = event_colors, name = "Event type", drop = TRUE) +
-    ggplot2::scale_x_date(date_labels = "%b %Y", expand = ggplot2::expansion(
-      mult = c(0.03, attr(events, "label_room") + 0.03)
-    )) +
+    ggplot2::scale_x_date(
+      breaks = attr(events, "x_breaks"), labels = .mp_date_labels,
+      limits = attr(events, "x_limits"), expand = ggplot2::expansion()
+    ) +
     ggplot2::scale_y_continuous(
       breaks = seq_len(n_types), labels = names(event_colors),
       limits = c(0.5, n_types + 0.5), expand = ggplot2::expansion()
@@ -694,36 +704,74 @@ mp_plot_timeline <- function(db, patient_id) {
 #' event moves to the next free lane when its label would overlap the label of
 #' an earlier event, so that every label stays readable.
 #'
+#' Label widths are estimated as a fraction of the panel width, so the date
+#' axis is sized to the whole drawing (event dates plus the labels to their
+#' right) rather than to the event dates alone. When all events share one
+#' date, the axis spans a nominal 30 days.
+#'
 #' @param events Tibble with `date`, `label` and `type`.
 #' @param types Event types in their display order (bottom to top).
 #' @param char_frac Approximate width of one label character as a fraction of
-#'   the date range at the default 7-inch figure width.
-#' @return `events` with `y` and `label_x` columns and a `label_room`
-#'   attribute (right-hand axis expansion needed for the longest label).
+#'   the panel width at the default 7-inch figure width (measured 0.008 to
+#'   0.010 for mixed-case labels at the 2.8 mm label size).
+#' @param max_chars Labels longer than this are shortened with an ellipsis so
+#'   that one label never needs most of the panel.
+#' @return `events` with `y` and `label_x` columns and an `x_limits`
+#'   attribute (the date axis limits).
 #' @noRd
-.mp_timeline_lanes <- function(events, types, char_frac = 0.0095) {
+.mp_timeline_lanes <- function(events, types, char_frac = 0.01, max_chars = 45L) {
   events <- events[order(match(events$type, types), events$date), , drop = FALSE]
-  span <- as.numeric(diff(range(events$date)))
-  if (!is.finite(span) || span <= 0) span <- 30
-  gap <- span * 0.012
-  width <- nchar(events$label) * char_frac * span + 2 * gap
-  events$label_x <- events$date + gap
+  long <- nchar(events$label) > max_chars
+  events$label[long] <- paste0(substr(events$label[long], 1L, max_chars - 1L), "\u2026")
+
+  # Fractions of the panel width: outer padding on both sides and the gap
+  # between a point and its label.
+  pad <- 0.03
+  gap <- 0.012
+  label_frac <- nchar(events$label) * char_frac
+  offset <- as.numeric(events$date - min(events$date))
+  # Each label must end inside the panel:
+  # pad * total + offset + (gap + label_frac) * total <= (1 - pad) * total.
+  single_date <- max(offset) == 0
+  if (single_date) {
+    # Nominal 30-day window with the shared date at 30% of the panel width.
+    total <- 30
+    start <- min(events$date) - 0.3 * total
+  } else {
+    total <- max(offset / (1 - 2 * pad - gap - label_frac))
+    start <- min(events$date) - pad * total
+  }
+
+  events$label_x <- events$date + gap * total
+  width <- (2 * gap + label_frac) * total
   events$y <- NA_real_
   for (type in unique(events$type)) {
     rows <- which(events$type == type)
     lane_end <- numeric()
     lane <- integer(length(rows))
     for (k in seq_along(rows)) {
-      start <- as.numeric(events$date[rows[k]])
-      free <- which(lane_end < start)
+      at <- as.numeric(events$date[rows[k]])
+      free <- which(lane_end < at)
       lane[k] <- if (length(free)) free[1L] else length(lane_end) + 1L
-      lane_end[lane[k]] <- start + width[rows[k]]
+      lane_end[lane[k]] <- at + width[rows[k]]
     }
     n_lanes <- max(lane)
     step <- min(0.22, 0.8 / max(n_lanes, 1L))
     centre <- match(type, types)
     events$y[rows] <- centre - (n_lanes - 1) * step / 2 + (lane - 1) * step
   }
-  attr(events, "label_room") <- max(width) / span
+  attr(events, "x_limits") <- c(start, start + total)
+  # A shared date is the only date worth a tick.
+  attr(events, "x_breaks") <- if (single_date) min(events$date) else ggplot2::waiver()
   events
+}
+
+#' Month-and-year date labels, with the day added when months repeat or a
+#' single tick marks one date (internal)
+#' @noRd
+.mp_date_labels <- function(x) {
+  out <- format(x, "%b %Y")
+  shown <- out[!is.na(x)]
+  if (length(shown) == 1L || anyDuplicated(shown)) out <- format(x, "%d %b %Y")
+  out
 }
