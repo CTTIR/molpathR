@@ -16,7 +16,7 @@ A \code{molpath_db} object.
 \description{
 Reads an RDS file, verifies it contains a valid \code{molpath_db} object,
 and prints a summary of the loaded database. Known legacy zero-column empty
-tables and one-row metadata tibbles are normalized explicitly. Malformed
+tables and one-row metadata tibbles are normalised explicitly. Malformed
 schemas or values are rejected; incomplete foreign-key links remain visible
 through \code{\link[=mp_validate_db]{mp_validate_db()}} rather than being invented.
 }

@@ -279,7 +279,7 @@ print.molpath_summary <- function(x, ...) {
 #' (case-insensitive).
 #'
 #' @param db A `molpath_db` object.
-#' @param term A single nonempty search string (matched literally, ignoring case).
+#' @param term A single non-empty search string (matched literally, ignoring case).
 #'
 #' @return A named list of tibbles, one per table, containing rows that match
 #'   the search term. Empty tibbles are omitted.

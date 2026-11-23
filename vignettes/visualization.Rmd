@@ -1,8 +1,8 @@
 ---
-title: "Visualization Guide"
+title: "Visualisation Guide"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Visualization Guide}
+  %\VignetteIndexEntry{Visualisation Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
@@ -38,7 +38,7 @@ resource_files:
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/molpathR?branch=main)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -53,7 +53,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-All molpathR plot functions return ggplot2 objects, so you can customize them
+All molpathR plot functions return ggplot2 objects, so you can customise them
 with standard ggplot2 syntax.
 
 ```{r data}
@@ -103,11 +103,11 @@ pid <- db$patients$patient_id[1]
 mp_plot_timeline(db, pid)
 ```
 
-## Customization
+## Customisation
 
-All plots can be customized with ggplot2:
+All plots can be customised with ggplot2:
 
-```{r custom, fig.alt = "Distribution of synthetic variant allele fractions with a customized title and styling."}
+```{r custom, fig.alt = "Distribution of synthetic variant allele fractions with a customised title and styling."}
 library(ggplot2)
 mp_plot_vaf_distribution(db) +
   labs(title = "Custom Title") +

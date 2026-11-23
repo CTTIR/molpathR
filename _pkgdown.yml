@@ -43,7 +43,7 @@ reference:
       - mp_summary
       - mp_search
 
-  - title: "Visualization"
+  - title: "Visualisation"
     desc: "Publication-ready plots"
     contents:
       - mp_plot_variant_landscape

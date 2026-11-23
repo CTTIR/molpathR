@@ -4,7 +4,7 @@
 
 # ---- Internal helpers --------------------------------------------------------
 
-#' Categorize a parsed object into target database tables
+#' Categorise a parsed object into target database tables
 #'
 #' @param parsed A `molpath_parsed` object.
 #' @return A named list with keys matching molpath_db table slots, each
@@ -113,7 +113,7 @@
 }
 
 
-#' Normalize parsed input for mp_add_data
+#' Normalise parsed input for mp_add_data
 #'
 #' @param parsed A single `molpath_parsed` object or a list of them.
 #' @return A flat list of `molpath_parsed` objects.
@@ -151,7 +151,7 @@
 #' Build a molpath_db from parsed data objects
 #'
 #' Constructs a unified `molpath_db` database object from one or more
-#' `molpath_parsed` objects. Each parsed object is categorized by its
+#' `molpath_parsed` objects. Each parsed object is categorised by its
 #' `source_type` and merged into the appropriate database table. Raw FASTQ/BAM
 #' reads remain available through their readers but cannot be interpreted as
 #' variant calls by this function. Unknown gene annotations, pathogenicity and
@@ -159,7 +159,7 @@
 #'
 #' Source types map to database tables as follows:
 #' \itemize{
-#'   \item `"vcf"` -- non-reference GT calls or explicitly normalized variants
+#'   \item `"vcf"` -- non-reference GT calls or explicitly normalised variants
 #'   \item `"xml_report"` -- variants and explicitly identified patients/samples
 #'   \item `"pdf_report"` -- reports
 #'   \item `"nexus_pathology"` -- patients and samples
@@ -424,7 +424,7 @@ mp_validate_db <- function(db) {
 
 #' Save a molpath_db to disk
 #'
-#' Validates the database and saves it as a compressed RDS file. Serialization
+#' Validates the database and saves it as a compressed RDS file. Serialisation
 #' and read-back verification occur in a sibling temporary file before replacement.
 #' If replacement fails, the previous destination is restored or an explicit
 #' recovery path is reported. Use one writer per destination; this is not a
@@ -496,7 +496,7 @@ mp_save_db <- function(db, path) {
 #'
 #' Reads an RDS file, verifies it contains a valid `molpath_db` object,
 #' and prints a summary of the loaded database. Known legacy zero-column empty
-#' tables and one-row metadata tibbles are normalized explicitly. Malformed
+#' tables and one-row metadata tibbles are normalised explicitly. Malformed
 #' schemas or values are rejected; incomplete foreign-key links remain visible
 #' through [mp_validate_db()] rather than being invented.
 #'

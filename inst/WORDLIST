@@ -1,4 +1,6 @@
+alt
 authors’
+backends
 BAM
 Bioconductor
 Biostrings
@@ -9,6 +11,7 @@ Codecov
 copyediting
 CRAN
 CSV
+db
 deduplicated
 EGFR
 extensionless
@@ -35,6 +38,7 @@ MSI
 NGS
 nonfinite
 nonreference
+Okabe
 Ollama
 ollamar
 oncoplot
@@ -48,9 +52,12 @@ pfs
 pkgdown
 POSIXct
 pre
+PyTorch
 queryable
+RColorBrewer
 RDS
 README
+regex
 Rsamtools
 RStudio
 runnable
@@ -62,6 +69,7 @@ SNV
 standardise
 Summarise
 summarising
+themakR
 tibble
 tibbles
 TNM
@@ -74,6 +82,7 @@ vaf
 VAF
 VariantAnnotation
 VCF
+VCFs
 vLLM
 VUS
 xlsx

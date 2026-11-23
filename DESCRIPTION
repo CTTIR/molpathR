@@ -1,6 +1,6 @@
 Package: molpathR
 Title: Molecular Pathology Data Platform for Clinical NGS Integration
-Description: Ingests, links, queries and visualizes molecular pathology data
+Description: Ingests, links, queries and visualises molecular pathology data
     from heterogeneous sources, including next-generation sequencing (NGS)
     files (FASTQ, BAM, VCF), XML variant interpretation reports, structured
     pathology reports in PDF format, exports from pathology and clinical
@@ -17,7 +17,7 @@ License: MIT + file LICENSE
 URL: https://github.com/CTTIR/molpathR, https://cttir.github.io/molpathR/
 BugReports: https://github.com/CTTIR/molpathR/issues
 Encoding: UTF-8
-Language: en-US
+Language: en-GB
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.1.0)

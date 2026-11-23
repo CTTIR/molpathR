@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/molpathR?branch=main)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889946.svg)](https://doi.org/10.5281/zenodo.21889946)
 <!-- badges: end -->
@@ -122,10 +122,10 @@ repository citation until a public deposit is verified.
 
 - [Getting Started](https://cttir.github.io/molpathR/articles/getting-started.html)
 - [Data Import Guide](https://cttir.github.io/molpathR/articles/data-import.html)
-- [Visualization Guide](https://cttir.github.io/molpathR/articles/visualization.html)
+- [Visualisation Guide](https://cttir.github.io/molpathR/articles/visualization.html)
 - [Shiny Application](https://cttir.github.io/molpathR/articles/shiny-app.html)
 
-## License
+## Licence
 
 MIT License. See [LICENSE.md](LICENSE.md) for details.
 

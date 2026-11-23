@@ -15,7 +15,7 @@ coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](htt
 downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads
 total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -149,12 +149,12 @@ audit; use the repository citation until a public deposit is verified.
   Started](https://cttir.github.io/molpathR/articles/getting-started.html)
 - [Data Import
   Guide](https://cttir.github.io/molpathR/articles/data-import.html)
-- [Visualization
+- [Visualisation
   Guide](https://cttir.github.io/molpathR/articles/visualization.html)
 - [Shiny
   Application](https://cttir.github.io/molpathR/articles/shiny-app.html)
 
-## License
+## Licence
 
 MIT License. See [LICENSE.md](LICENSE.md) for details.
 

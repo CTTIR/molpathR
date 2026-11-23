@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
 
-Ingests, links, queries and visualizes molecular pathology data from heterogeneous sources, including next-generation sequencing (NGS) files (FASTQ, BAM, VCF), XML variant interpretation reports, structured pathology reports in PDF format, exports from pathology and clinical information systems, and survival outcome data. Provides a searchable in-memory database and an interactive 'shiny' application for clinical exploration and cohort analysis. Raw sequence and alignment readers do not perform variant calling or clinical interpretation. The optional 'Bioconductor' packages 'Rsamtools', 'ShortRead' and 'Biostrings' are used when installed.
+Ingests, links, queries and visualises molecular pathology data from heterogeneous sources, including next-generation sequencing (NGS) files (FASTQ, BAM, VCF), XML variant interpretation reports, structured pathology reports in PDF format, exports from pathology and clinical information systems, and survival outcome data. Provides a searchable in-memory database and an interactive 'shiny' application for clinical exploration and cohort analysis. Raw sequence and alignment readers do not perform variant calling or clinical interpretation. The optional 'Bioconductor' packages 'Rsamtools', 'ShortRead' and 'Biostrings' are used when installed.
 }
 \seealso{
 Useful links:

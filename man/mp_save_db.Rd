@@ -16,7 +16,7 @@ typically end in \code{.rds}.}
 The file \code{path}, returned invisibly.
 }
 \description{
-Validates the database and saves it as a compressed RDS file. Serialization
+Validates the database and saves it as a compressed RDS file. Serialisation
 and read-back verification occur in a sibling temporary file before replacement.
 If replacement fails, the previous destination is restored or an explicit
 recovery path is reported. Use one writer per destination; this is not a

@@ -38,7 +38,7 @@ resource_files:
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/molpathR?branch=main)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -97,7 +97,7 @@ mp_get_patient(db, "P1")$clinical
 CSV, semicolon-delimited and tab-delimited exports are detected by their actual
 fields. Field aliases match whole column names, ignoring case and surrounding
 header whitespace. `patient_id_backup` is preserved as an extra source column;
-it does not replace `patient_id`. Multiple recognized aliases for one field are
+it does not replace `patient_id`. Multiple recognised aliases for one field are
 ambiguous and require reconciliation. Survival event values must be exactly 0
 (censored), 1 (event), or missing; fractional values are never truncated. Observed
 times must be finite and nonnegative. Dates use ISO `YYYY-MM-DD` values.
@@ -108,7 +108,7 @@ The reader preserves ID, INFO, FORMAT and each sample's raw token regardless of
 optional typed-reader installations. Original header lines and declared sample
 names are in `parsed$metadata`. Database integration expands observed
 non-reference GT alleles, while retaining source genomic fields and genotype
-information. Each normalized row keeps its original sample token in
+information. Each normalised row keeps its original sample token in
 `sample_fields`, interpreted by `format`; raw sample names cannot overwrite gene
 annotations or model identifiers. It does not derive gene effects or pathogenicity from coordinates.
 
@@ -127,7 +127,7 @@ mp_validate_db(linked)$valid
 ```
 
 A site-only VCF or sample measurements without GT do not establish a usable
-sample call. Inspect the parsed table, then supply an explicitly normalized
+sample call. Inspect the parsed table, then supply an explicitly normalised
 `sample_id`/`variant` table after independent calling/annotation if that is the
 intended input. Reference or uncalled genotypes are not evidence of a wild-type
 gene: the package has no assay-coverage model.
@@ -140,7 +140,7 @@ gene: the package has no assay-coverage model.
 | `mp_read_pdf_report()` | Extracted text sections; no OCR or inferred patient/sample identity |
 | `mp_read_fastq()` | Raw read IDs, sequences and qualities; `n` selects the first records, not a random sample |
 | `mp_read_bam()` | Explicit alignment fields, optionally restricted to one genomic region |
-| `mp_read_auto()` | Recognized source schema; unrecognized or ambiguous tabular layouts raise an error |
+| `mp_read_auto()` | Recognised source schema; unrecognised or ambiguous tabular layouts raise an error |
 
 The generic report templates are not vendor-certified. XML without a known link
 and PDF text can remain incomplete report evidence; inspect it before assigning
@@ -175,7 +175,7 @@ replacement restores the previous destination or reports the preserved recovery
 path. Use one writer per destination. Incomplete links are reported on save and
 remain inspectable after reload; they are not silently repaired.
 
-Older zero-column empty tables and one-row metadata tibbles are normalized on
-load. ISO date strings are normalized to `Date`. Malformed nonempty tables or
+Older zero-column empty tables and one-row metadata tibbles are normalised on
+load. ISO date strings are normalised to `Date`. Malformed non-empty tables or
 conflicting identities require explicit repair; keep the original RDS and review
 the reported field rather than fabricating missing clinical information.
