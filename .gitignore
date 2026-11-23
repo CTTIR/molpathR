@@ -19,3 +19,6 @@ _coverage/
 
 # Local maintenance notes stay out of the repository
 /planning/
+
+# The pkgdown site is built in CI and deployed to gh-pages
+/docs/
