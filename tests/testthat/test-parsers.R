@@ -399,6 +399,14 @@ test_that("mp_read_auto routes survival-like csv to survival reader", {
   expect_equal(result$source_type, "survival")
 })
 
+test_that("mp_read_auto recognises every survival time alias of mp_read_survival", {
+  tmp <- withr::local_tempfile(fileext = ".csv")
+  writeLines(c("patient_id,pfs.months,pfs.status", "P1,6,1"), tmp)
+  result <- mp_read_auto(tmp)
+  expect_equal(result$source_type, "survival")
+  expect_equal(result$data$pfs_months, 6)
+})
+
 test_that("mp_read_auto routes clinical-like csv to clinical reader", {
   csv <- c("patient_id,parameter,value,unit", "P1,Ki-67,20,%")
   tmp <- withr::local_tempfile(fileext = ".csv")

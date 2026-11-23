@@ -409,7 +409,6 @@ mp_read_nexus_pathology <- function(path_or_connection) {
 #' Standardise Nexus pathology column names to expected output (internal)
 #' @noRd
 .standardise_nexus_pathology <- function(raw) {
-  nms <- tolower(names(raw))
   # Map common variations
   mapping <- c(
     patient_id  = "patient_id|patientid|patient.id|pat_id|pid",
@@ -491,7 +490,6 @@ mp_read_nexus_clinical <- function(path_or_connection) {
 #' Standardise Nexus clinical column names (internal)
 #' @noRd
 .standardise_nexus_clinical <- function(raw) {
-  nms <- tolower(names(raw))
   mapping <- c(
     patient_id = "patient_id|patientid|patient.id|pat_id|pid",
     parameter  = "parameter|param|test|test_name|testname|analyte",
@@ -534,8 +532,6 @@ mp_read_survival <- function(path) {
 
   cli::cli_alert_info("Reading survival data: {.file {basename(path)}}")
 
-  ext <- tolower(tools::file_ext(path))
-
   raw <- .mp_read_tabular(path)
 
   tbl <- .standardise_survival(raw)
@@ -544,19 +540,26 @@ mp_read_survival <- function(path) {
 }
 
 
-#' Standardise survival column names (internal)
+#' Recognised survival column aliases (internal)
+#'
+#' Shared by [mp_read_survival()] and the tabular auto-detection so that both
+#' recognise the same column names.
 #' @noRd
-.standardise_survival <- function(raw) {
-  nms <- tolower(names(raw))
-  mapping <- c(
+.mp_survival_mapping <- function() {
+  c(
     patient_id = "patient_id|patientid|patient.id|pat_id|pid|id|subject_id|subjectid",
     os_months  = "os_months|os.months|osmonths|overall_survival_months|os_time|os.time",
     os_status  = "os_status|os.status|osstatus|overall_survival_status|os_event|os.event|vital_status",
     pfs_months = "pfs_months|pfs.months|pfsmonths|progression_free_survival_months|pfs_time|pfs.time",
     pfs_status = "pfs_status|pfs.status|pfsstatus|progression_free_survival_status|pfs_event|pfs.event"
   )
+}
 
-  result <- .mp_map_fields(raw, mapping, required = "patient_id")
+
+#' Standardise survival column names (internal)
+#' @noRd
+.standardise_survival <- function(raw) {
+  result <- .mp_map_fields(raw, .mp_survival_mapping(), required = "patient_id")
   for (field in c("os_months", "pfs_months")) result[[field]] <- .mp_number(result[[field]], field)
   for (field in c("os_status", "pfs_status")) result[[field]] <- .mp_number(result[[field]], field, event = TRUE)
   result
@@ -586,8 +589,11 @@ mp_read_survival <- function(path) {
 #'   \item \code{.bam}: \code{\link{mp_read_bam}}
 #'   \item \code{.xml}: \code{\link{mp_read_xml_report}}
 #'   \item \code{.pdf}: \code{\link{mp_read_pdf_report}}
-#'   \item \code{.xlsx}, \code{.xls}, \code{.csv}: tries survival/clinical
-#'     format detection
+#'   \item \code{.xlsx}, \code{.xls}, \code{.csv}, \code{.tsv}: chooses
+#'     \code{\link{mp_read_survival}}, \code{\link{mp_read_nexus_clinical}}
+#'     or \code{\link{mp_read_nexus_pathology}} from the recognised column
+#'     names (survival times, a clinical parameter column or a sample
+#'     identifier); ambiguous or unrecognised tables are refused
 #' }
 #'
 #' @examples
@@ -640,7 +646,10 @@ mp_read_auto <- function(path, source_name = NULL) {
   if (is.na(detected)) {
     cli::cli_abort(c(
       "Cannot auto-detect file type for: {.file {basename(path)}}",
-      "i" = "Supported extensions: .vcf, .vcf.gz, .fastq, .fq, .bam, .xml, .pdf, .xlsx, .xls, .csv"
+      "i" = paste(
+        "Supported extensions: .vcf, .vcf.gz, .fastq, .fastq.gz, .fq, .fq.gz,",
+        ".bam, .xml, .pdf, .xlsx, .xls, .csv, .tsv"
+      )
     ))
   }
 
@@ -660,11 +669,10 @@ mp_read_auto <- function(path, source_name = NULL) {
 #' Auto-detect tabular file subtype (survival vs clinical) (internal)
 #' @noRd
 .read_tabular_auto <- function(path) {
-  ext <- tolower(tools::file_ext(path))
-
   raw <- .mp_read_tabular(path, n_max = 5L)
   nms <- tolower(trimws(names(raw)))
-  has_survival <- any(nms %in% c("os_months", "os.months", "osmonths", "overall_survival_months", "os_time", "os.time", "pfs_months", "pfs.time", "pfs_time"))
+  survival_time <- .mp_survival_mapping()[c("os_months", "pfs_months")]
+  has_survival <- any(nms %in% unlist(strsplit(survival_time, "|", fixed = TRUE)))
   has_clinical <- any(nms %in% c("parameter", "param", "test", "test_name", "testname", "analyte"))
   has_pathology <- any(nms %in% c("sample_id", "sampleid", "sample.id", "specimen_id", "specimenid"))
   if (sum(c(has_survival, has_clinical, has_pathology)) > 1L) cli::cli_abort("Ambiguous tabular source; use an explicit reader and unambiguous columns.")
