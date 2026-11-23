@@ -1,11 +1,11 @@
 {
   "upload_type": "software",
-  "title": "molpathR: Molecular pathology data platform for clinical NGS integration",
+  "title": "molpathR: Molecular Pathology Data Platform for Clinical NGS Integration",
   "version": "0.2.0",
   "description": "<p>molpathR supports local exploratory integration of explicitly identified molecular pathology records, interpreted variants, report text, clinical measurements and survival outcomes. It preserves source fields and reports incomplete links. FASTQ and BAM readers expose raw reads and alignments separately; they do not perform variant calling. The Shiny application provides linked cohort queries and visualizations. Clinical diagnostic qualification and vendor-specific production interoperability are outside the verified scope.</p>",
   "creators": [
     {
-      "name": "Heller, Raban",
+      "name": "Heller, R.",
       "orcid": "0000-0001-8006-9742"
     }
   ],

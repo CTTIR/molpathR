@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: Cite this package and record the version or commit used.
 type: software
-title: 'molpathR: Molecular pathology data platform for clinical NGS integration'
+title: 'molpathR: Molecular Pathology Data Platform for Clinical NGS Integration'
 version: 0.2.0
 doi: 10.5281/zenodo.21889946
 authors:
 - family-names: Heller
-  given-names: Raban
+  given-names: R.
   orcid: https://orcid.org/0000-0001-8006-9742
 repository-code: https://github.com/CTTIR/molpathR
 license: MIT
