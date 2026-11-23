@@ -201,7 +201,8 @@ expect_timeline_labels_fit <- function(p, width = 7, height = 5) {
   }, numeric(1))
   ends <- to_in(ev$label_x) + label_in
   expect_true(all(to_in(ev$date) >= 0))
-  expect_true(all(ends <= panel_in), label = "every label ends inside the panel")
+  expect_true(all(ends <= panel_in),
+              label = "every label ends inside the panel")
   for (lane in split(seq_len(nrow(ev)), list(ev$type, ev$y), drop = TRUE)) {
     lane <- lane[order(ev$date[lane])]
     if (length(lane) > 1L) {
@@ -225,12 +226,14 @@ test_that("timeline keeps labels next to events that share one date", {
   pid <- db$patients$patient_id[1]
   sids <- db$samples$sample_id[db$samples$patient_id == pid]
   db$samples$date[db$samples$patient_id == pid] <- as.Date("2024-02-20")
-  db$reports$report_date[db$reports$sample_id %in% sids] <- as.Date("2024-02-20")
+  in_reports <- db$reports$sample_id %in% sids
+  db$reports$report_date[in_reports] <- as.Date("2024-02-20")
   db$clinical$date[db$clinical$patient_id == pid] <- as.Date(NA)
   p <- mp_plot_timeline(db, pid)
   panel <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]
   expect_gte(diff(panel$x.range), 7)
-  expect_equal(as.character(stats::na.omit(panel$x$get_labels())), "20 Feb 2024")
+  ticks <- as.character(stats::na.omit(panel$x$get_labels()))
+  expect_equal(ticks, "20 Feb 2024")
   expect_timeline_labels_fit(p)
 })
 
@@ -238,12 +241,15 @@ test_that("timeline date ticks stay distinct for short time spans", {
   db <- mp_example_db(n_patients = 5, seed = 1)
   pid <- db$patients$patient_id[1]
   sids <- db$samples$sample_id[db$samples$patient_id == pid]
-  db$samples$date[db$samples$patient_id == pid] <- as.Date("2024-03-01") + 7 * (seq_along(sids) - 1L)
-  db$reports$report_date[db$reports$sample_id %in% sids] <- as.Date("2024-03-12")
+  own <- db$samples$patient_id == pid
+  db$samples$date[own] <- as.Date("2024-03-01") + 7 * (seq_along(sids) - 1L)
+  in_reports <- db$reports$sample_id %in% sids
+  db$reports$report_date[in_reports] <- as.Date("2024-03-12")
   cl <- which(db$clinical$patient_id == pid)
   db$clinical$date[cl] <- as.Date("2024-02-25") + 3 * seq_along(cl)
   p <- mp_plot_timeline(db, pid)
-  x_labels <- stats::na.omit(ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_labels())
+  panel <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]
+  x_labels <- stats::na.omit(panel$x$get_labels())
   expect_gt(length(x_labels), 1L)
   expect_false(anyDuplicated(x_labels) > 0L)
   expect_true(all(grepl("[0-9]{4}$", x_labels)))
@@ -256,7 +262,8 @@ test_that("timeline shows the recorded unit with a clinical value", {
     patient_id = pid, parameter = "CEA", value = "3.1",
     date = as.Date("2023-06-01"), source = "LIMS"
   ))
-  db$clinical$unit <- ifelse(db$clinical$parameter == "CEA", "ng/mL", NA_character_)
+  is_cea <- db$clinical$parameter == "CEA"
+  db$clinical$unit <- ifelse(is_cea, "ng/mL", NA_character_)
   labels <- mp_plot_timeline(db, pid)$data$label
   expect_true("CEA: 3.1 ng/mL" %in% labels)
   expect_false(any(grepl("NA", labels, fixed = TRUE)))

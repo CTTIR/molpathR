@@ -644,7 +644,9 @@ mp_plot_timeline <- function(db, patient_id) {
       has_unit <- has_value & !is.na(unit) & nzchar(unit)
       clin_value[has_unit] <- paste(clin_value[has_unit], unit[has_unit])
     }
-    clin_label[has_value] <- paste0(clin_label[has_value], ": ", clin_value[has_value])
+    clin_label[has_value] <- paste0(
+      clin_label[has_value], ": ", clin_value[has_value]
+    )
     c_data <- tibble::tibble(
       date  = pat$clinical$date,
       label = clin_label,
@@ -719,10 +721,13 @@ mp_plot_timeline <- function(db, patient_id) {
 #' @return `events` with `y` and `label_x` columns and an `x_limits`
 #'   attribute (the date axis limits).
 #' @noRd
-.mp_timeline_lanes <- function(events, types, char_frac = 0.01, max_chars = 45L) {
+.mp_timeline_lanes <- function(events, types, char_frac = 0.01,
+                               max_chars = 45L) {
   events <- events[order(match(events$type, types), events$date), , drop = FALSE]
   long <- nchar(events$label) > max_chars
-  events$label[long] <- paste0(substr(events$label[long], 1L, max_chars - 1L), "\u2026")
+  events$label[long] <- paste0(
+    substr(events$label[long], 1L, max_chars - 1L), "\u2026"
+  )
 
   # Fractions of the panel width: outer padding on both sides and the gap
   # between a point and its label.
@@ -730,8 +735,9 @@ mp_plot_timeline <- function(db, patient_id) {
   gap <- 0.012
   label_frac <- nchar(events$label) * char_frac
   offset <- as.numeric(events$date - min(events$date))
-  # Each label must end inside the panel:
-  # pad * total + offset + (gap + label_frac) * total <= (1 - pad) * total.
+  # Each label must end inside the panel: the left padding, the event's
+  # offset, the gap and the label width together may not exceed the panel
+  # width less the right padding, all in units of the total axis range.
   single_date <- max(offset) == 0
   if (single_date) {
     # Nominal 30-day window with the shared date at 30% of the panel width.
@@ -762,7 +768,11 @@ mp_plot_timeline <- function(db, patient_id) {
   }
   attr(events, "x_limits") <- c(start, start + total)
   # A shared date is the only date worth a tick.
-  attr(events, "x_breaks") <- if (single_date) min(events$date) else ggplot2::waiver()
+  attr(events, "x_breaks") <- if (single_date) {
+    min(events$date)
+  } else {
+    ggplot2::waiver()
+  }
   events
 }
 

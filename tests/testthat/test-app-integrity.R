@@ -37,7 +37,8 @@ test_that("plot filters change observed values and mutation counts", {
 test_that("app survival plot keeps the log-rank label inside the plot area", {
   env <- app_modules()
   p <- mp_plot_survival(app_fixture(), "TP53")
-  text <- Filter(function(t) identical(t$mode, "text"), env$app_survival_plotly(p)$x$data)
+  traces <- env$app_survival_plotly(p)$x$data
+  text <- Filter(function(t) identical(t$mode, "text"), traces)
   expect_length(text, 1L)
   expect_match(text[[1]]$text, "^Log-rank")
   expect_identical(text[[1]]$textposition, "top right")
