@@ -16,3 +16,6 @@ _build.R
 *.orig
 *.Rcheck/
 _coverage/
+
+# Local maintenance notes stay out of the repository
+/planning/
