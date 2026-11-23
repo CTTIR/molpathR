@@ -146,3 +146,9 @@ test_that("mp_search errors on bad inputs", {
   expect_error(mp_search(db, 1), "single character")
   expect_error(mp_search(db, c("a", "b")), "single character")
 })
+
+test_that("mp_search refuses empty and missing terms instead of warning", {
+  db <- mp_example_db(n_patients = 5, seed = 1)
+  expect_no_warning(expect_error(mp_search(db, ""), "neither empty nor NA"))
+  expect_error(mp_search(db, NA_character_), "neither empty nor NA")
+})

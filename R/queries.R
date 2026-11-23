@@ -279,7 +279,7 @@ print.molpath_summary <- function(x, ...) {
 #' (case-insensitive).
 #'
 #' @param db A `molpath_db` object.
-#' @param term A single search string.
+#' @param term A single nonempty search string (matched literally, ignoring case).
 #'
 #' @return A named list of tibbles, one per table, containing rows that match
 #'   the search term. Empty tibbles are omitted.
@@ -292,8 +292,8 @@ mp_search <- function(db, term) {
   if (!inherits(db, "molpath_db")) {
     rlang::abort("`db` must be a molpath_db object.")
   }
-  if (!is.character(term) || length(term) != 1L) {
-    rlang::abort("`term` must be a single character string.")
+  if (!is.character(term) || length(term) != 1L || is.na(term) || !nzchar(term)) {
+    rlang::abort("`term` must be a single character string that is neither empty nor NA.")
   }
 
   search_table <- function(tbl) {

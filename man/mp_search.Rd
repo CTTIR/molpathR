@@ -9,7 +9,7 @@ mp_search(db, term)
 \arguments{
 \item{db}{A \code{molpath_db} object.}
 
-\item{term}{A single search string.}
+\item{term}{A single nonempty search string (matched literally, ignoring case).}
 }
 \value{
 A named list of tibbles, one per table, containing rows that match
