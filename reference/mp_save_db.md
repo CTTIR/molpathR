@@ -1,7 +1,7 @@
 # Save a molpath_db to disk
 
 Validates the database and saves it as a compressed RDS file.
-Serialization and read-back verification occur in a sibling temporary
+Serialisation and read-back verification occur in a sibling temporary
 file before replacement. If replacement fails, the previous destination
 is restored or an explicit recovery path is reported. Use one writer per
 destination; this is not a multi-process database transaction. The file
@@ -47,6 +47,6 @@ mp_save_db(db, tmp)
 #> • Patients with reports: 100%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to /tmp/RtmpqPrZ65/file1c1221a4ff5c.rds (38.3 KB).
+#> ✔ Database saved to /tmp/RtmpzL7Iny/file19ab6ec9f190.rds (38.3 KB).
 unlink(tmp)
 ```

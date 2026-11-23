@@ -57,7 +57,7 @@ Filter and search the database
 - [`mp_search()`](https://cttir.github.io/molpathR/reference/mp_search.md)
   : Free-text search across a molpath_db
 
-## Visualization
+## Visualisation
 
 Publication-ready plots
 

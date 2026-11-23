@@ -1,7 +1,7 @@
 # Build a molpath_db from parsed data objects
 
 Constructs a unified `molpath_db` database object from one or more
-`molpath_parsed` objects. Each parsed object is categorized by its
+`molpath_parsed` objects. Each parsed object is categorised by its
 `source_type` and merged into the appropriate database table. Raw
 FASTQ/BAM reads remain available through their readers but cannot be
 interpreted as variant calls by this function. Unknown gene annotations,
@@ -31,7 +31,7 @@ reports, clinical, survival, and metadata tables.
 
 Source types map to database tables as follows:
 
-- `"vcf"` – non-reference GT calls or explicitly normalized variants
+- `"vcf"` – non-reference GT calls or explicitly normalised variants
 
 - `"xml_report"` – variants and explicitly identified patients/samples
 

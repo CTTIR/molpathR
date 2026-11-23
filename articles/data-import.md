@@ -13,7 +13,7 @@ coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](htt
 downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads
 total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -91,7 +91,7 @@ CSV, semicolon-delimited and tab-delimited exports are detected by their
 actual fields. Field aliases match whole column names, ignoring case and
 surrounding header whitespace. `patient_id_backup` is preserved as an
 extra source column; it does not replace `patient_id`. Multiple
-recognized aliases for one field are ambiguous and require
+recognised aliases for one field are ambiguous and require
 reconciliation. Survival event values must be exactly 0 (censored), 1
 (event), or missing; fractional values are never truncated. Observed
 times must be finite and nonnegative. Dates use ISO `YYYY-MM-DD` values.
@@ -102,7 +102,7 @@ The reader preserves ID, INFO, FORMAT and each sample’s raw token
 regardless of optional typed-reader installations. Original header lines
 and declared sample names are in `parsed$metadata`. Database integration
 expands observed non-reference GT alleles, while retaining source
-genomic fields and genotype information. Each normalized row keeps its
+genomic fields and genotype information. Each normalised row keeps its
 original sample token in `sample_fields`, interpreted by `format`; raw
 sample names cannot overwrite gene annotations or model identifiers. It
 does not derive gene effects or pathogenicity from coordinates.
@@ -144,7 +144,7 @@ mp_validate_db(linked)$valid
 
 A site-only VCF or sample measurements without GT do not establish a
 usable sample call. Inspect the parsed table, then supply an explicitly
-normalized `sample_id`/`variant` table after independent
+normalised `sample_id`/`variant` table after independent
 calling/annotation if that is the intended input. Reference or uncalled
 genotypes are not evidence of a wild-type gene: the package has no
 assay-coverage model.
@@ -157,7 +157,7 @@ assay-coverage model.
 | [`mp_read_pdf_report()`](https://cttir.github.io/molpathR/reference/mp_read_pdf_report.md) | Extracted text sections; no OCR or inferred patient/sample identity |
 | [`mp_read_fastq()`](https://cttir.github.io/molpathR/reference/mp_read_fastq.md) | Raw read IDs, sequences and qualities; `n` selects the first records, not a random sample |
 | [`mp_read_bam()`](https://cttir.github.io/molpathR/reference/mp_read_bam.md) | Explicit alignment fields, optionally restricted to one genomic region |
-| [`mp_read_auto()`](https://cttir.github.io/molpathR/reference/mp_read_auto.md) | Recognized source schema; unrecognized or ambiguous tabular layouts raise an error |
+| [`mp_read_auto()`](https://cttir.github.io/molpathR/reference/mp_read_auto.md) | Recognised source schema; unrecognised or ambiguous tabular layouts raise an error |
 
 The generic report templates are not vendor-certified. XML without a
 known link and PDF text can remain incomplete report evidence; inspect
@@ -199,12 +199,12 @@ mp_save_db(linked, saved)
 #> • Patients with reports: 0%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to /tmp/RtmphjYxuf/molpath-example-1f3a4c24d5a1/database.rds (1.2 KB).
+#> ✔ Database saved to /tmp/Rtmp1k13Ts/molpath-example-1cd35ce9e678/database.rds (1.2 KB).
 restored <- mp_load_db(saved)
 #> 
 #> ── Loading molpath database ──
 #> 
-#> ✔ Database loaded from /tmp/RtmphjYxuf/molpath-example-1f3a4c24d5a1/database.rds.
+#> ✔ Database loaded from /tmp/Rtmp1k13Ts/molpath-example-1cd35ce9e678/database.rds.
 #> ℹ Contents: 2 patients, 2 samples, 1 variant, 0 reports, 2 clinical records, 2 survival records.
 identical(restored, linked)
 #> [1] TRUE
@@ -218,7 +218,7 @@ reported on save and remain inspectable after reload; they are not
 silently repaired.
 
 Older zero-column empty tables and one-row metadata tibbles are
-normalized on load. ISO date strings are normalized to `Date`. Malformed
-nonempty tables or conflicting identities require explicit repair; keep
+normalised on load. ISO date strings are normalised to `Date`. Malformed
+non-empty tables or conflicting identities require explicit repair; keep
 the original RDS and review the reported field rather than fabricating
 missing clinical information.

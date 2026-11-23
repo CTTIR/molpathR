@@ -17,7 +17,7 @@ mp_search(db, term)
 
 - term:
 
-  A single nonempty search string (matched literally, ignoring case).
+  A single non-empty search string (matched literally, ignoring case).
 
 ## Value
 

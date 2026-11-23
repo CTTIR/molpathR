@@ -136,12 +136,12 @@ audit; use the repository citation until a public deposit is verified.
   Started](https://cttir.github.io/molpathR/articles/getting-started.html)
 - [Data Import
   Guide](https://cttir.github.io/molpathR/articles/data-import.html)
-- [Visualization
+- [Visualisation
   Guide](https://cttir.github.io/molpathR/articles/visualization.html)
 - [Shiny
   Application](https://cttir.github.io/molpathR/articles/shiny-app.html)
 
-## License
+## Licence
 
 MIT License. See
 [LICENSE.md](https://cttir.github.io/molpathR/LICENSE.md) for details.
@@ -231,7 +231,7 @@ Filter and search the database
 - [`mp_search()`](https://cttir.github.io/molpathR/reference/mp_search.md)
   : Free-text search across a molpath_db
 
-## Visualization
+## Visualisation
 
 Publication-ready plots
 
@@ -291,7 +291,7 @@ S3 class constructors
   molpathR](https://cttir.github.io/molpathR/articles/getting-started.md):
 - [Data Import
   Guide](https://cttir.github.io/molpathR/articles/data-import.md):
-- [Visualization
+- [Visualisation
   Guide](https://cttir.github.io/molpathR/articles/visualization.md):
 - [Interactive Shiny
   Application](https://cttir.github.io/molpathR/articles/shiny-app.md):

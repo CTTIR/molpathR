@@ -1,4 +1,4 @@
-# Visualization Guide
+# Visualisation Guide
 
 ![molpathR logo](figures/logo.svg)![molpathR
 logo](figures/logo-dark.svg)
@@ -13,14 +13,14 @@ coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](htt
 downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads
 total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 ## Overview
 
-All molpathR plot functions return ggplot2 objects, so you can customize
+All molpathR plot functions return ggplot2 objects, so you can customise
 them with standard ggplot2 syntax.
 
 ``` r
@@ -104,9 +104,9 @@ mp_plot_timeline(db, pid)
 ![Dated sample, report and clinical records for one synthetic
 patient.](visualization_files/figure-html/timeline-1.png)
 
-## Customization
+## Customisation
 
-All plots can be customized with ggplot2:
+All plots can be customised with ggplot2:
 
 ``` r
 
@@ -116,5 +116,5 @@ mp_plot_vaf_distribution(db) +
   theme(plot.title = element_text(colour = "purple"))
 ```
 
-![Distribution of synthetic variant allele fractions with a customized
+![Distribution of synthetic variant allele fractions with a customised
 title and styling.](visualization_files/figure-html/custom-1.png)

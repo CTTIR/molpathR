@@ -13,7 +13,7 @@ coverage](https://codecov.io/gh/CTTIR/molpathR/branch/main/graph/badge.svg)](htt
 downloads](https://cranlogs.r-pkg.org/badges/molpathR)](https://cran.r-project.org/package=molpathR)
 [![CRAN downloads
 total](https://cranlogs.r-pkg.org/badges/grand-total/molpathR)](https://cran.r-project.org/package=molpathR)
-[![License:
+[![Licence:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -47,7 +47,7 @@ db
 #> ℹ survival: 50 records x 5 columns
 #> ℹ Sample date range: 2021-04-01 to 2025-06-26
 #> ℹ Overall completeness: "93.7%"
-#> ℹ Created: "2026-11-23 07:38:36"
+#> ℹ Created: "2026-11-23 09:03:06"
 #> ℹ Source files: 0
 ```
 
@@ -131,7 +131,7 @@ head(tp53)
 #> # ℹ 2 more variables: ref_allele <chr>, alt_allele <chr>
 ```
 
-## Visualize
+## Visualise
 
 ``` r
 

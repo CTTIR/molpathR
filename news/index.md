@@ -20,18 +20,18 @@
 - Database construction, merging and persistence share typed table and
   value contracts. Conflicting primary identities are refused;
   incomplete links remain explicit. Known legacy empty-table and
-  metadata representations are normalized.
+  metadata representations are normalised.
 - Actual pathology and XML imports retain patient/sample linkage. VCF
   integration uses explicit nonreference genotypes and preserves source
   fields without inventing annotations. Raw FASTQ/BAM data are no longer
   treated as variant calls.
 - Delimited imports use exact field aliases, support semicolon/tab
-  separation, reject malformed outcomes and retain unrecognized source
+  separation, reject malformed outcomes and retain unrecognised source
   columns.
 - VCF ID/INFO/FORMAT/sample values are independent of optional typed
   backends; BAM fields, FASTQ first-n selection and quality values are
   repaired. Malformed input and command failures are visible.
-- Database writes stage and verify serialization, with recovery on
+- Database writes stage and verify serialisation, with recovery on
   replacement failure. Loading rejects corrupt objects. Upload dispatch
   preserves the original filename without retaining a deleted temporary
   path.
@@ -50,14 +50,22 @@
 - [`mp_plot_survival()`](https://cttir.github.io/molpathR/reference/mp_plot_survival.md)
   colours groups with the colour-blind-safe Okabe-Ito palette instead of
   ‘RColorBrewer’ Set1 (red and green), marks censored observations with
-  `+`, and places the log-rank label in the lower-left corner, where it
-  no longer overlaps the curves. The note on genes without a recorded
-  variant is dropped when the plot falls back to one group.
+  `+`, and places the log-rank label in the lower-left corner, which the
+  curves usually leave free (a group whose curve falls to zero within
+  the first months can still cross it); the Shiny app draws that label
+  inside the plot area instead of cutting it off at the y axis. The note
+  on genes without a recorded variant is dropped when the plot falls
+  back to one group.
 - [`mp_plot_timeline()`](https://cttir.github.io/molpathR/reference/mp_plot_timeline.md)
   places each label to the right of its event and moves labels that
-  would overlap onto separate lanes; clinical events show their value
-  and the date axis shows the year. A patient whose events are all
-  undated now gives an informative error instead of an empty panel.
+  would overlap onto separate lanes. The date axis is sized to the
+  labels as well as the dates, so labels are no longer cut off at the
+  right edge; events that all share one date are drawn in a 30-day
+  window with that date as the only tick. Date ticks show the month and
+  year, and also the day when months would repeat. Clinical events show
+  their value, with its unit when a `unit` column is recorded; labels
+  longer than 45 characters are shortened. A patient whose events are
+  all undated now gives an informative error instead of an empty panel.
 - [`mp_plot_vaf_distribution()`](https://cttir.github.io/molpathR/reference/mp_plot_vaf_distribution.md)
   bins start at 0, so no bar extends below a VAF of 0; several genes are
   drawn in one panel each instead of overlaid translucent histograms
@@ -79,10 +87,10 @@
   refuses an empty or missing `term` with an informative error instead
   of emitting one warning per text column and returning no matches.
 - [`mp_read_auto()`](https://cttir.github.io/molpathR/reference/mp_read_auto.md)
-  recognizes every survival time column alias that
+  recognises every survival time column alias that
   [`mp_read_survival()`](https://cttir.github.io/molpathR/reference/mp_read_survival.md)
   accepts (for example `pfs.months`), so such tables are no longer
-  refused as unrecognized; its error message lists all supported
+  refused as unrecognised; its error message lists all supported
   extensions.
 
 ### Documentation
@@ -92,7 +100,7 @@
 
 ## molpathR 0.1.0
 
-- Standardize the named v5 package logo across README, documentation
+- Standardise the named v5 package logo across README, documentation
   pages and available application headers, with matching light and dark
   artwork.
 
@@ -116,7 +124,7 @@
   validate, save/load operations.
 - Query engine with tidy evaluation, variant filtering, free-text
   search.
-- Six visualization functions: variant landscape, mutation spectrum,
+- Six visualisation functions: variant landscape, mutation spectrum,
   survival curves, cohort overview, VAF distribution, patient timeline.
 - Interactive Shiny application with 6 tabs and cross-tab interactivity.
 - Synthetic data generator

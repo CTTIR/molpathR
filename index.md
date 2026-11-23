@@ -136,12 +136,12 @@ audit; use the repository citation until a public deposit is verified.
   Started](https://cttir.github.io/molpathR/articles/getting-started.html)
 - [Data Import
   Guide](https://cttir.github.io/molpathR/articles/data-import.html)
-- [Visualization
+- [Visualisation
   Guide](https://cttir.github.io/molpathR/articles/visualization.html)
 - [Shiny
   Application](https://cttir.github.io/molpathR/articles/shiny-app.html)
 
-## License
+## Licence
 
 MIT License. See
 [LICENSE.md](https://cttir.github.io/molpathR/LICENSE.md) for details.

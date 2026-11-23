@@ -44,10 +44,10 @@ graphics::text(0.02, c(0.9, 0.8, 0.7, 0.6), adj = 0, labels = c(
   "Interpretation: pathogenic variant"
 ))
 grDevices::dev.off()
-#> agg_record_1c125e60808c 
+#> agg_record_19ab76db30ec 
 #>                       2 
 result <- mp_read_pdf_report(pdf_file)
-#> ℹ Reading PDF report: file1c12416c9c89.pdf (template: generic)
+#> ℹ Reading PDF report: file19ab64aa5a18.pdf (template: generic)
 #> ✔ Extracted 3 section(s) from PDF report
 result$data
 #> # A tibble: 3 × 2

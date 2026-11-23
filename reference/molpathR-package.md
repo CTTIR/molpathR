@@ -1,6 +1,6 @@
 # molpathR: Molecular Pathology Data Platform for Clinical NGS Integration
 
-Ingests, links, queries and visualizes molecular pathology data from
+Ingests, links, queries and visualises molecular pathology data from
 heterogeneous sources, including next-generation sequencing (NGS) files
 (FASTQ, BAM, VCF), XML variant interpretation reports, structured
 pathology reports in PDF format, exports from pathology and clinical

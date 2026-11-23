@@ -2,7 +2,7 @@
 
 Reads an RDS file, verifies it contains a valid `molpath_db` object, and
 prints a summary of the loaded database. Known legacy zero-column empty
-tables and one-row metadata tibbles are normalized explicitly. Malformed
+tables and one-row metadata tibbles are normalised explicitly. Malformed
 schemas or values are rejected; incomplete foreign-key links remain
 visible through
 [`mp_validate_db()`](https://cttir.github.io/molpathR/reference/mp_validate_db.md)
@@ -44,12 +44,12 @@ mp_save_db(db, tmp)
 #> • Patients with reports: 100%
 #> • Patients with clinical: 100%
 #> • Patients with survival: 100%
-#> ✔ Database saved to /tmp/RtmpqPrZ65/file1c125bd6ec92.rds (38.3 KB).
+#> ✔ Database saved to /tmp/RtmpzL7Iny/file19ab3c18f574.rds (38.3 KB).
 db2 <- mp_load_db(tmp)
 #> 
 #> ── Loading molpath database ──
 #> 
-#> ✔ Database loaded from /tmp/RtmpqPrZ65/file1c125bd6ec92.rds.
+#> ✔ Database loaded from /tmp/RtmpzL7Iny/file19ab3c18f574.rds.
 #> ℹ Contents: 5 patients, 11 samples, 2011 variants, 11 reports, 20 clinical records, 5 survival records.
 unlink(tmp)
 ```
