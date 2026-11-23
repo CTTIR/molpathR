@@ -23,11 +23,18 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+      <ul class="navbar-nav me-auto"></ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/CTTIR/molpathR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul></li>
       </ul></div>
 
 
@@ -57,6 +64,30 @@
 <li>Plot and app filters select the same observations; stale selections are cleared and download formats match their contents. Gene survival groups describe recorded variants, without inferring a negative assay from missing records.</li>
 <li>Small synthetic cohorts work with stable types; generators restore caller RNG and synthetic file dates have an explicit fixed anchor.</li>
 <li>Development citation metadata no longer advertises the unresolving draft DOI; no release or deposit is claimed for this maintenance version.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="figures-0-2-0">Figures<a class="anchor" aria-label="anchor" href="#figures-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_plot_survival.html">mp_plot_survival()</a></code> colours groups with the colour-blind-safe Okabe-Ito palette instead of ‘RColorBrewer’ Set1 (red and green), marks censored observations with <code>+</code>, and places the log-rank label in the lower-left corner, where it no longer overlaps the curves. The note on genes without a recorded variant is dropped when the plot falls back to one group.</li>
+<li>
+<code><a href="../reference/mp_plot_timeline.html">mp_plot_timeline()</a></code> places each label to the right of its event and moves labels that would overlap onto separate lanes; clinical events show their value and the date axis shows the year. A patient whose events are all undated now gives an informative error instead of an empty panel.</li>
+<li>
+<code><a href="../reference/mp_plot_vaf_distribution.html">mp_plot_vaf_distribution()</a></code> bins start at 0, so no bar extends below a VAF of 0; several genes are drawn in one panel each instead of overlaid translucent histograms that could not be told apart, and the axis states that VAF is a proportion.</li>
+<li>
+<code><a href="../reference/mp_plot_variant_landscape.html">mp_plot_variant_landscape()</a></code> patient labels are larger (8 pt for up to 25 patients); beyond 60 patients, where labels overlap at any usual width, they are omitted and the axis title gives the number of patients. The “Unclassified” legend key only appears when such records are present.</li>
+<li>
+<code><a href="../reference/mp_plot_cohort_overview.html">mp_plot_cohort_overview()</a></code> gives diagnoses and sex codes outside the built-in palette their own colours instead of the grey missing-value fill; the age axis states its unit (years).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-2-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mp_search.html">mp_search()</a></code> refuses an empty or missing <code>term</code> with an informative error instead of emitting one warning per text column and returning no matches.</li>
+<li>
+<code><a href="../reference/mp_read_auto.html">mp_read_auto()</a></code> recognizes every survival time column alias that <code><a href="../reference/mp_read_survival.html">mp_read_survival()</a></code> accepts (for example <code>pfs.months</code>), so such tables are no longer refused as unrecognized; its error message lists all supported extensions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-0-2-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-2-0"></a></h3>
+<ul><li>The pkgdown site inherits the navigation bar of the shared themakR template, which restores the changelog link and the light/dark switch.</li>
 </ul></div>
 </div>
     <div class="section level2">

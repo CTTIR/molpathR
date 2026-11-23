@@ -44,7 +44,14 @@ Extension mapping:
 - `.pdf`:
   [`mp_read_pdf_report`](https://cttir.github.io/molpathR/reference/mp_read_pdf_report.md)
 
-- `.xlsx`, `.xls`, `.csv`: tries survival/clinical format detection
+- `.xlsx`, `.xls`, `.csv`, `.tsv`: chooses
+  [`mp_read_survival`](https://cttir.github.io/molpathR/reference/mp_read_survival.md),
+  [`mp_read_nexus_clinical`](https://cttir.github.io/molpathR/reference/mp_read_nexus_clinical.md)
+  or
+  [`mp_read_nexus_pathology`](https://cttir.github.io/molpathR/reference/mp_read_nexus_pathology.md)
+  from the recognized column names (survival times, a clinical parameter
+  column or a sample identifier); ambiguous or unrecognized tables are
+  refused
 
 ## Examples
 
@@ -55,8 +62,8 @@ mp_read_auto(files$vcf[1])
 #> 
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "vcf"
-#> ℹ Source file: /tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0001.vcf
-#> ℹ Parsed: "2026-11-22 05:43:52"
+#> ℹ Source file: /tmp/RtmpqPrZ65/molpathR-example/vcf/SAM-2024-0001.vcf
+#> ℹ Parsed: "2026-11-23 07:38:12"
 #> ℹ Data: 8 rows x 10 columns
 #> ℹ Columns: chrom, pos, id, ref, alt, qual, filter, info, format, and SAM-2024-0001
 #> ℹ Completeness: "100%"
@@ -67,8 +74,8 @@ mp_read_auto(files$survival)
 #> 
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "survival"
-#> ℹ Source file: /tmp/RtmpYMvdo5/molpathR-example/survival.csv
-#> ℹ Parsed: "2026-11-22 05:43:52"
+#> ℹ Source file: /tmp/RtmpqPrZ65/molpathR-example/survival.csv
+#> ℹ Parsed: "2026-11-23 07:38:12"
 #> ℹ Data: 30 rows x 5 columns
 #> ℹ Columns: patient_id, os_months, os_status, pfs_months, and pfs_status
 #> ℹ Completeness: "100%"

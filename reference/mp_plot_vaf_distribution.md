@@ -1,7 +1,8 @@
 # Plot variant allele frequency distribution
 
-Histogram or density plot of variant allele frequencies (VAF),
-optionally filtered by gene.
+Histogram of variant allele frequencies (VAF), optionally filtered by
+gene. Bins are 0.05 wide and start at 0; the dashed line marks a VAF of
+0.5. When `gene` selects several genes, each gene gets its own panel.
 
 ## Usage
 

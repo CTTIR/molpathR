@@ -1,7 +1,9 @@
 # Plot patient timeline
 
 Displays a timeline of events for a single patient: sample collections,
-report dates, and clinical measurements.
+report dates, and clinical measurements (with their values). Labels are
+placed to the right of each event and moved to separate lanes where they
+would otherwise overlap. Events without a date are omitted.
 
 ## Usage
 

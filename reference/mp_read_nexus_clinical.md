@@ -32,7 +32,7 @@ utils::write.csv(data.frame(
   date = c("2025-01-10", "2025-01-10")
 ), clin_file, row.names = FALSE)
 result <- mp_read_nexus_clinical(clin_file)
-#> ℹ Reading Nexus clinical export: file194e4c21aa83.csv
+#> ℹ Reading Nexus clinical export: file1c122ebd1bd2.csv
 #> ✔ Parsed 2 clinical record(s)
 result$data
 #> # A tibble: 2 × 6

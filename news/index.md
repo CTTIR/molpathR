@@ -45,6 +45,51 @@
   draft DOI; no release or deposit is claimed for this maintenance
   version.
 
+### Figures
+
+- [`mp_plot_survival()`](https://cttir.github.io/molpathR/reference/mp_plot_survival.md)
+  colours groups with the colour-blind-safe Okabe-Ito palette instead of
+  ‘RColorBrewer’ Set1 (red and green), marks censored observations with
+  `+`, and places the log-rank label in the lower-left corner, where it
+  no longer overlaps the curves. The note on genes without a recorded
+  variant is dropped when the plot falls back to one group.
+- [`mp_plot_timeline()`](https://cttir.github.io/molpathR/reference/mp_plot_timeline.md)
+  places each label to the right of its event and moves labels that
+  would overlap onto separate lanes; clinical events show their value
+  and the date axis shows the year. A patient whose events are all
+  undated now gives an informative error instead of an empty panel.
+- [`mp_plot_vaf_distribution()`](https://cttir.github.io/molpathR/reference/mp_plot_vaf_distribution.md)
+  bins start at 0, so no bar extends below a VAF of 0; several genes are
+  drawn in one panel each instead of overlaid translucent histograms
+  that could not be told apart, and the axis states that VAF is a
+  proportion.
+- [`mp_plot_variant_landscape()`](https://cttir.github.io/molpathR/reference/mp_plot_variant_landscape.md)
+  patient labels are larger (8 pt for up to 25 patients); beyond 60
+  patients, where labels overlap at any usual width, they are omitted
+  and the axis title gives the number of patients. The “Unclassified”
+  legend key only appears when such records are present.
+- [`mp_plot_cohort_overview()`](https://cttir.github.io/molpathR/reference/mp_plot_cohort_overview.md)
+  gives diagnoses and sex codes outside the built-in palette their own
+  colours instead of the grey missing-value fill; the age axis states
+  its unit (years).
+
+### Bug fixes
+
+- [`mp_search()`](https://cttir.github.io/molpathR/reference/mp_search.md)
+  refuses an empty or missing `term` with an informative error instead
+  of emitting one warning per text column and returning no matches.
+- [`mp_read_auto()`](https://cttir.github.io/molpathR/reference/mp_read_auto.md)
+  recognizes every survival time column alias that
+  [`mp_read_survival()`](https://cttir.github.io/molpathR/reference/mp_read_survival.md)
+  accepts (for example `pfs.months`), so such tables are no longer
+  refused as unrecognized; its error message lists all supported
+  extensions.
+
+### Documentation
+
+- The pkgdown site inherits the navigation bar of the shared themakR
+  template, which restores the changelog link and the light/dark switch.
+
 ## molpathR 0.1.0
 
 - Standardize the named v5 package logo across README, documentation

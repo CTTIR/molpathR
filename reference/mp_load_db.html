@@ -31,11 +31,18 @@ through mp_validate_db() rather than being invented."><meta property="og:image" 
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+      <ul class="navbar-nav me-auto"></ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/CTTIR/molpathR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul></li>
       </ul></div>
 
 
@@ -93,12 +100,12 @@ containing a <code>molpath_db</code> object.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • Patients with reports: 100%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • Patients with clinical: 100%</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> • Patients with survival: 100%</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Database saved to <span style="color: #0000BB;">/tmp/RtmpYMvdo5/file194e144fba46.rds</span> (38.3 KB).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Database saved to <span style="color: #0000BB;">/tmp/RtmpqPrZ65/file1c125bd6ec92.rds</span> (38.3 KB).</span>
 <span class="r-in"><span><span class="va">db2</span> <span class="op">&lt;-</span> <span class="fu">mp_load_db</span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Loading molpath database</span> ──</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Database loaded from <span style="color: #0000BB;">/tmp/RtmpYMvdo5/file194e144fba46.rds</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Database loaded from <span style="color: #0000BB;">/tmp/RtmpqPrZ65/file1c125bd6ec92.rds</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Contents: 5 patients, 11 samples, 2011 variants, 11 reports, 20 clinical records, 5 survival records.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></span>
 </code></pre></div>

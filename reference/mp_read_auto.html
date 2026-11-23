@@ -25,11 +25,18 @@ appropriate parser."><meta property="og:image" content="https://cttir.github.io/
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+      <ul class="navbar-nav me-auto"></ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/CTTIR/molpathR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul></li>
       </ul></div>
 
 
@@ -78,8 +85,11 @@ identity. A disposable copy is removed after reading.</p></dd>
 <li><p><code>.bam</code>: <code><a href="mp_read_bam.html">mp_read_bam</a></code></p></li>
 <li><p><code>.xml</code>: <code><a href="mp_read_xml_report.html">mp_read_xml_report</a></code></p></li>
 <li><p><code>.pdf</code>: <code><a href="mp_read_pdf_report.html">mp_read_pdf_report</a></code></p></li>
-<li><p><code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>: tries survival/clinical
-format detection</p></li>
+<li><p><code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>, <code>.tsv</code>: chooses
+<code><a href="mp_read_survival.html">mp_read_survival</a></code>, <code><a href="mp_read_nexus_clinical.html">mp_read_nexus_clinical</a></code>
+or <code><a href="mp_read_nexus_pathology.html">mp_read_nexus_pathology</a></code> from the recognized column
+names (survival times, a clinical parameter column or a sample
+identifier); ambiguous or unrecognized tables are refused</p></li>
 </ul></div>
 
     <div class="section level2">
@@ -90,8 +100,8 @@ format detection</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">molpath_parsed</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Source type: <span style="color: #0000BB;">"vcf"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Source file: <span style="color: #0000BB;">/tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0001.vcf</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Parsed: <span style="color: #0000BB;">"2026-11-22 05:43:52"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Source file: <span style="color: #0000BB;">/tmp/RtmpqPrZ65/molpathR-example/vcf/SAM-2024-0001.vcf</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Parsed: <span style="color: #0000BB;">"2026-11-23 07:38:12"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Data: <span style="color: #0000BB;">8</span> rows x <span style="color: #0000BB;">10</span> columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Columns: <span style="color: #00BB00;">chrom</span>, <span style="color: #00BB00;">pos</span>, <span style="color: #00BB00;">id</span>, <span style="color: #00BB00;">ref</span>, <span style="color: #00BB00;">alt</span>, <span style="color: #00BB00;">qual</span>, <span style="color: #00BB00;">filter</span>, <span style="color: #00BB00;">info</span>, <span style="color: #00BB00;">format</span>, and <span style="color: #00BB00;">SAM-2024-0001</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Completeness: <span style="color: #0000BB;">"100%"</span></span>
@@ -102,8 +112,8 @@ format detection</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">molpath_parsed</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Source type: <span style="color: #0000BB;">"survival"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Source file: <span style="color: #0000BB;">/tmp/RtmpYMvdo5/molpathR-example/survival.csv</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Parsed: <span style="color: #0000BB;">"2026-11-22 05:43:52"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Source file: <span style="color: #0000BB;">/tmp/RtmpqPrZ65/molpathR-example/survival.csv</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Parsed: <span style="color: #0000BB;">"2026-11-23 07:38:12"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Data: <span style="color: #0000BB;">30</span> rows x <span style="color: #0000BB;">5</span> columns</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Columns: <span style="color: #00BB00;">patient_id</span>, <span style="color: #00BB00;">os_months</span>, <span style="color: #00BB00;">os_status</span>, <span style="color: #00BB00;">pfs_months</span>, and <span style="color: #00BB00;">pfs_status</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Completeness: <span style="color: #0000BB;">"100%"</span></span>

@@ -40,8 +40,8 @@ result
 #> 
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "xml_report"
-#> ℹ Source file: /tmp/RtmpYMvdo5/molpathR-example/xml/SAM-2024-0001_report.xml
-#> ℹ Parsed: "2026-11-22 05:44:04"
+#> ℹ Source file: /tmp/RtmpqPrZ65/molpathR-example/xml/SAM-2024-0001_report.xml
+#> ℹ Parsed: "2026-11-23 07:38:24"
 #> ℹ Data: 7 rows x 10 columns
 #> ℹ Columns: patient_id, patient_name, sample_id, sample_type, gene, variant, classification, vaf, evidence, and therapeutic
 #> ℹ Completeness: "60%"

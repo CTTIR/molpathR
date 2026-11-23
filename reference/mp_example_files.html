@@ -27,11 +27,18 @@ PDF-like reports, a survival CSV, and a tiny FASTQ file."><meta property="og:ima
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
-      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+      <ul class="navbar-nav me-auto"></ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/CTTIR/molpathR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul></li>
       </ul></div>
 
 
@@ -103,11 +110,11 @@ The caller's random-number state is restored, including on error.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu">mp_example_files</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"molpathR-example"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vcf     : chr [1:5] "/tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0001.vcf" "/tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0002.vcf" "/tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0003.vcf" "/tmp/RtmpYMvdo5/molpathR-example/vcf/SAM-2024-0004.vcf" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ xml     : chr [1:5] "/tmp/RtmpYMvdo5/molpathR-example/xml/SAM-2024-0001_report.xml" "/tmp/RtmpYMvdo5/molpathR-example/xml/SAM-2024-0002_report.xml" "/tmp/RtmpYMvdo5/molpathR-example/xml/SAM-2024-0003_report.xml" "/tmp/RtmpYMvdo5/molpathR-example/xml/SAM-2024-0004_report.xml" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pdf     : chr [1:5] "/tmp/RtmpYMvdo5/molpathR-example/pdf/SAM-2024-0001_report.txt" "/tmp/RtmpYMvdo5/molpathR-example/pdf/SAM-2024-0002_report.txt" "/tmp/RtmpYMvdo5/molpathR-example/pdf/SAM-2024-0003_report.txt" "/tmp/RtmpYMvdo5/molpathR-example/pdf/SAM-2024-0004_report.txt" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ survival: chr "/tmp/RtmpYMvdo5/molpathR-example/survival.csv"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ fastq   : chr "/tmp/RtmpYMvdo5/molpathR-example/ngs/sample.fastq"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vcf     : chr [1:5] "/tmp/RtmpqPrZ65/molpathR-example/vcf/SAM-2024-0001.vcf" "/tmp/RtmpqPrZ65/molpathR-example/vcf/SAM-2024-0002.vcf" "/tmp/RtmpqPrZ65/molpathR-example/vcf/SAM-2024-0003.vcf" "/tmp/RtmpqPrZ65/molpathR-example/vcf/SAM-2024-0004.vcf" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ xml     : chr [1:5] "/tmp/RtmpqPrZ65/molpathR-example/xml/SAM-2024-0001_report.xml" "/tmp/RtmpqPrZ65/molpathR-example/xml/SAM-2024-0002_report.xml" "/tmp/RtmpqPrZ65/molpathR-example/xml/SAM-2024-0003_report.xml" "/tmp/RtmpqPrZ65/molpathR-example/xml/SAM-2024-0004_report.xml" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ pdf     : chr [1:5] "/tmp/RtmpqPrZ65/molpathR-example/pdf/SAM-2024-0001_report.txt" "/tmp/RtmpqPrZ65/molpathR-example/pdf/SAM-2024-0002_report.txt" "/tmp/RtmpqPrZ65/molpathR-example/pdf/SAM-2024-0003_report.txt" "/tmp/RtmpqPrZ65/molpathR-example/pdf/SAM-2024-0004_report.txt" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ survival: chr "/tmp/RtmpqPrZ65/molpathR-example/survival.csv"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ fastq   : chr "/tmp/RtmpqPrZ65/molpathR-example/ngs/sample.fastq"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">files</span><span class="op">$</span><span class="va">vcf</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##fileformat=VCFv4.2"                                               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "##source=molpathR_synthetic_v0.1"                                   </span>
