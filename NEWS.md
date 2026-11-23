@@ -43,8 +43,10 @@
   palette instead of 'RColorBrewer' Set1 (red and green), marks censored
   observations with `+`, and places the log-rank label in the lower-left
   corner, which the curves usually leave free (a group whose curve falls to
-  zero within the first months can still cross it). The note on genes without
-  a recorded variant is dropped when the plot falls back to one group.
+  zero within the first months can still cross it); the Shiny app draws that
+  label inside the plot area instead of cutting it off at the y axis. The note
+  on genes without a recorded variant is dropped when the plot falls back to
+  one group.
 * `mp_plot_timeline()` places each label to the right of its event and moves
   labels that would overlap onto separate lanes. The date axis is sized to
   the labels as well as the dates, so labels are no longer cut off at the

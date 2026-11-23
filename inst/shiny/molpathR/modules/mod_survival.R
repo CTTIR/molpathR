@@ -81,7 +81,7 @@ mod_survival_server <- function(id, shared) {
     })
 
     output$surv_plot <- plotly::renderPlotly({
-      plotly::ggplotly(surv_plot_obj())
+      app_survival_plotly(surv_plot_obj())
     })
 
     output$surv_stats <- shiny::renderPrint({

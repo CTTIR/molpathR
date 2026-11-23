@@ -34,6 +34,15 @@ test_that("plot filters change observed values and mutation counts", {
   expect_error(mp_query_variants(db, min_vaf = .8, max_vaf = .2), "must not exceed")
 })
 
+test_that("app survival plot keeps the log-rank label inside the plot area", {
+  env <- app_modules()
+  p <- mp_plot_survival(app_fixture(), "TP53")
+  text <- Filter(function(t) identical(t$mode, "text"), env$app_survival_plotly(p)$x$data)
+  expect_length(text, 1L)
+  expect_match(text[[1]]$text, "^Log-rank")
+  expect_identical(text[[1]]$textposition, "top right")
+})
+
 test_that("survival grouping describes records and exports actual analyzed rows", {
   db <- app_fixture()
   p <- mp_plot_survival(db, "TP53")

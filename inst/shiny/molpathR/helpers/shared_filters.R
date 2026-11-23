@@ -85,6 +85,20 @@ app_plot <- function(value) {
   })
 }
 
+# ggplotly() centres text on its anchor and ignores hjust/vjust, so the
+# log-rank label anchored in the lower-left corner would be cut off at the
+# y axis. Text traces are drawn above and to the right of their anchor, as in
+# the static plot.
+app_survival_plotly <- function(plot) {
+  widget <- plotly::plotly_build(plotly::ggplotly(plot))
+  for (i in seq_along(widget$x$data)) {
+    if (identical(widget$x$data[[i]]$mode, "text")) {
+      widget$x$data[[i]]$textposition <- "top right"
+    }
+  }
+  widget
+}
+
 # Flat formats carry structured cells as JSON; native RDS retains R objects.
 app_flat_table <- function(data, layer) {
   for (column in names(data)) {
