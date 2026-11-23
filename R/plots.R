@@ -128,9 +128,16 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
   # Order genes by frequency
   plot_data$gene <- factor(plot_data$gene, levels = rev(genes))
 
-  # Patient labels shrink with cohort size but stay legible.
+  # Patient labels shrink with cohort size but stay legible; beyond 60
+  # patients they cannot be read at any usual figure width and are omitted.
   n_patients <- length(unique(plot_data$patient_id))
   x_size <- if (n_patients <= 25L) 8 else if (n_patients <= 50L) 7 else 6
+  x_text <- if (n_patients <= 60L) {
+    ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = x_size)
+  } else {
+    ggplot2::element_blank()
+  }
+  x_title <- if (n_patients <= 60L) "Patient" else paste0("Patients (n = ", n_patients, ")")
 
   ggplot2::ggplot(plot_data, ggplot2::aes(
     x = .data$patient_id,
@@ -145,12 +152,12 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
     ) +
     ggplot2::labs(
       title = "Variant Landscape",
-      x = "Patient",
+      x = x_title,
       y = "Gene"
     ) +
     theme_molpath() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = x_size),
+      axis.text.x = x_text,
       panel.grid = ggplot2::element_blank()
     )
 }
@@ -665,7 +672,7 @@ mp_plot_timeline <- function(db, patient_id) {
       hjust = 0, size = 2.8, show.legend = FALSE
     ) +
     ggplot2::scale_colour_manual(values = event_colors, name = "Event type", drop = TRUE) +
-    ggplot2::scale_x_date(expand = ggplot2::expansion(
+    ggplot2::scale_x_date(date_labels = "%b %Y", expand = ggplot2::expansion(
       mult = c(0.03, attr(events, "label_room") + 0.03)
     )) +
     ggplot2::scale_y_continuous(

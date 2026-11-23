@@ -46,15 +46,16 @@
   recorded variant is dropped when the plot falls back to one group.
 * `mp_plot_timeline()` places each label to the right of its event and moves
   labels that would overlap onto separate lanes; clinical events show their
-  value. A patient whose events are all undated now gives an informative
+  value and the date axis shows the year. A patient whose events are all undated now gives an informative
   error instead of an empty panel.
 * `mp_plot_vaf_distribution()` bins start at 0, so no bar extends below a VAF
   of 0; several genes are drawn in one panel each instead of overlaid
   translucent histograms that could not be told apart, and the axis states
   that VAF is a proportion.
 * `mp_plot_variant_landscape()` patient labels are larger (8 pt for up to 25
-  patients), and the "Unclassified" legend key only appears when such records
-  are present.
+  patients); beyond 60 patients, where labels overlap at any usual width, they
+  are omitted and the axis title gives the number of patients. The
+  "Unclassified" legend key only appears when such records are present.
 * `mp_plot_cohort_overview()` gives diagnoses and sex codes outside the
   built-in palette their own colours instead of the grey missing-value fill;
   the age axis states its unit (years).

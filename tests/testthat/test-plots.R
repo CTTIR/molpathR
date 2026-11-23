@@ -131,6 +131,13 @@ test_that("variant landscape keys only classifications that are present", {
   expect_gte(p$theme$axis.text.x$size, 7)
 })
 
+test_that("variant landscape omits unreadable patient labels in large cohorts", {
+  db <- mp_example_db(n_patients = 80, seed = 1)
+  p <- mp_plot_variant_landscape(db, top_n = 5)
+  expect_s3_class(p$theme$axis.text.x, "element_blank")
+  expect_match(p$labels$x, "^Patients \\(n = [0-9]+\\)$")
+})
+
 test_that("survival groups use colour-blind-safe colours and mark censoring", {
   db <- mp_example_db(n_patients = 30, seed = 1)
   p <- mp_plot_survival(db, group_by = "diagnosis", type = "os")
@@ -174,6 +181,8 @@ test_that("timeline labels do not overlap and carry clinical values", {
   p <- mp_plot_timeline(db, pid)
   ev <- p$data
   expect_true(any(grepl(": ", ev$label[ev$type == "Clinical"])))
+  x_labels <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x$get_labels()
+  expect_true(all(grepl("[0-9]{4}$", stats::na.omit(x_labels))))
   span <- as.numeric(diff(range(ev$date)))
   for (lane in split(ev, list(ev$type, ev$y), drop = TRUE)) {
     lane <- lane[order(lane$date), ]
