@@ -16,7 +16,9 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
 Displays a timeline of events for a single patient: sample collections,
-report dates, and clinical measurements.
+report dates, and clinical measurements (with their values). Labels are
+placed to the right of each event and moved to separate lanes where they
+would otherwise overlap. Events without a date are omitted.
 }
 \examples{
 db <- mp_example_db(n_patients = 20, seed = 1)

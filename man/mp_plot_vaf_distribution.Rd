@@ -15,8 +15,9 @@ mp_plot_vaf_distribution(db, gene = NULL)
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
-Histogram or density plot of variant allele frequencies (VAF), optionally
-filtered by gene.
+Histogram of variant allele frequencies (VAF), optionally filtered by gene.
+Bins are 0.05 wide and start at 0; the dashed line marks a VAF of 0.5.
+When \code{gene} selects several genes, each gene gets its own panel.
 }
 \examples{
 db <- mp_example_db(n_patients = 20, seed = 1)

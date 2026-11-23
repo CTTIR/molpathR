@@ -36,6 +36,36 @@ mp_diagnosis_colors <- function() {
   )
 }
 
+# Okabe-Ito colour-blind-safe qualitative palette, as reproduced in
+# Wong B (2011) Points of view: Color blindness. Nature Methods 8(6), 441,
+# Figure 2, p. 441. doi:10.1038/nmeth.1618. Reordered so that the
+# low-contrast yellow is used last.
+#' @noRd
+mp_okabe_ito <- function() {
+  c("#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00", "#56B4E9",
+    "#000000", "#F0E442")
+}
+
+# Named fill values for `levels`: known levels keep their colour, other levels
+# take unused Okabe-Ito colours (then hue colours) instead of the grey NA fill.
+#' @noRd
+.mp_level_colors <- function(levels, known = character()) {
+  levels <- unique(levels[!is.na(levels)])
+  out <- known[intersect(levels, names(known))]
+  extra <- setdiff(levels, names(out))
+  if (length(extra)) {
+    pool <- setdiff(mp_okabe_ito(), out)
+    if (length(extra) > length(pool)) {
+      pool <- c(pool, grDevices::hcl(
+        h = seq(15, 375, length.out = length(extra) - length(pool) + 1L)[-1L],
+        c = 100, l = 65
+      ))
+    }
+    out <- c(out, stats::setNames(pool[seq_along(extra)], extra))
+  }
+  out
+}
+
 # ---- Variant landscape -------------------------------------------------------
 
 #' Plot variant landscape (oncoplot)
@@ -90,9 +120,17 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
 
   plot_data <- dplyr::arrange(plot_data, .data$classification)
   plot_data <- dplyr::distinct(plot_data, .data$patient_id, .data$gene, .keep_all = TRUE)
+  # Show the "Unclassified" key only when such records are present.
+  if (!any(plot_data$classification == "Unclassified")) {
+    plot_data$classification <- factor(plot_data$classification, levels = class_order)
+  }
 
   # Order genes by frequency
   plot_data$gene <- factor(plot_data$gene, levels = rev(genes))
+
+  # Patient labels shrink with cohort size but stay legible.
+  n_patients <- length(unique(plot_data$patient_id))
+  x_size <- if (n_patients <= 25L) 8 else if (n_patients <= 50L) 7 else 6
 
   ggplot2::ggplot(plot_data, ggplot2::aes(
     x = .data$patient_id,
@@ -112,7 +150,7 @@ mp_plot_variant_landscape <- function(db, genes = NULL, top_n = 20) {
     ) +
     theme_molpath() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 5),
+      axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = x_size),
       panel.grid = ggplot2::element_blank()
     )
 }
@@ -292,6 +330,7 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
   if (has_group && length(unique(plot_df$group)) < 2L) {
     cli::cli_warn("Only one group found for {.val {group_by}}. Plotting without stratification.")
     has_group <- FALSE
+    gene_group <- FALSE
   }
 
   # Fit survival model
@@ -312,14 +351,19 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
     y = .data$surv
   ))
 
+  censored <- surv_df[surv_df$n_censor > 0, , drop = FALSE]
+
   if (has_group) {
     p <- p +
       ggplot2::geom_step(ggplot2::aes(colour = .data$strata), linewidth = 1) +
-      if (length(unique(plot_df$group)) <= 9L) {
-        ggplot2::scale_colour_brewer(palette = "Set1", name = "Group")
-      } else {
-        ggplot2::scale_colour_hue(name = "Group")
-      }
+      ggplot2::geom_point(
+        data = censored, ggplot2::aes(colour = .data$strata),
+        shape = 3, size = 2, show.legend = FALSE
+      ) +
+      ggplot2::scale_colour_manual(
+        values = .mp_level_colors(sort(unique(surv_df$strata))),
+        name = "Group"
+      )
 
     # Log-rank test
     pval <- NA_real_
@@ -330,19 +374,24 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
     pval_label <- if (!is.finite(pval)) "unavailable (no informative events)" else if (pval < 0.001) {
       "p < 0.001"
     } else paste0("p = ", round(pval, 3))
+    # Bottom-left corner: Kaplan-Meier curves start at the top left, so this
+    # area stays free of curves and censoring marks in most cohorts.
     p <- p + ggplot2::annotate(
-      "text", x = max(surv_df$time) * 0.7, y = 0.95,
+      "text", x = 0, y = 0.02,
       label = paste("Log-rank:", pval_label),
-      hjust = 0, size = 3.5
+      hjust = 0, vjust = 0, size = 3.5
     )
   } else {
-    p <- p + ggplot2::geom_step(colour = "#7B2D8E", linewidth = 1)
+    p <- p +
+      ggplot2::geom_step(colour = "#7B2D8E", linewidth = 1) +
+      ggplot2::geom_point(data = censored, colour = "#7B2D8E", shape = 3, size = 2)
   }
 
   p <- p +
     ggplot2::labs(
       title = type_label,
       subtitle = if (gene_group) "No recorded variant does not establish a negative assay or wild-type genotype." else NULL,
+      caption = if (nrow(censored) > 0L) "+ censored observation" else NULL,
       x = "Time (months)",
       y = "Survival probability"
     ) +
@@ -358,9 +407,10 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
 .survfit_to_df <- function(fit) {
   if (is.null(fit$strata)) {
     tibble::tibble(
-      time   = c(0, fit$time),
-      surv   = c(1, fit$surv),
-      strata = "All"
+      time     = c(0, fit$time),
+      surv     = c(1, fit$surv),
+      n_censor = c(0, fit$n.censor),
+      strata   = "All"
     )
   } else {
     strata_names <- names(fit$strata)
@@ -370,15 +420,17 @@ mp_plot_survival <- function(db, group_by = NULL, type = c("os", "pfs")) {
     strata_labels <- sub("^group=", "", strata_labels)
 
     df <- tibble::tibble(
-      time   = fit$time,
-      surv   = fit$surv,
-      strata = strata_labels
+      time     = fit$time,
+      surv     = fit$surv,
+      n_censor = fit$n.censor,
+      strata   = strata_labels
     )
     # Add starting points
     starts <- tibble::tibble(
       time = 0,
       surv = 1,
-      strata = unique(strata_labels)
+      n_censor = 0,
+      strata = sub("^group=", "", strata_names)
     )
     dplyr::bind_rows(starts, df)
   }
@@ -413,7 +465,10 @@ mp_plot_cohort_overview <- function(db) {
     fill = .data$diagnosis
   )) +
     ggplot2::geom_bar(show.legend = FALSE) +
-    ggplot2::scale_fill_manual(values = mp_diagnosis_colors()) +
+    ggplot2::scale_fill_manual(
+      values = .mp_level_colors(db$patients$diagnosis, mp_diagnosis_colors()),
+      na.value = "grey60"
+    ) +
     ggplot2::labs(title = "Diagnosis Distribution", x = NULL, y = "Count") +
     theme_molpath() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
@@ -423,8 +478,11 @@ mp_plot_cohort_overview <- function(db) {
     x = .data$age, fill = .data$sex
   )) +
     ggplot2::geom_histogram(binwidth = 5, position = "dodge", alpha = 0.8) +
-    ggplot2::scale_fill_manual(values = c("M" = "#5C6BC0", "F" = "#EC407A")) +
-    ggplot2::labs(title = "Age Distribution", x = "Age", y = "Count", fill = "Sex") +
+    ggplot2::scale_fill_manual(
+      values = .mp_level_colors(db$patients$sex, c("M" = "#5C6BC0", "F" = "#EC407A")),
+      na.value = "grey60"
+    ) +
+    ggplot2::labs(title = "Age Distribution", x = "Age (years)", y = "Count", fill = "Sex") +
     theme_molpath()
 
   # 3. Sample type distribution
@@ -462,8 +520,9 @@ mp_plot_cohort_overview <- function(db) {
 
 #' Plot variant allele frequency distribution
 #'
-#' Histogram or density plot of variant allele frequencies (VAF), optionally
-#' filtered by gene.
+#' Histogram of variant allele frequencies (VAF), optionally filtered by gene.
+#' Bins are 0.05 wide and start at 0; the dashed line marks a VAF of 0.5.
+#' When `gene` selects several genes, each gene gets its own panel.
 #'
 #' @param db A `molpath_db` object.
 #' @param gene Optional character vector of gene symbols to include.
@@ -490,23 +549,28 @@ mp_plot_vaf_distribution <- function(db, gene = NULL) {
   vars <- dplyr::filter(vars, !is.na(.data$vaf))
   if (nrow(vars) == 0L) rlang::abort("No measured VAF values to plot.")
 
-  if (!is.null(gene) && length(gene) > 1L) {
-    p <- ggplot2::ggplot(vars, ggplot2::aes(x = .data$vaf, fill = .data$gene)) +
-      ggplot2::geom_histogram(binwidth = 0.05, alpha = 0.7, position = "identity") +
-      ggplot2::scale_fill_brewer(palette = "Set2", name = "Gene")
-  } else {
-    p <- ggplot2::ggplot(vars, ggplot2::aes(x = .data$vaf)) +
-      ggplot2::geom_histogram(binwidth = 0.05, fill = "#7B2D8E", alpha = 0.8)
+  # Bins start at 0 so that no bar extends outside the [0, 1] proportion scale.
+  p <- ggplot2::ggplot(vars, ggplot2::aes(x = .data$vaf)) +
+    ggplot2::geom_histogram(
+      binwidth = 0.05, boundary = 0, closed = "left",
+      fill = "#7B2D8E", alpha = 0.8
+    )
+  if (!is.null(gene) && length(unique(vars$gene)) > 1L) {
+    # One panel per gene: overlaid translucent histograms are hard to read.
+    p <- p + ggplot2::facet_wrap(ggplot2::vars(.data$gene))
   }
 
   p +
     ggplot2::geom_vline(xintercept = 0.5, linetype = "dashed", colour = "grey50") +
+    ggplot2::coord_cartesian(xlim = c(0, 1)) +
     ggplot2::labs(
       title = "VAF Distribution",
-      x = "Variant Allele Frequency",
+      x = "Variant allele frequency (proportion)",
       y = "Count"
     ) +
-    theme_molpath()
+    theme_molpath() +
+    # Keep the end labels of neighbouring panels ("1.00" and "0.00") apart.
+    ggplot2::theme(panel.spacing.x = ggplot2::unit(1.5, "lines"))
 }
 
 # ---- Patient timeline --------------------------------------------------------
@@ -514,7 +578,9 @@ mp_plot_vaf_distribution <- function(db, gene = NULL) {
 #' Plot patient timeline
 #'
 #' Displays a timeline of events for a single patient: sample collections,
-#' report dates, and clinical measurements.
+#' report dates, and clinical measurements (with their values). Labels are
+#' placed to the right of each event and moved to separate lanes where they
+#' would otherwise overlap. Events without a date are omitted.
 #'
 #' @param db A `molpath_db` object.
 #' @param patient_id A single patient ID.
@@ -560,9 +626,12 @@ mp_plot_timeline <- function(db, patient_id) {
 
   # Clinical
   if (nrow(pat$clinical) > 0L && "date" %in% names(pat$clinical)) {
+    clin_label <- pat$clinical$parameter
+    has_value <- !is.na(pat$clinical$value) & nzchar(pat$clinical$value)
+    clin_label[has_value] <- paste0(clin_label[has_value], ": ", pat$clinical$value[has_value])
     c_data <- tibble::tibble(
       date  = pat$clinical$date,
-      label = pat$clinical$parameter,
+      label = clin_label,
       type  = "Clinical"
     )
     events <- dplyr::bind_rows(events, c_data)
@@ -573,28 +642,81 @@ mp_plot_timeline <- function(db, patient_id) {
   }
 
   events <- dplyr::filter(events, !is.na(.data$date))
+  if (nrow(events) == 0L) {
+    rlang::abort("No dated timeline events found for this patient.")
+  }
 
   event_colors <- c(
     Sample   = "#7B2D8E",
     Report   = "#2196F3",
     Clinical = "#4CAF50"
   )
+  events <- .mp_timeline_lanes(events, types = names(event_colors))
+  n_types <- length(names(event_colors))
 
   ggplot2::ggplot(events, ggplot2::aes(
     x = .data$date,
-    y = .data$type,
+    y = .data$y,
     colour = .data$type
   )) +
-    ggplot2::geom_point(size = 4) +
+    ggplot2::geom_point(size = 3) +
     ggplot2::geom_text(
-      ggplot2::aes(label = .data$label),
-      vjust = -1, size = 2.5, show.legend = FALSE
+      ggplot2::aes(x = .data$label_x, label = .data$label),
+      hjust = 0, size = 2.8, show.legend = FALSE
     ) +
-    ggplot2::scale_colour_manual(values = event_colors, name = "Event type") +
+    ggplot2::scale_colour_manual(values = event_colors, name = "Event type", drop = TRUE) +
+    ggplot2::scale_x_date(expand = ggplot2::expansion(
+      mult = c(0.03, attr(events, "label_room") + 0.03)
+    )) +
+    ggplot2::scale_y_continuous(
+      breaks = seq_len(n_types), labels = names(event_colors),
+      limits = c(0.5, n_types + 0.5), expand = ggplot2::expansion()
+    ) +
     ggplot2::labs(
       title = paste("Patient Timeline:", patient_id),
       x = "Date",
       y = NULL
     ) +
-    theme_molpath()
+    theme_molpath() +
+    ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
+}
+
+#' Assign non-overlapping label lanes to timeline events
+#'
+#' Labels are drawn to the right of each point. Within one event type, an
+#' event moves to the next free lane when its label would overlap the label of
+#' an earlier event, so that every label stays readable.
+#'
+#' @param events Tibble with `date`, `label` and `type`.
+#' @param types Event types in their display order (bottom to top).
+#' @param char_frac Approximate width of one label character as a fraction of
+#'   the date range at the default 7-inch figure width.
+#' @return `events` with `y` and `label_x` columns and a `label_room`
+#'   attribute (right-hand axis expansion needed for the longest label).
+#' @noRd
+.mp_timeline_lanes <- function(events, types, char_frac = 0.0095) {
+  events <- events[order(match(events$type, types), events$date), , drop = FALSE]
+  span <- as.numeric(diff(range(events$date)))
+  if (!is.finite(span) || span <= 0) span <- 30
+  gap <- span * 0.012
+  width <- nchar(events$label) * char_frac * span + 2 * gap
+  events$label_x <- events$date + gap
+  events$y <- NA_real_
+  for (type in unique(events$type)) {
+    rows <- which(events$type == type)
+    lane_end <- numeric()
+    lane <- integer(length(rows))
+    for (k in seq_along(rows)) {
+      start <- as.numeric(events$date[rows[k]])
+      free <- which(lane_end < start)
+      lane[k] <- if (length(free)) free[1L] else length(lane_end) + 1L
+      lane_end[lane[k]] <- start + width[rows[k]]
+    }
+    n_lanes <- max(lane)
+    step <- min(0.22, 0.8 / max(n_lanes, 1L))
+    centre <- match(type, types)
+    events$y[rows] <- centre - (n_lanes - 1) * step / 2 + (lane - 1) * step
+  }
+  attr(events, "label_room") <- max(width) / span
+  events
 }
