@@ -1,5 +1,8 @@
 # molpathR ![molpathR logo](reference/figures/logo-with-name.png)
 
+Zenodo DOI reserved for the release: `10.5281/zenodo.21889946` (not yet
+published).
+
 **molpathR** is a unified molecular pathology data platform that ingests
 heterogeneous clinical and genomic data sources (VCF, BAM, FASTQ, XML
 reports, PDF reports, clinical information systems, survival data),

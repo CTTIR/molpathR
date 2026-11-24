@@ -36,7 +36,7 @@ print(parsed)
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "survival"
 #> ℹ Source file: example.csv
-#> ℹ Parsed: "2026-11-23 12:47:41"
+#> ℹ Parsed: "2026-11-24 15:00:49"
 #> ℹ Data: 1 row x 2 columns
 #> ℹ Columns: patient_id and os_months
 #> ℹ Completeness: "100%"

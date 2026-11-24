@@ -41,8 +41,8 @@ result
 #> 
 #> ── molpath_parsed ──────────────────────────────────────────────────────────────
 #> ℹ Source type: "vcf"
-#> ℹ Source file: /tmp/RtmpJS1auA/molpathR-example/vcf/SAM-2024-0001.vcf
-#> ℹ Parsed: "2026-11-23 12:47:38"
+#> ℹ Source file: /tmp/Rtmpmd56QU/molpathR-example/vcf/SAM-2024-0001.vcf
+#> ℹ Parsed: "2026-11-24 15:00:46"
 #> ℹ Data: 8 rows x 10 columns
 #> ℹ Columns: chrom, pos, id, ref, alt, qual, filter, info, format, and SAM-2024-0001
 #> ℹ Completeness: "100%"
